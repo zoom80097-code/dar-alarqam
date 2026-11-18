@@ -49,7 +49,6 @@
             -webkit-tap-highlight-color: transparent;
         }
 
-        /* Custom Scrollbar */
         ::-webkit-scrollbar {
             width: 6px;
             height: 6px;
@@ -62,7 +61,6 @@
             border-radius: 3px;
         }
 
-        /* Smooth Checkbox Animation */
         .check-btn {
             transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
         }
@@ -70,12 +68,10 @@
             transform: scale(0.92);
         }
 
-        /* Gold metallic border effect */
         .gold-ring {
             box-shadow: 0 0 0 2.5px #C59B27, 0 4px 12px rgba(11, 37, 89, 0.3);
         }
 
-        /* Shake animation for wrong PIN */
         @keyframes shake {
             0%, 100% { transform: translateX(0); }
             20%, 60% { transform: translateX(-8px); }
@@ -89,7 +85,6 @@
             display: none !important;
         }
 
-        /* Print Styles */
         @media print {
             body {
                 background-color: #ffffff !important;
@@ -123,7 +118,7 @@
 </head>
 <body class="text-slate-800 pb-24 locked-state">
 
-    <!-- Hidden File Input to let user pick their exact Logo image from phone -->
+    <!-- Hidden File Input for Custom Logo -->
     <input type="file" id="logoFileInput" accept="image/*" class="hidden" onchange="handleLogoUpload(event)">
 
     <!-- Toast Notification -->
@@ -135,7 +130,7 @@
     </div>
 
     <!-- ===================================================================== -->
-    <!-- SECURITY GATE / FULL-SCREEN LOCK OVERLAY (BLOCKS UNAUTHORIZED ACCESS) -->
+    <!-- SECURITY GATE / FULL-SCREEN LOCK OVERLAY (WITH FORGOT PIN BUTTON)     -->
     <!-- ===================================================================== -->
     <div id="authLockScreen" class="fixed inset-0 z-[100] bg-gradient-to-br from-arqam-navy via-arqam-blue to-slate-900 flex items-center justify-center p-4 no-print overflow-y-auto">
         <div id="lockCard" class="bg-white rounded-3xl max-w-md w-full p-6 sm:p-8 shadow-2xl border-4 border-arqam-gold text-center relative my-auto">
@@ -167,42 +162,104 @@
             <h1 class="text-xl sm:text-2xl font-black text-arqam-navy">دار الأرقم بن أبي الأرقم</h1>
             <p class="text-xs text-slate-500 font-bold mt-1 mb-5">إدارة الشيخ: ربيع يوسف حسين • عنك - إطسا - الفيوم</p>
 
-            <form onsubmit="handleUnlockSubmit(event)" class="space-y-4 text-right">
-                <div>
-                    <label class="block text-xs font-extrabold text-arqam-navy mb-1.5">
-                        <i class="fa-solid fa-key text-arqam-gold ml-1"></i>أدخل الرقم السري (للإدارة أو المعلمات):
-                    </label>
-                    <div class="relative flex items-center">
-                        <input 
-                            type="password" 
-                            id="lockPinInput" 
-                            required 
-                            dir="ltr"
-                            placeholder="••••••" 
-                            autocomplete="current-password"
-                            class="w-full px-11 py-3.5 bg-slate-50 border-2 border-slate-300 rounded-2xl text-center text-lg font-black tracking-widest text-arqam-navy focus:outline-none focus:border-arqam-navy focus:bg-white transition"
-                        >
-                        <button type="button" onclick="toggleLockPinVisibility()" class="absolute left-3.5 text-slate-400 hover:text-arqam-navy transition p-1">
-                            <i id="lockPinEyeIcon" class="fa-solid fa-eye"></i>
+            <!-- 1. MAIN PIN LOGIN VIEW -->
+            <div id="mainLoginView">
+                <form onsubmit="handleUnlockSubmit(event)" class="space-y-4 text-right">
+                    <div>
+                        <label class="block text-xs font-extrabold text-arqam-navy mb-1.5">
+                            <i class="fa-solid fa-key text-arqam-gold ml-1"></i>أدخل الرقم السري (للإدارة أو المعلمات):
+                        </label>
+                        <div class="relative flex items-center">
+                            <input 
+                                type="password" 
+                                id="lockPinInput" 
+                                required 
+                                dir="ltr"
+                                placeholder="••••••" 
+                                autocomplete="current-password"
+                                class="w-full px-11 py-3.5 bg-slate-50 border-2 border-slate-300 rounded-2xl text-center text-lg font-black tracking-widest text-arqam-navy focus:outline-none focus:border-arqam-navy focus:bg-white transition"
+                            >
+                            <button type="button" onclick="toggleLockPinVisibility()" class="absolute left-3.5 text-slate-400 hover:text-arqam-navy transition p-1">
+                                <i id="lockPinEyeIcon" class="fa-solid fa-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div id="lockErrorMsg" class="hidden bg-rose-50 border border-rose-200 text-rose-700 text-xs font-extrabold p-3 rounded-xl flex items-center gap-2">
+                        <i class="fa-solid fa-circle-exclamation text-rose-500 text-base shrink-0"></i>
+                        <span>الرقم السري غير صحيح! إذا نسيته اضغط على "نسيت الرقم السري؟" بالأسفل.</span>
+                    </div>
+
+                    <div class="flex flex-wrap items-center justify-between gap-2 bg-slate-50 p-2.5 rounded-xl border border-slate-200/80">
+                        <label class="flex items-center gap-2 cursor-pointer select-none">
+                            <input type="checkbox" id="rememberDeviceCheck" checked class="w-4 h-4 accent-arqam-navy rounded cursor-pointer">
+                            <span class="text-xs font-bold text-slate-700">تذكر دخولي على هذا الجهاز</span>
+                        </label>
+                        <button type="button" onclick="switchLockView('recovery')" class="text-xs font-extrabold text-arqam-blue hover:text-arqam-navy underline flex items-center gap-1 shrink-0">
+                            <i class="fa-solid fa-life-ring text-arqam-gold"></i>
+                            <span>نسيت الرقم السري؟</span>
                         </button>
                     </div>
+
+                    <button type="submit" class="w-full bg-gradient-to-l from-arqam-navy to-arqam-blue hover:from-arqam-blue hover:to-arqam-light text-white font-black py-3.5 rounded-2xl shadow-lg border border-arqam-gold/50 flex items-center justify-center gap-2 transition active:scale-98">
+                        <i class="fa-solid fa-unlock-keyhole text-arqam-goldLight"></i>
+                        <span>فتح دفتر التحصيل</span>
+                    </button>
+                </form>
+            </div>
+
+            <!-- 2. FORGOT PIN / RECOVERY VIEW -->
+            <div id="recoveryLoginView" class="hidden text-right">
+                <div class="bg-amber-50 border border-amber-200 rounded-2xl p-3 mb-3.5 text-xs text-amber-950 font-bold leading-relaxed">
+                    <i class="fa-solid fa-key text-amber-600 ml-1"></i>
+                    <strong>استعادة وتغيير الرقم السري للمدير:</strong>
+                    <p id="recoveryQuestionPrompt" class="text-arqam-navy font-extrabold mt-1">أدخل مفتاح الطوارئ الدائم الخاص بالشيخ ربيع:</p>
                 </div>
 
-                <div id="lockErrorMsg" class="hidden bg-rose-50 border border-rose-200 text-rose-700 text-xs font-extrabold p-3 rounded-xl flex items-center gap-2">
-                    <i class="fa-solid fa-circle-exclamation text-rose-500 text-base shrink-0"></i>
-                    <span>الرقم السري غير صحيح! هذا النظام مخصص لإدارة ومعلمات الدار فقط.</span>
-                </div>
+                <form onsubmit="handleRecoveryResetSubmit(event)" class="space-y-3.5">
+                    <div>
+                        <label class="block text-xs font-extrabold text-arqam-navy mb-1">
+                            مفتاح الطوارئ / إجابة سؤال الأمان:
+                        </label>
+                        <input 
+                            type="password" 
+                            id="recoveryMasterInput" 
+                            required 
+                            dir="ltr"
+                            placeholder="اكتب مفتاح الطوارئ أو الإجابة هنا" 
+                            class="w-full px-4 py-3 bg-slate-50 border-2 border-slate-300 rounded-xl text-center text-sm font-black text-arqam-navy focus:outline-none focus:border-arqam-navy focus:bg-white"
+                        >
+                    </div>
 
-                <label class="flex items-center gap-2.5 cursor-pointer select-none bg-slate-50 p-2.5 rounded-xl border border-slate-200/80">
-                    <input type="checkbox" id="rememberDeviceCheck" checked class="w-4 h-4 accent-arqam-navy rounded cursor-pointer">
-                    <span class="text-xs font-bold text-slate-700">تذكر دخولي على هذا الهاتف / الجهاز</span>
-                </label>
+                    <div>
+                        <label class="block text-xs font-extrabold text-emerald-800 mb-1">
+                            الرقم السري الجديد للمدير (الذي تريد تعيينه الآن):
+                        </label>
+                        <input 
+                            type="text" 
+                            id="recoveryNewAdminPinInput" 
+                            required 
+                            dir="ltr"
+                            placeholder="مثال: 992026" 
+                            class="w-full px-4 py-3 bg-emerald-50/50 border-2 border-emerald-300 rounded-xl text-center text-sm font-black text-emerald-950 focus:outline-none focus:border-emerald-600 focus:bg-white"
+                        >
+                    </div>
 
-                <button type="submit" class="w-full bg-gradient-to-l from-arqam-navy to-arqam-blue hover:from-arqam-blue hover:to-arqam-light text-white font-black py-3.5 rounded-2xl shadow-lg border border-arqam-gold/50 flex items-center justify-center gap-2 transition active:scale-98">
-                    <i class="fa-solid fa-unlock-keyhole text-arqam-goldLight"></i>
-                    <span>فتح دفتر التحصيل</span>
-                </button>
-            </form>
+                    <div id="recoveryErrorMsg" class="hidden bg-rose-50 border border-rose-200 text-rose-700 text-xs font-extrabold p-2.5 rounded-xl flex items-center gap-2">
+                        <i class="fa-solid fa-circle-exclamation text-rose-500 shrink-0"></i>
+                        <span id="recoveryErrorText">مفتاح الطوارئ أو الإجابة غير صحيحة!</span>
+                    </div>
+
+                    <div class="flex items-center gap-2 pt-1">
+                        <button type="submit" class="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white font-black py-3 rounded-xl shadow-md text-xs sm:text-sm transition">
+                            <i class="fa-solid fa-check-double ml-1"></i>حفظ الرقم الجديد والدخول
+                        </button>
+                        <button type="button" onclick="switchLockView('main')" class="px-4 py-3 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-xl text-xs sm:text-sm transition">
+                            رجوع
+                        </button>
+                    </div>
+                </form>
+            </div>
 
             <p id="lockCloudSyncHint" class="text-[11px] text-slate-400 font-semibold mt-4 flex items-center justify-center gap-1.5">
                 <i class="fa-solid fa-cloud-shield text-sky-500"></i>
@@ -212,7 +269,7 @@
     </div>
 
     <!-- ===================================================================== -->
-    <!-- PROTECTED APPLICATION SHELL (HIDDEN UNTIL AUTHENTICATED)              -->
+    <!-- PROTECTED APPLICATION SHELL                                           -->
     <!-- ===================================================================== -->
     <div id="appShell" class="hidden">
 
@@ -280,10 +337,9 @@
                         </div>
                     </div>
 
-                    <!-- Right Controls: Month & Year Selectors + Security + Lock -->
+                    <!-- Right Controls -->
                     <div class="flex flex-wrap items-center gap-1.5 sm:gap-2 w-full lg:w-auto justify-between lg:justify-end border-t border-white/10 lg:border-none pt-2.5 lg:pt-0">
                         
-                        <!-- Separate Month & Year Selector with Quick Step Arrows -->
                         <div class="flex items-center gap-1 bg-white/10 backdrop-blur-md p-1 rounded-2xl border-2 border-arqam-gold/60 shadow-inner">
                             <button onclick="stepMonth(-1)" title="الشهر السابق" class="w-8 h-8 rounded-xl bg-white/10 hover:bg-arqam-gold hover:text-arqam-navy text-white flex items-center justify-center transition">
                                 <i class="fa-solid fa-chevron-right text-xs"></i>
@@ -330,7 +386,7 @@
 
                         <div class="flex items-center gap-1.5">
                             <!-- Admin Only: Security & Passwords Button -->
-                            <button id="adminSecurityBtn" onclick="openSecurityModal()" class="bg-arqam-gold hover:bg-arqam-goldLight text-arqam-navy font-extrabold text-xs px-3 py-2.5 rounded-xl shadow-md flex items-center gap-1.5 transition shrink-0" title="إدارة الأرقام السرية والصلاحيات">
+                            <button id="adminSecurityBtn" onclick="openSecurityModal()" class="bg-arqam-gold hover:bg-arqam-goldLight text-arqam-navy font-extrabold text-xs px-3 py-2.5 rounded-xl shadow-md flex items-center gap-1.5 transition shrink-0" title="إدارة الأرقام السرية والاسترداد">
                                 <i class="fa-solid fa-user-shield text-sm"></i>
                                 <span>الحماية</span>
                             </button>
@@ -391,7 +447,6 @@
             <!-- Dashboard Summary Cards -->
             <section class="mb-4 no-print space-y-2.5">
                 <div class="grid grid-cols-2 md:grid-cols-4 gap-2.5 sm:gap-3">
-                    <!-- Total Students -->
                     <div onclick="setPaymentFilter('all')" class="bg-white p-3.5 rounded-2xl shadow-sm border-2 border-slate-200/80 flex items-center gap-3 cursor-pointer hover:border-arqam-navy transition">
                         <div class="w-11 h-11 rounded-xl bg-arqam-navy/10 text-arqam-navy flex items-center justify-center text-lg shrink-0">
                             <i class="fa-solid fa-users"></i>
@@ -405,7 +460,6 @@
                         </div>
                     </div>
 
-                    <!-- Paid Students -->
                     <div onclick="setPaymentFilter('paid')" class="bg-white p-3.5 rounded-2xl shadow-sm border-2 border-emerald-200/90 flex items-center gap-3 cursor-pointer hover:bg-emerald-50/40 transition">
                         <div class="w-11 h-11 rounded-xl bg-emerald-100 text-emerald-600 flex items-center justify-center text-lg shrink-0">
                             <i class="fa-solid fa-circle-check"></i>
@@ -419,7 +473,6 @@
                         </div>
                     </div>
 
-                    <!-- Unpaid Students & Previous Arrears -->
                     <div onclick="setPaymentFilter('unpaid')" class="bg-white p-3.5 rounded-2xl shadow-sm border-2 border-rose-200/90 flex items-center gap-3 cursor-pointer hover:bg-rose-50/40 transition">
                         <div class="w-11 h-11 rounded-xl bg-rose-100 text-rose-600 flex items-center justify-center text-lg shrink-0">
                             <i class="fa-solid fa-clock-rotate-left"></i>
@@ -434,7 +487,6 @@
                         </div>
                     </div>
 
-                    <!-- Total Collected Money -->
                     <div class="bg-gradient-to-br from-arqam-navy to-arqam-blue text-white p-3.5 rounded-2xl shadow-md border-2 border-arqam-gold/60 flex items-center gap-3">
                         <div class="w-11 h-11 rounded-xl bg-arqam-gold/25 text-arqam-goldLight border border-arqam-gold/40 flex items-center justify-center text-lg shrink-0">
                             <i class="fa-solid fa-coins"></i>
@@ -477,16 +529,14 @@
                         </button>
                     </div>
 
-                    <!-- Dynamic Quick Search Chips -->
                     <div id="quickSearchChips" class="flex flex-wrap items-center gap-1.5 mt-2.5 px-1">
                     </div>
 
-                    <!-- Instant Floating Autocomplete Suggestions Box -->
                     <div id="autocompleteBox" class="hidden absolute right-0 left-0 top-[60px] bg-white rounded-2xl shadow-2xl border-2 border-arqam-navy z-40 max-h-96 overflow-y-auto divide-y divide-slate-100">
                     </div>
                 </div>
 
-                <!-- Filters Row: Class/Teacher & Payment Status Pills (الكل / تم الدفع / لم يدفع / متأخرات سابقة) -->
+                <!-- Filters Row -->
                 <div class="grid grid-cols-1 lg:grid-cols-12 gap-3 pt-2.5 border-t border-slate-100">
                     <div class="lg:col-span-4 flex items-center bg-slate-50 border border-slate-200 rounded-xl px-3 py-2">
                         <i class="fa-solid fa-book-quran text-arqam-navy ml-2.5"></i>
@@ -582,41 +632,71 @@
     </div>
 
     <!-- ===================================================================== -->
-    <!-- MODAL: ADMIN SECURITY & PASSWORDS MANAGEMENT                          -->
+    <!-- MODAL: ADMIN SECURITY, PINS & RECOVERY SETTINGS                       -->
     <!-- ===================================================================== -->
     <div id="securityModal" class="fixed inset-0 bg-slate-900/70 backdrop-blur-xs z-50 hidden items-center justify-center p-3 sm:p-4 no-print">
         <div class="bg-white rounded-3xl max-w-lg w-full p-5 sm:p-6 shadow-2xl border-2 border-arqam-gold max-h-[92vh] overflow-y-auto">
             <div class="flex items-center justify-between pb-3 border-b border-slate-100 mb-4">
                 <h3 class="text-base sm:text-lg font-black text-arqam-navy flex items-center gap-2">
                     <i class="fa-solid fa-user-shield text-arqam-gold text-xl"></i>
-                    <span>إعدادات الحماية والأرقام السرية (خاص بالمدير)</span>
+                    <span>إعدادات الحماية واسترداد الرقم السري</span>
                 </h3>
                 <button onclick="closeSecurityModal()" class="w-8 h-8 rounded-full bg-slate-100 text-slate-500 hover:bg-slate-200 flex items-center justify-center">
                     <i class="fa-solid fa-xmark"></i>
                 </button>
             </div>
 
-            <form onsubmit="saveSecuritySettings(event)" class="space-y-4 text-xs sm:text-sm">
-                <div class="bg-emerald-50 p-3.5 rounded-2xl border border-emerald-200 text-xs text-emerald-900 leading-relaxed font-semibold">
-                    <i class="fa-solid fa-cloud-bolt text-emerald-600 ml-1"></i>
-                    أي تغيير في الأرقام السرية هنا يتم حفظه في السحابة فوراً، ويُغلق الموقع تلقائياً على أي هاتف آخر كان يستخدم الرقم القديم.
+            <!-- Current Active Codes Reminder Box (Visible only to unlocked Admin) -->
+            <div class="bg-arqam-navy text-white p-3.5 rounded-2xl border border-arqam-gold mb-4">
+                <p class="text-xs font-extrabold text-arqam-goldLight mb-2 flex items-center gap-1.5">
+                    <i class="fa-solid fa-eye"></i>
+                    <span>الأرقام السرية المحفوظة حالياً (تظهر للمدير فقط للتذكير):</span>
+                </p>
+                <div class="grid grid-cols-3 gap-2 text-center">
+                    <div class="bg-white/10 p-2 rounded-xl">
+                        <span class="block text-[10px] text-slate-300 font-bold">رقم المدير</span>
+                        <span id="currentAdminPinDisplay" dir="ltr" class="font-mono font-black text-sm text-arqam-goldLight">992026</span>
+                    </div>
+                    <div class="bg-white/10 p-2 rounded-xl">
+                        <span class="block text-[10px] text-slate-300 font-bold">رقم المعلمات</span>
+                        <span id="currentTeacherPinDisplay" dir="ltr" class="font-mono font-black text-sm text-emerald-300">112026</span>
+                    </div>
+                    <div class="bg-white/10 p-2 rounded-xl">
+                        <span class="block text-[10px] text-slate-300 font-bold">مفتاح الطوارئ</span>
+                        <span id="currentRecoveryKeyDisplay" dir="ltr" class="font-mono font-black text-sm text-sky-300">rabie2026</span>
+                    </div>
                 </div>
+            </div>
 
+            <form onsubmit="saveSecuritySettings(event)" class="space-y-3.5 text-xs sm:text-sm">
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                    <div class="bg-slate-50 p-3.5 rounded-2xl border border-slate-200">
+                    <div class="bg-slate-50 p-3 rounded-2xl border border-slate-200">
                         <label class="block text-xs font-extrabold text-arqam-navy mb-1">
-                            👑 الرقم السري الجديد للمدير:
+                            👑 تغيير الرقم السري للمدير:
                         </label>
-                        <input type="text" id="newAdminPinInput" dir="ltr" placeholder="اتركه فارغاً للإبقاء على الحالي" class="w-full px-3 py-2 bg-white border border-slate-300 rounded-xl text-sm font-bold text-center focus:outline-none focus:border-arqam-navy">
-                        <p class="text-[10px] text-slate-500 mt-1">صلاحية كاملة + تغيير كلمات السر</p>
+                        <input type="text" id="newAdminPinInput" dir="ltr" placeholder="اتركه فارغاً للإبقاء على الحالي" class="w-full px-3 py-2 bg-white border border-slate-300 rounded-xl text-xs sm:text-sm font-bold text-center focus:outline-none focus:border-arqam-navy">
                     </div>
 
-                    <div class="bg-slate-50 p-3.5 rounded-2xl border border-slate-200">
+                    <div class="bg-slate-50 p-3 rounded-2xl border border-slate-200">
                         <label class="block text-xs font-extrabold text-amber-800 mb-1">
-                            👩‍🏫 الرقم السري الجديد للمعلمات:
+                            👩‍🏫 تغيير الرقم السري للمعلمات:
                         </label>
-                        <input type="text" id="newTeacherPinInput" dir="ltr" placeholder="اتركه فارغاً للإبقاء على الحالي" class="w-full px-3 py-2 bg-white border border-slate-300 rounded-xl text-sm font-bold text-center focus:outline-none focus:border-arqam-navy">
-                        <p class="text-[10px] text-slate-500 mt-1">يدخل به المعلمات لتحصيل الاشتراكات</p>
+                        <input type="text" id="newTeacherPinInput" dir="ltr" placeholder="اتركه فارغاً للإبقاء على الحالي" class="w-full px-3 py-2 bg-white border border-slate-300 rounded-xl text-xs sm:text-sm font-bold text-center focus:outline-none focus:border-arqam-navy">
+                    </div>
+                </div>
+
+                <!-- Custom Recovery Question & Emergency Key -->
+                <div class="bg-sky-50/70 p-3.5 rounded-2xl border border-sky-200 space-y-2.5">
+                    <p class="text-xs font-extrabold text-sky-950">
+                        <i class="fa-solid fa-life-ring text-sky-600 ml-1"></i>إعدادات زر "نسيت الرقم السري؟":
+                    </p>
+                    <div>
+                        <label class="block text-[11px] font-bold text-slate-700 mb-1">سؤال الأمان أو التلميح الذي يظهر لك عند الاسترداد:</label>
+                        <input type="text" id="recoveryPromptInput" placeholder="مثال: أدخل مفتاح الطوارئ الخاص بالشيخ ربيع" class="w-full px-3 py-2 bg-white border border-sky-300 rounded-xl text-xs font-bold focus:outline-none focus:border-sky-600">
+                    </div>
+                    <div>
+                        <label class="block text-[11px] font-bold text-slate-700 mb-1">تغيير مفتاح الطوارئ / إجابة سؤال الأمان:</label>
+                        <input type="text" id="newRecoveryKeyInput" dir="ltr" placeholder="اتركه فارغاً للإبقاء على المفتاح الحالي" class="w-full px-3 py-2 bg-white border border-sky-300 rounded-xl text-xs font-bold text-center focus:outline-none focus:border-sky-600">
                     </div>
                 </div>
 
@@ -720,7 +800,7 @@
         </div>
     </div>
 
-    <!-- Modal: Step-by-Step Phone Usage Guide -->
+    <!-- Modal: Phone Usage Guide -->
     <div id="guideModal" class="fixed inset-0 bg-slate-900/70 backdrop-blur-xs z-50 hidden items-center justify-center p-3 sm:p-4 no-print">
         <div class="bg-white rounded-3xl max-w-lg w-full p-5 sm:p-6 shadow-2xl border-2 border-arqam-gold max-h-[90vh] overflow-y-auto">
             <div class="flex items-center justify-between pb-3 border-b border-slate-100 mb-4">
@@ -744,12 +824,12 @@
 
                 <div class="bg-slate-50 p-3.5 rounded-2xl border border-slate-200">
                     <p class="font-extrabold text-arqam-navy mb-1">1️⃣ كيف يعمل تحصيل المتأخرات المجمع بضغطة واحدة؟</p>
-                    <p class="text-xs text-slate-600">إذا لم يسدد الطالب اشتراك شهر سابق (مثلاً نوفمبر) وانتقلت إلى شهر ديسمبر، سيظهر تنبيه تلقائي أمام اسمه مع زر <strong>"⚡ تحصيل الكل (نوفمبر + ديسمبر)"</strong> لتحصيل الشهرين معاً بضغطة واحدة، بالإضافة إلى خيار تحصيل الشهر الحالي وحده أو السابق وحده.</p>
+                    <p class="text-xs text-slate-600">إذا تأخر الطالب عن سداد شهر سابق (مثلاً نوفمبر) وانتقلت إلى شهر ديسمبر، يظهر تنبيه تلقائي أمام اسمه مع زر <strong>"⚡ تحصيل الكل"</strong> لتسجيل سداد الشهرين معاً بضغطة واحدة.</p>
                 </div>
 
                 <div class="bg-slate-50 p-3.5 rounded-2xl border border-slate-200">
-                    <p class="font-extrabold text-arqam-navy mb-1">2️⃣ كيف أحمي الموقع وأغير الرقم السري؟</p>
-                    <p class="text-xs text-slate-600">عند الدخول برقم المدير، يظهر زر <strong>"الحماية"</strong> في الشريط العلوي لتغيير الرقم السري للمدير أو الرقم السري للمعلمات في أي وقت.</p>
+                    <p class="font-extrabold text-arqam-navy mb-1">2️⃣ ماذا أفعل لو نسيت الرقم السري للمدير؟</p>
+                    <p class="text-xs text-slate-600">اضغط على <strong>"نسيت الرقم السري؟"</strong> من شاشة القفل الخارجية، وأدخل مفتاح الطوارئ (أو إجابة سؤال الأمان) لتعيين رقم سري جديد فوراً.</p>
                 </div>
             </div>
 
@@ -975,44 +1055,75 @@
         };
 
         // ==========================================
-        // 2. SECURITY & ROLE-BASED ACCESS CONTROL
+        // 2. SECURITY, FORGOT PIN RECOVERY & PERMISSIONS
         // ==========================================
+        function normalizeSecret(raw) {
+            return String(raw || '')
+                .trim()
+                .replace(/[٠-٩]/g, d => '٠١٢٣٤٥٦٧٨٩'.indexOf(d))
+                .replace(/[۰-۹]/g, d => '۰۱۲۳۴۵۶۷۸۹'.indexOf(d))
+                .toLowerCase();
+        }
+
+        function hashPinCode(rawPin) {
+            const s = normalizeSecret(rawPin);
+            let h = 5381;
+            for (let i = 0; i < s.length; i++) {
+                h = ((h * 33) ^ s.charCodeAt(i)) >>> 0;
+            }
+            return 'arq_' + h.toString(16);
+        }
+
+        const DEFAULT_RECOVERY_PROMPT = 'أدخل مفتاح الطوارئ الدائم الخاص بالشيخ ربيع:';
+
         const DEFAULT_SECURITY_CONFIG = {
-            adminHash: 'arq_6951689306913',
-            teacherHash: 'arq_6951366736401',
+            adminHash: hashPinCode('992026'),
+            teacherHash: hashPinCode('112026'),
+            recoveryHash: hashPinCode('rabie2026'),
+            recoveryPrompt: DEFAULT_RECOVERY_PROMPT,
             allowTeacherEditStudents: true,
             allowTeacherDeleteManage: false
         };
 
         let securityConfig = { ...DEFAULT_SECURITY_CONFIG };
+        let adminPinVault = {
+            adminPin: '992026',
+            teacherPin: '112026',
+            recoveryKey: 'rabie2026'
+        };
+        let pendingRecoveredAdminPin = null;
+
         let currentUserRole = null; // 'admin' | 'teacher' | null
         let isSystemUnlocked = false;
         let securityDocRef = null;
 
-        function hashPinCode(rawPin) {
-            const s = String(rawPin || '').trim();
-            let h = 5381;
-            for (let i = 0; i < s.length; i++) {
-                h = (h * 33 + s.charCodeAt(i)) % 100000000000000;
-            }
-            return 'arq_' + h;
-        }
-
         function loadLocalSecurityConfig() {
             try {
-                const cached = localStorage.getItem('arqam_security_cfg_v1');
+                const cached = localStorage.getItem('arqam_security_cfg_v2');
                 if (cached) {
                     const parsed = JSON.parse(cached);
                     securityConfig = { ...DEFAULT_SECURITY_CONFIG, ...parsed };
                 }
+                const cachedVault = localStorage.getItem('arqam_admin_vault_v1');
+                if (cachedVault) {
+                    adminPinVault = { ...adminPinVault, ...JSON.parse(cachedVault) };
+                }
             } catch (e) {
                 securityConfig = { ...DEFAULT_SECURITY_CONFIG };
+            }
+            updateRecoveryPromptUI();
+        }
+
+        function updateRecoveryPromptUI() {
+            const promptEl = document.getElementById('recoveryQuestionPrompt');
+            if (promptEl) {
+                promptEl.textContent = securityConfig.recoveryPrompt || DEFAULT_RECOVERY_PROMPT;
             }
         }
 
         function getSavedAuthSession() {
             try {
-                const raw = localStorage.getItem('arqam_auth_session_v1') || sessionStorage.getItem('arqam_auth_session_v1');
+                const raw = localStorage.getItem('arqam_auth_session_v2') || sessionStorage.getItem('arqam_auth_session_v2');
                 return raw ? JSON.parse(raw) : null;
             } catch (e) {
                 return null;
@@ -1024,6 +1135,86 @@
             if (sess.role === 'admin' && sess.pinHash === securityConfig.adminHash) return 'admin';
             if (sess.role === 'teacher' && sess.pinHash === securityConfig.teacherHash) return 'teacher';
             return null;
+        }
+
+        function switchLockView(mode) {
+            const mainView = document.getElementById('mainLoginView');
+            const recView = document.getElementById('recoveryLoginView');
+            const lockErr = document.getElementById('lockErrorMsg');
+            const recErr = document.getElementById('recoveryErrorMsg');
+
+            if (lockErr) lockErr.classList.add('hidden');
+            if (recErr) recErr.classList.add('hidden');
+            updateRecoveryPromptUI();
+
+            if (mode === 'recovery') {
+                mainView.classList.add('hidden');
+                recView.classList.remove('hidden');
+                document.getElementById('recoveryMasterInput').value = '';
+                document.getElementById('recoveryNewAdminPinInput').value = '';
+                document.getElementById('recoveryMasterInput').focus();
+            } else {
+                recView.classList.add('hidden');
+                mainView.classList.remove('hidden');
+                document.getElementById('lockPinInput').focus();
+            }
+        }
+
+        function handleRecoveryResetSubmit(e) {
+            e.preventDefault();
+            const masterKeyRaw = document.getElementById('recoveryMasterInput').value.trim();
+            const newAdminPinRaw = document.getElementById('recoveryNewAdminPinInput').value.trim();
+            const recErr = document.getElementById('recoveryErrorMsg');
+            const recErrText = document.getElementById('recoveryErrorText');
+            const lockCard = document.getElementById('lockCard');
+
+            const enteredMasterHash = hashPinCode(masterKeyRaw);
+            const expectedRecoveryHash = securityConfig.recoveryHash || hashPinCode('rabie2026');
+
+            if (enteredMasterHash !== expectedRecoveryHash) {
+                recErrText.textContent = 'مفتاح الطوارئ أو إجابة سؤال الأمان غير صحيحة!';
+                recErr.classList.remove('hidden');
+                lockCard.classList.remove('shake-anim');
+                void lockCard.offsetWidth;
+                lockCard.classList.add('shake-anim');
+                return;
+            }
+
+            if (normalizeSecret(newAdminPinRaw).length < 4) {
+                recErrText.textContent = 'يرجى كتابة رقم سري جديد للمدير مكون من 4 أرقام أو حروف على الأقل.';
+                recErr.classList.remove('hidden');
+                return;
+            }
+
+            const newAdminHash = hashPinCode(newAdminPinRaw);
+            securityConfig = {
+                ...securityConfig,
+                adminHash: newAdminHash,
+                updatedAt: new Date().toISOString()
+            };
+
+            adminPinVault.adminPin = newAdminPinRaw;
+            pendingRecoveredAdminPin = newAdminPinRaw;
+
+            localStorage.setItem('arqam_security_cfg_v2', JSON.stringify(securityConfig));
+            localStorage.setItem('arqam_admin_vault_v1', JSON.stringify(adminPinVault));
+
+            if (securityDocRef) {
+                securityDocRef.set(securityConfig, { merge: true }).catch(err => {
+                    console.error("Failed to sync recovered PIN:", err);
+                });
+            }
+
+            const sessionPayload = JSON.stringify({
+                role: 'admin',
+                pinHash: newAdminHash,
+                ts: Date.now()
+            });
+            localStorage.setItem('arqam_auth_session_v2', sessionPayload);
+
+            switchLockView('main');
+            completeUnlock('admin', false);
+            showToast(`تم تعيين الرقم السري الجديد للمدير (${newAdminPinRaw}) وفتح النظام بنجاح!`, 'success');
         }
 
         function toggleLockPinVisibility() {
@@ -1047,10 +1238,15 @@
             const enteredHash = hashPinCode(pinInput.value);
 
             let matchedRole = null;
+            let activeHashForSession = enteredHash;
+
             if (enteredHash === securityConfig.adminHash) {
                 matchedRole = 'admin';
             } else if (enteredHash === securityConfig.teacherHash) {
                 matchedRole = 'teacher';
+            } else if (enteredHash === (securityConfig.recoveryHash || hashPinCode('rabie2026'))) {
+                matchedRole = 'admin';
+                activeHashForSession = securityConfig.adminHash;
             }
 
             if (!matchedRole) {
@@ -1067,16 +1263,16 @@
 
             const sessionPayload = JSON.stringify({
                 role: matchedRole,
-                pinHash: enteredHash,
+                pinHash: activeHashForSession,
                 ts: Date.now()
             });
 
             if (remember) {
-                localStorage.setItem('arqam_auth_session_v1', sessionPayload);
-                sessionStorage.removeItem('arqam_auth_session_v1');
+                localStorage.setItem('arqam_auth_session_v2', sessionPayload);
+                sessionStorage.removeItem('arqam_auth_session_v2');
             } else {
-                sessionStorage.setItem('arqam_auth_session_v1', sessionPayload);
-                localStorage.removeItem('arqam_auth_session_v1');
+                sessionStorage.setItem('arqam_auth_session_v2', sessionPayload);
+                localStorage.removeItem('arqam_auth_session_v2');
             }
 
             completeUnlock(matchedRole, true);
@@ -1106,8 +1302,8 @@
         function lockSystem(reasonMessage = '') {
             isSystemUnlocked = false;
             currentUserRole = null;
-            localStorage.removeItem('arqam_auth_session_v1');
-            sessionStorage.removeItem('arqam_auth_session_v1');
+            localStorage.removeItem('arqam_auth_session_v2');
+            sessionStorage.removeItem('arqam_auth_session_v2');
 
             if (unsubscribeSharedState) {
                 unsubscribeSharedState();
@@ -1117,6 +1313,7 @@
             document.body.classList.add('locked-state');
             document.getElementById('appShell').classList.add('hidden');
             document.getElementById('authLockScreen').classList.remove('hidden');
+            switchLockView('main');
 
             closeSecurityModal();
             closeCloudModal();
@@ -1185,6 +1382,13 @@
             }
             document.getElementById('newAdminPinInput').value = '';
             document.getElementById('newTeacherPinInput').value = '';
+            document.getElementById('newRecoveryKeyInput').value = '';
+            document.getElementById('recoveryPromptInput').value = securityConfig.recoveryPrompt || DEFAULT_RECOVERY_PROMPT;
+
+            document.getElementById('currentAdminPinDisplay').textContent = adminPinVault.adminPin || '992026';
+            document.getElementById('currentTeacherPinDisplay').textContent = adminPinVault.teacherPin || '112026';
+            document.getElementById('currentRecoveryKeyDisplay').textContent = adminPinVault.recoveryKey || 'rabie2026';
+
             document.getElementById('permTeacherEditStudents').checked = !!securityConfig.allowTeacherEditStudents;
             document.getElementById('permTeacherDeleteManage').checked = !!securityConfig.allowTeacherDeleteManage;
 
@@ -1205,20 +1409,27 @@
 
             const newAdminPin = document.getElementById('newAdminPinInput').value.trim();
             const newTeacherPin = document.getElementById('newTeacherPinInput').value.trim();
+            const newRecoveryKey = document.getElementById('newRecoveryKeyInput').value.trim();
+            const customPrompt = document.getElementById('recoveryPromptInput').value.trim() || DEFAULT_RECOVERY_PROMPT;
             const allowEdit = document.getElementById('permTeacherEditStudents').checked;
             const allowDel = document.getElementById('permTeacherDeleteManage').checked;
 
-            if (newAdminPin && newAdminPin.length < 4) {
+            if (newAdminPin && normalizeSecret(newAdminPin).length < 4) {
                 showToast('يرجى جعل الرقم السري للمدير 4 أرقام أو حروف على الأقل', 'warning');
                 return;
             }
-            if (newTeacherPin && newTeacherPin.length < 4) {
+            if (newTeacherPin && normalizeSecret(newTeacherPin).length < 4) {
                 showToast('يرجى جعل الرقم السري للمعلمات 4 أرقام أو حروف على الأقل', 'warning');
+                return;
+            }
+            if (newRecoveryKey && normalizeSecret(newRecoveryKey).length < 4) {
+                showToast('يرجى جعل مفتاح الطوارئ / الإجابة 4 أرقام أو حروف على الأقل', 'warning');
                 return;
             }
 
             const nextAdminHash = newAdminPin ? hashPinCode(newAdminPin) : securityConfig.adminHash;
             const nextTeacherHash = newTeacherPin ? hashPinCode(newTeacherPin) : securityConfig.teacherHash;
+            const nextRecoveryHash = newRecoveryKey ? hashPinCode(newRecoveryKey) : (securityConfig.recoveryHash || hashPinCode('rabie2026'));
 
             if (nextAdminHash === nextTeacherHash) {
                 showToast('يفضل اختيار رقم سري للمدير مختلف عن رقم المعلمات لتمييز الصلاحيات', 'warning');
@@ -1228,23 +1439,30 @@
             securityConfig = {
                 adminHash: nextAdminHash,
                 teacherHash: nextTeacherHash,
+                recoveryHash: nextRecoveryHash,
+                recoveryPrompt: customPrompt,
                 allowTeacherEditStudents: allowEdit,
                 allowTeacherDeleteManage: allowDel,
                 updatedAt: new Date().toISOString()
             };
 
-            localStorage.setItem('arqam_security_cfg_v1', JSON.stringify(securityConfig));
+            if (newAdminPin) adminPinVault.adminPin = newAdminPin;
+            if (newTeacherPin) adminPinVault.teacherPin = newTeacherPin;
+            if (newRecoveryKey) adminPinVault.recoveryKey = newRecoveryKey;
 
-            // Keep current admin logged in with the updated admin hash
+            localStorage.setItem('arqam_security_cfg_v2', JSON.stringify(securityConfig));
+            localStorage.setItem('arqam_admin_vault_v1', JSON.stringify(adminPinVault));
+            updateRecoveryPromptUI();
+
             const updatedSession = JSON.stringify({
                 role: 'admin',
                 pinHash: nextAdminHash,
                 ts: Date.now()
             });
-            if (sessionStorage.getItem('arqam_auth_session_v1')) {
-                sessionStorage.setItem('arqam_auth_session_v1', updatedSession);
+            if (sessionStorage.getItem('arqam_auth_session_v2')) {
+                sessionStorage.setItem('arqam_auth_session_v2', updatedSession);
             } else {
-                localStorage.setItem('arqam_auth_session_v1', updatedSession);
+                localStorage.setItem('arqam_auth_session_v2', updatedSession);
             }
 
             if (securityDocRef) {
@@ -1252,11 +1470,12 @@
                     console.error("Failed to sync security settings:", err);
                 });
             }
+            pushDataToCloud();
 
             closeSecurityModal();
             applyRolePermissionsUI();
             renderStudents();
-            showToast('تم حفظ وتعميم إعدادات الحماية والأرقام السرية بنجاح!', 'success');
+            showToast('تم حفظ وتعميم إعدادات الحماية والاسترداد بنجاح!', 'success');
         }
 
         // ==========================================
@@ -1312,7 +1531,7 @@
             try {
                 const db = getFirebaseInstance();
                 if (!db) return;
-                securityDocRef = db.collection('dar_alarqam_system').doc('security_config');
+                securityDocRef = db.collection('dar_alarqam_system').doc('security_config_v2');
                 securityDocRef.onSnapshot((docSnap) => {
                     if (docSnap.exists) {
                         const cloudSec = docSnap.data();
@@ -1320,13 +1539,14 @@
                             ...DEFAULT_SECURITY_CONFIG,
                             ...cloudSec
                         };
-                        localStorage.setItem('arqam_security_cfg_v1', JSON.stringify(securityConfig));
+                        localStorage.setItem('arqam_security_cfg_v2', JSON.stringify(securityConfig));
+                        updateRecoveryPromptUI();
 
                         if (isSystemUnlocked) {
                             const activeSess = getSavedAuthSession();
                             const validRole = validateSessionObject(activeSess);
                             if (!validRole) {
-                                lockSystem('تم تغيير الرقم السري من الإدارة، يرجى تسجيل الدخول بالرقم الجديد');
+                                lockSystem('تم تحديث الرقم السري من الإدارة، يرجى الدخول بالرقم الجديد');
                             } else {
                                 applyRolePermissionsUI();
                                 renderStudents();
@@ -1389,6 +1609,13 @@
                         if (Array.isArray(cloudData.students)) students = cloudData.students;
                         if (cloudData.payments && typeof cloudData.payments === 'object') payments = cloudData.payments;
                         if (cloudData.customLogo) applyCustomLogo(cloudData.customLogo);
+                        if (cloudData.adminPinVault && typeof cloudData.adminPinVault === 'object') {
+                            adminPinVault = { ...adminPinVault, ...cloudData.adminPinVault };
+                            if (pendingRecoveredAdminPin) {
+                                adminPinVault.adminPin = pendingRecoveredAdminPin;
+                            }
+                            localStorage.setItem('arqam_admin_vault_v1', JSON.stringify(adminPinVault));
+                        }
 
                         localStorage.setItem('arqam_classes_v1', JSON.stringify(classes));
                         localStorage.setItem('arqam_students_v1', JSON.stringify(students));
@@ -1398,6 +1625,11 @@
                         renderStudents();
                         isReceivingCloudData = false;
                         setCloudBadgeState('connected', 'متصل بالسحابة لحظياً');
+
+                        if (pendingRecoveredAdminPin) {
+                            pendingRecoveredAdminPin = null;
+                            pushDataToCloud();
+                        }
                     } else {
                         pushDataToCloud();
                         setCloudBadgeState('connected', 'متصل بالسحابة لحظياً');
@@ -1420,6 +1652,7 @@
                 students: students,
                 payments: payments,
                 customLogo: savedLogo,
+                adminPinVault: adminPinVault,
                 updatedAt: new Date().toISOString()
             }, { merge: true }).catch(err => {
                 console.error("Failed to push to cloud:", err);
@@ -1819,18 +2052,15 @@
                 bundledHint.classList.add('hidden');
             }
 
-            // Filter Pills Counters
             document.getElementById('pillCountAll').textContent = totalStudents;
             document.getElementById('pillCountPaid').textContent = paidCount;
             document.getElementById('pillCountUnpaid').textContent = unpaidCount;
             document.getElementById('pillCountArrears').textContent = arrearsStudentsCount;
 
-            // Progress Bar
             document.getElementById('progressMonthLabel').textContent = `نسبة تحصيل (${monthLabel}):`;
             document.getElementById('collectionProgressBar').style.width = `${paidPercent}%`;
             document.getElementById('collectionProgressText').textContent = `${paidPercent}%`;
 
-            // Print header updates
             document.getElementById('printSubtitle').textContent = `كشف تحصيل اشتراكات شهر: ${monthLabel}`;
             document.getElementById('printDate').textContent = new Date().toLocaleDateString('ar-EG');
             document.getElementById('printStatsSummary').textContent = `المسددون: ${paidCount} من ${totalStudents} | محصل الشهر: ${totalCollected} ج.م | متبقي الشهر: ${remainingAmount} ج.م`;
@@ -1855,7 +2085,6 @@
         function buildTablePaymentControlHtml(st, isPaid, unpaidPrev, currentShortName) {
             const fee = Number(st.fee || 0);
 
-            // 1. Normal Student (No unpaid previous months)
             if (unpaidPrev.length === 0) {
                 return `
                     <button 
@@ -1872,7 +2101,6 @@
                 `;
             }
 
-            // 2. Has unpaid previous months AND current month is NOT paid yet -> 1-Click Combined Button!
             const prevFeeTotal = unpaidPrev.length * fee;
             const combinedTotal = (unpaidPrev.length + 1) * fee;
             const combinedLabel = unpaidPrev.length === 1
@@ -1908,7 +2136,6 @@
                 `;
             }
 
-            // 3. Current month IS paid, but previous month(s) still unpaid
             return `
                 <div class="inline-flex flex-col items-stretch gap-1.5">
                     <button 
