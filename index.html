@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>دار الأرقم بن أبي الأرقم لتحفيظ القرآن الكريم — نظام التحصيل والاشتراكات</title>
+    <link id="dynamicFavicon" rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📖</text></svg>">
 
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -81,11 +82,12 @@
 <body class="locked-state text-slate-800 antialiased">
 
     <!-- ===================================================================== -->
-    <!-- INITIAL LOADING SPLASH SCREEN                                         -->
+    <!-- INITIAL LOADING SPLASH SCREEN (WITH INSTANT CUSTOM LOGO)              -->
     <!-- ===================================================================== -->
     <div id="initialLoadingScreen" class="fixed inset-0 bg-arqam-navy z-[200] flex flex-col items-center justify-center text-white transition-opacity duration-300 no-print">
-        <div class="w-16 h-16 rounded-2xl bg-arqam-gold/20 border-2 border-arqam-gold flex items-center justify-center mb-3 animate-pulse">
-            <i class="fa-solid fa-book-quran text-3xl text-arqam-goldLight"></i>
+        <div class="w-20 h-20 rounded-2xl bg-arqam-gold/20 border-2 border-arqam-gold flex items-center justify-center mb-3 overflow-hidden shadow-lg animate-pulse">
+            <img id="splashCustomLogoImg" src="" alt="شعار دار الأرقم" class="w-full h-full object-cover hidden">
+            <i id="splashDefaultLogoSvg" class="fa-solid fa-book-quran text-3xl text-arqam-goldLight"></i>
         </div>
         <h2 class="text-base sm:text-lg font-black text-arqam-goldLight">دار الأرقم بن أبي الأرقم</h2>
         <p class="text-xs text-slate-300 mt-1 font-bold">جاري تحميل وتجهيز دفتر التحصيل...</p>
@@ -211,6 +213,32 @@
             </div>
         </div>
     </div>
+
+    <!-- Instant Pre-Paint Logo Hydration -->
+    <script>
+        (function() {
+            try {
+                var savedLogo = localStorage.getItem('arqam_custom_logo_v1');
+                if (savedLogo) {
+                    var pairs = [
+                        ['splashCustomLogoImg', 'splashDefaultLogoSvg'],
+                        ['lockCustomLogoImg', 'lockDefaultLogoSvg']
+                    ];
+                    for (var i = 0; i < pairs.length; i++) {
+                        var img = document.getElementById(pairs[i][0]);
+                        var svg = document.getElementById(pairs[i][1]);
+                        if (img && svg) {
+                            img.src = savedLogo;
+                            img.classList.remove('hidden');
+                            svg.classList.add('hidden');
+                        }
+                    }
+                    var fav = document.getElementById('dynamicFavicon');
+                    if (fav) fav.href = savedLogo;
+                }
+            } catch (e) {}
+        })();
+    </script>
 
     <!-- ===================================================================== -->
     <!-- MAIN APPLICATION SHELL                                                -->
@@ -726,7 +754,7 @@
             <div class="space-y-3 text-xs sm:text-sm leading-relaxed text-slate-700">
                 <div class="bg-arqam-goldPale p-3.5 rounded-2xl border border-arqam-gold/40">
                     <p class="font-extrabold text-arqam-navy mb-1"><i class="fa-solid fa-star text-arqam-gold ml-1"></i> تثبيت صورة اللوجو الأصلية من هاتفك</p>
-                    <p class="text-xs text-slate-600 mb-2">يمكن للمدير رفع شعار الدار ليظهر في شاشة القفل، رأس الصفحة، وكشوف الطباعة:</p>
+                    <p class="text-xs text-slate-600 mb-2">يمكن للمدير رفع شعار الدار ليظهر في شاشة التحميل، وشاشة القفل، ورأس الصفحة، وكشوف الطباعة:</p>
                     <button onclick="triggerLogoUpload()" class="bg-arqam-navy text-white font-bold text-xs px-4 py-2 rounded-xl flex items-center gap-2 hover:bg-arqam-blue transition">
                         <i class="fa-solid fa-image text-arqam-goldLight"></i>
                         <span>اختيار صورة لوجو دار الأرقم من الهاتف</span>
@@ -1079,6 +1107,8 @@
                 cleaned = cleaned.slice(2);
             } else if (/^01[0125]\d{8}$/.test(cleaned)) {
                 cleaned = '2' + cleaned;
+            } else if (/^1[0125]\d{8}$/.test(cleaned)) {
+                cleaned = '20' + cleaned;
             } else if (cleaned.startsWith('0') && cleaned.length >= 10) {
                 cleaned = '2' + cleaned;
             }
@@ -1111,17 +1141,6 @@
             modal.classList.add('hidden');
             modal.classList.remove('flex');
         }
-
-        document.addEventListener('DOMContentLoaded', () => {
-            const yesBtn = document.getElementById('confirmModalYesBtn');
-            if (yesBtn) {
-                yesBtn.addEventListener('click', () => {
-                    const fn = pendingConfirmCallback;
-                    closeConfirmModal();
-                    if (fn) fn();
-                });
-            }
-        });
 
         // ==========================================
         // 4. SECURITY, FORGOT PIN RECOVERY & PERMISSIONS
@@ -1385,10 +1404,6 @@
                 unsubscribeSharedState();
                 unsubscribeSharedState = null;
             }
-            if (unsubscribeLogoState) {
-                unsubscribeLogoState();
-                unsubscribeLogoState = null;
-            }
 
             document.body.classList.add('locked-state');
             document.getElementById('appShell').classList.add('hidden');
@@ -1402,6 +1417,7 @@
             closeClassesModal();
             closeUndoPaymentModal();
             closeConfirmModal();
+            closeGuideModal();
 
             if (reasonMessage) {
                 showToast(reasonMessage, 'info');
@@ -1641,6 +1657,7 @@
 
         function getFirebaseInstance() {
             if (firestoreDb) return firestoreDb;
+            if (typeof firebase === 'undefined') return null;
             const savedUserConfigStr = localStorage.getItem('arqam_user_firebase_config_v1');
             const userConfig = safeParseFirebaseConfig(savedUserConfigStr) || HARDCODED_FIREBASE_CONFIG;
             if (userConfig && userConfig.projectId) {
@@ -1658,7 +1675,7 @@
             if (authPromise) return authPromise;
             try {
                 getFirebaseInstance();
-                if (!firebase.auth) {
+                if (typeof firebase === 'undefined' || !firebase.auth) {
                     authPromise = Promise.resolve(null);
                     return authPromise;
                 }
@@ -1680,11 +1697,12 @@
             }
         }
 
-        async function initSecurityCloudListener() {
+        async function initEarlyCloudBootstrap() {
             try {
                 const db = getFirebaseInstance();
                 if (!db) return;
                 await ensureFirebaseAuth();
+
                 securityDocRef = db.collection('dar_alarqam_system').doc('security_config_v2');
                 securityDocRef.onSnapshot((docSnap) => {
                     if (docSnap.exists) {
@@ -1712,8 +1730,22 @@
                 }, (err) => {
                     console.warn("Security sync warning:", err);
                 });
+
+                logoDocRef = db.collection('dar_alarqam_system').doc('branding_logo');
+                if (unsubscribeLogoState) unsubscribeLogoState();
+                unsubscribeLogoState = logoDocRef.onSnapshot((logoSnap) => {
+                    if (logoSnap.exists) {
+                        const data = logoSnap.data();
+                        if (data && data.customLogo) {
+                            try {
+                                localStorage.setItem(LS_KEYS.LOGO, data.customLogo);
+                            } catch (e) {}
+                            applyCustomLogo(data.customLogo);
+                        }
+                    }
+                }, () => {});
             } catch (e) {
-                console.warn("Firebase Security Init Warning:", e);
+                console.warn("Firebase Bootstrap Warning:", e);
             }
         }
 
@@ -1760,28 +1792,20 @@
             if (!isSystemUnlocked) return;
             try {
                 const db = getFirebaseInstance();
-                if (!db) return;
+                if (!db) {
+                    setCloudBadgeState('error', 'وضع عدم الاتصال (محفوظ محلياً)');
+                    return;
+                }
 
                 setCloudBadgeState('pending', 'جاري الاتصال...');
                 await ensureFirebaseAuth();
 
                 sharedDocRef = db.collection('dar_alarqam_system').doc('shared_state');
-                logoDocRef = db.collection('dar_alarqam_system').doc('branding_logo');
+                if (!logoDocRef) {
+                    logoDocRef = db.collection('dar_alarqam_system').doc('branding_logo');
+                }
 
                 startSyncRetryLoop();
-
-                if (unsubscribeLogoState) unsubscribeLogoState();
-                unsubscribeLogoState = logoDocRef.onSnapshot((logoSnap) => {
-                    if (logoSnap.exists) {
-                        const data = logoSnap.data();
-                        if (data && data.customLogo) {
-                            try {
-                                localStorage.setItem(LS_KEYS.LOGO, data.customLogo);
-                            } catch (e) {}
-                            applyCustomLogo(data.customLogo);
-                        }
-                    }
-                }, () => {});
 
                 if (unsubscribeSharedState) unsubscribeSharedState();
 
@@ -1954,10 +1978,14 @@
                 showToast('تغيير شعار الدار متاح للمدير فقط', 'info');
                 return;
             }
-            document.getElementById('logoFileInput').click();
+            const fileInput = document.getElementById('logoFileInput');
+            if (fileInput) {
+                fileInput.value = '';
+                fileInput.click();
+            }
         }
 
-        function compressImageDataUrl(dataUrl, maxSize = 240, quality = 0.82) {
+        function compressImageDataUrl(dataUrl, maxSize = 240, quality = 0.85) {
             return new Promise((resolve) => {
                 const img = new Image();
                 img.onload = function() {
@@ -1994,7 +2022,7 @@
 
             const reader = new FileReader();
             reader.onload = async function(e) {
-                const compressedUrl = await compressImageDataUrl(e.target.result, 240, 0.82);
+                const compressedUrl = await compressImageDataUrl(e.target.result, 240, 0.85);
                 try {
                     localStorage.setItem(LS_KEYS.LOGO, compressedUrl);
                 } catch (err) {}
@@ -2014,12 +2042,20 @@
 
         function applyCustomLogo(dataUrl) {
             if (!dataUrl) return;
+            const splashImg = document.getElementById('splashCustomLogoImg');
+            const splashSvg = document.getElementById('splashDefaultLogoSvg');
             const customImg = document.getElementById('customLogoImg');
             const printImg = document.getElementById('printCustomLogo');
             const defaultSvg = document.getElementById('defaultLogoSvg');
             const lockCustomImg = document.getElementById('lockCustomLogoImg');
             const lockDefaultSvg = document.getElementById('lockDefaultLogoSvg');
+            const fav = document.getElementById('dynamicFavicon');
 
+            if (splashImg && splashSvg) {
+                splashImg.src = dataUrl;
+                splashImg.classList.remove('hidden');
+                splashSvg.classList.add('hidden');
+            }
             if (customImg && defaultSvg) {
                 customImg.src = dataUrl;
                 customImg.classList.remove('hidden');
@@ -2033,6 +2069,9 @@
             if (printImg) {
                 printImg.src = dataUrl;
                 printImg.classList.remove('hidden');
+            }
+            if (fav) {
+                fav.href = dataUrl;
             }
         }
 
@@ -2313,7 +2352,7 @@
             const bundledHint = document.getElementById('statBundledCollectedHint');
             if (bundledArrearsCollectedThisMonth > 0) {
                 const cashTotal = totalCollected + bundledArrearsCollectedThisMonth;
-                bundledHint.textContent = `+ متأخرات محصلة: ${bundledArrearsCollectedThisMonth} ج.م (الإجمالي: ${cashTotal} ج.م)`;
+                bundledHint.textContent = `+ متأخرات محصلة: ${bundledArrearsCollectedThisMonth.toLocaleString('ar-EG')} ج.م (الإجمالي: ${cashTotal.toLocaleString('ar-EG')} ج.م)`;
                 bundledHint.classList.remove('hidden');
             } else {
                 bundledHint.classList.add('hidden');
@@ -3038,6 +3077,11 @@
                     delete payments[monthKey][student.id];
                     cleanupEmptyMonthBucket(monthKey);
                 }
+                bundledMonths.forEach(mKey => {
+                    if (payments[mKey] && payments[mKey][student.id]) {
+                        delete payments[mKey][student.id].collectedIn;
+                    }
+                });
                 closeUndoPaymentModal();
                 saveData();
                 renderStudents(true);
@@ -3091,97 +3135,118 @@
         // ==========================================
         // 10. ORGANIZED RIGHT-TO-LEFT (RTL) EXCEL EXPORT BY CLASS
         // ==========================================
+        function buildExcelClassSection(cls, classStudents, sectionIndex, monthKey, monthLabel, totalsAccumulator) {
+            let clsPaidCount = 0;
+            let clsUnpaidCount = 0;
+            let clsCollected = 0;
+            let clsRemaining = 0;
+
+            let sectionHtml = `
+                <tr><td colspan="7" style="height: 16px; border: none; background-color: #ffffff;"></td></tr>
+                <tr>
+                    <td colspan="7" style="background-color:#dbeafe; color:#1e3a8a; font-family:'Calibri','Segoe UI',Tahoma,sans-serif; font-weight:bold; font-size:11pt; text-align:right; padding:8px 12px; border:1px solid #cbd5e1; vertical-align:middle;">
+                        جدول (${sectionIndex}): ${escapeHtml(cls.name)} &nbsp;|&nbsp; المعلمة المسؤولة: ${escapeHtml(cls.teacher)} &nbsp;|&nbsp; الشهر: ${monthLabel}
+                    </td>
+                </tr>
+                <tr style="background-color:#f8fafc; color:#334155; font-family:'Calibri','Segoe UI',Tahoma,sans-serif; font-weight:bold; font-size:11pt; text-align:center;">
+                    <th style="border:1px solid #cbd5e1; padding:7px 8px; width:45px; vertical-align:middle;">م</th>
+                    <th style="border:1px solid #cbd5e1; padding:7px 10px; width:230px; text-align:right; vertical-align:middle;">اسم الطالب</th>
+                    <th style="border:1px solid #cbd5e1; padding:7px 8px; width:150px; vertical-align:middle;">الفصل / الحلقة</th>
+                    <th style="border:1px solid #cbd5e1; padding:7px 8px; width:140px; vertical-align:middle;">اسم المعلمة</th>
+                    <th style="border:1px solid #cbd5e1; padding:7px 8px; width:100px; vertical-align:middle;">قيمة الاشتراك</th>
+                    <th style="border:1px solid #cbd5e1; padding:7px 8px; width:230px; vertical-align:middle;">حالة الدفع والمتأخرات</th>
+                    <th style="border:1px solid #cbd5e1; padding:7px 8px; width:170px; vertical-align:middle;">هاتف ولي الأمر / ملاحظات</th>
+                </tr>
+            `;
+
+            classStudents.forEach((st, idx) => {
+                const isPaid = isStudentPaid(st.id, monthKey);
+                const paymentInfo = getPaymentInfo(st.id, monthKey);
+                const unpaidPrev = getUnpaidPreviousMonths(st, monthKey);
+                const fee = Number(st.fee || 0);
+
+                if (isPaid) {
+                    clsPaidCount++;
+                    clsCollected += fee;
+                    totalsAccumulator.grandPaidCount++;
+                    totalsAccumulator.grandCollectedSum += fee;
+                } else {
+                    clsUnpaidCount++;
+                    clsRemaining += fee;
+                    totalsAccumulator.grandUnpaidCount++;
+                    totalsAccumulator.grandRemainingSum += fee;
+                }
+
+                const rowBg = isPaid ? '#f0fdf4' : (unpaidPrev.length > 0 ? '#fffbeb' : '#ffffff');
+                let statusText = isPaid ? `تم الدفع ✓ (${paymentInfo?.date || ''})` : 'لم يدفع بعد';
+                if (unpaidPrev.length > 0) {
+                    statusText += ` | متأخر: ${unpaidPrev.map(formatMonthKeyShort).join('+')} (${unpaidPrev.length * fee} ج.م)`;
+                }
+                const statusColor = isPaid ? '#15803d' : (unpaidPrev.length > 0 ? '#b91c1c' : '#64748b');
+                const extraInfo = [st.phone, st.notes].filter(Boolean).join(' - ') || '-';
+
+                sectionHtml += `
+                    <tr style="background-color:${rowBg}; color:#1e293b; font-family:'Calibri','Segoe UI',Tahoma,sans-serif; font-size:11pt;">
+                        <td style="border:1px solid #cbd5e1; text-align:center; padding:6px 8px; vertical-align:middle; color:#475569;">${idx + 1}</td>
+                        <td style="border:1px solid #cbd5e1; text-align:right; font-weight:bold; padding:6px 10px; vertical-align:middle; color:#0f172a;">${escapeHtml(st.name)}</td>
+                        <td style="border:1px solid #cbd5e1; text-align:center; padding:6px 8px; vertical-align:middle; color:#334155;">${escapeHtml(cls.name)}</td>
+                        <td style="border:1px solid #cbd5e1; text-align:center; padding:6px 8px; vertical-align:middle; color:#334155;">${escapeHtml(cls.teacher)}</td>
+                        <td style="border:1px solid #cbd5e1; text-align:center; font-weight:bold; padding:6px 8px; vertical-align:middle; color:#1e293b;">${fee} ج.م</td>
+                        <td style="border:1px solid #cbd5e1; text-align:center; font-weight:bold; color:${statusColor}; padding:6px 8px; vertical-align:middle;">${escapeHtml(statusText)}</td>
+                        <td style="border:1px solid #cbd5e1; text-align:center; padding:6px 8px; vertical-align:middle; color:#475569;">${escapeHtml(extraInfo)}</td>
+                    </tr>
+                `;
+            });
+
+            sectionHtml += `
+                <tr style="background-color:#f8fafc; color:#334155; font-family:'Calibri','Segoe UI',Tahoma,sans-serif; font-weight:bold; font-size:11pt;">
+                    <td colspan="4" style="border:1px solid #cbd5e1; text-align:right; padding:7px 10px; vertical-align:middle; color:#1e293b;">
+                        إجمالي ${escapeHtml(cls.name)} (${escapeHtml(cls.teacher)}): عدد الطلاب (${classStudents.length}) &nbsp;|&nbsp; المسددون (${clsPaidCount}) &nbsp;|&nbsp; غير المسددين (${clsUnpaidCount})
+                    </td>
+                    <td colspan="3" style="border:1px solid #cbd5e1; text-align:center; padding:7px 8px; vertical-align:middle; color:#15803d;">
+                        المحصل: ${clsCollected} ج.م &nbsp;|&nbsp; المتبقي: ${clsRemaining} ج.م
+                    </td>
+                </tr>
+            `;
+
+            return sectionHtml;
+        }
+
         function exportToExcel() {
             const monthKey = getCurrentMonthKey();
             const monthLabel = getCurrentMonthLabel();
 
             let allClassTablesHtml = '';
-            let grandTotalStudents = students.length;
-            let grandPaidCount = 0;
-            let grandUnpaidCount = 0;
-            let grandCollectedSum = 0;
-            let grandRemainingSum = 0;
+            const totals = {
+                grandTotalStudents: students.length,
+                grandPaidCount: 0,
+                grandUnpaidCount: 0,
+                grandCollectedSum: 0,
+                grandRemainingSum: 0
+            };
 
-            classes.forEach((cls, classIndex) => {
+            let sectionNumber = 0;
+            const validClassIds = new Set(classes.map(c => c.id));
+
+            classes.forEach((cls) => {
                 const classStudents = students
                     .filter(s => s.classId === cls.id)
                     .sort((a, b) => a.name.localeCompare(b.name, 'ar'));
 
                 if (classStudents.length === 0) return;
-
-                let clsPaidCount = 0;
-                let clsUnpaidCount = 0;
-                let clsCollected = 0;
-                let clsRemaining = 0;
-
-                allClassTablesHtml += `
-                    <tr><td colspan="7" style="height: 16px; border: none; background-color: #ffffff;"></td></tr>
-                    <tr>
-                        <td colspan="7" style="background-color:#dbeafe; color:#1e3a8a; font-family:'Calibri','Segoe UI',Tahoma,sans-serif; font-weight:bold; font-size:11pt; text-align:right; padding:8px 12px; border:1px solid #cbd5e1; vertical-align:middle;">
-                            جدول (${classIndex + 1}): ${escapeHtml(cls.name)} &nbsp;|&nbsp; المعلمة المسؤولة: ${escapeHtml(cls.teacher)} &nbsp;|&nbsp; الشهر: ${monthLabel}
-                        </td>
-                    </tr>
-                    <tr style="background-color:#f8fafc; color:#334155; font-family:'Calibri','Segoe UI',Tahoma,sans-serif; font-weight:bold; font-size:11pt; text-align:center;">
-                        <th style="border:1px solid #cbd5e1; padding:7px 8px; width:45px; vertical-align:middle;">م</th>
-                        <th style="border:1px solid #cbd5e1; padding:7px 10px; width:230px; text-align:right; vertical-align:middle;">اسم الطالب</th>
-                        <th style="border:1px solid #cbd5e1; padding:7px 8px; width:150px; vertical-align:middle;">الفصل / الحلقة</th>
-                        <th style="border:1px solid #cbd5e1; padding:7px 8px; width:140px; vertical-align:middle;">اسم المعلمة</th>
-                        <th style="border:1px solid #cbd5e1; padding:7px 8px; width:100px; vertical-align:middle;">قيمة الاشتراك</th>
-                        <th style="border:1px solid #cbd5e1; padding:7px 8px; width:230px; vertical-align:middle;">حالة الدفع والمتأخرات</th>
-                        <th style="border:1px solid #cbd5e1; padding:7px 8px; width:170px; vertical-align:middle;">هاتف ولي الأمر / ملاحظات</th>
-                    </tr>
-                `;
-
-                classStudents.forEach((st, idx) => {
-                    const isPaid = isStudentPaid(st.id, monthKey);
-                    const paymentInfo = getPaymentInfo(st.id, monthKey);
-                    const unpaidPrev = getUnpaidPreviousMonths(st, monthKey);
-                    const fee = Number(st.fee || 0);
-
-                    if (isPaid) {
-                        clsPaidCount++;
-                        clsCollected += fee;
-                        grandPaidCount++;
-                        grandCollectedSum += fee;
-                    } else {
-                        clsUnpaidCount++;
-                        clsRemaining += fee;
-                        grandUnpaidCount++;
-                        grandRemainingSum += fee;
-                    }
-
-                    const rowBg = isPaid ? '#f0fdf4' : (unpaidPrev.length > 0 ? '#fffbeb' : '#ffffff');
-                    let statusText = isPaid ? `تم الدفع ✓ (${paymentInfo?.date || ''})` : 'لم يدفع بعد';
-                    if (unpaidPrev.length > 0) {
-                        statusText += ` | متأخر: ${unpaidPrev.map(formatMonthKeyShort).join('+')} (${unpaidPrev.length * fee} ج.م)`;
-                    }
-                    const statusColor = isPaid ? '#15803d' : (unpaidPrev.length > 0 ? '#b91c1c' : '#64748b');
-                    const extraInfo = [st.phone, st.notes].filter(Boolean).join(' - ') || '-';
-
-                    allClassTablesHtml += `
-                        <tr style="background-color:${rowBg}; color:#1e293b; font-family:'Calibri','Segoe UI',Tahoma,sans-serif; font-size:11pt;">
-                            <td style="border:1px solid #cbd5e1; text-align:center; padding:6px 8px; vertical-align:middle; color:#475569;">${idx + 1}</td>
-                            <td style="border:1px solid #cbd5e1; text-align:right; font-weight:bold; padding:6px 10px; vertical-align:middle; color:#0f172a;">${escapeHtml(st.name)}</td>
-                            <td style="border:1px solid #cbd5e1; text-align:center; padding:6px 8px; vertical-align:middle; color:#334155;">${escapeHtml(cls.name)}</td>
-                            <td style="border:1px solid #cbd5e1; text-align:center; padding:6px 8px; vertical-align:middle; color:#334155;">${escapeHtml(cls.teacher)}</td>
-                            <td style="border:1px solid #cbd5e1; text-align:center; font-weight:bold; padding:6px 8px; vertical-align:middle; color:#1e293b;">${fee} ج.م</td>
-                            <td style="border:1px solid #cbd5e1; text-align:center; font-weight:bold; color:${statusColor}; padding:6px 8px; vertical-align:middle;">${escapeHtml(statusText)}</td>
-                            <td style="border:1px solid #cbd5e1; text-align:center; padding:6px 8px; vertical-align:middle; color:#475569;">${escapeHtml(extraInfo)}</td>
-                        </tr>
-                    `;
-                });
-
-                allClassTablesHtml += `
-                    <tr style="background-color:#f8fafc; color:#334155; font-family:'Calibri','Segoe UI',Tahoma,sans-serif; font-weight:bold; font-size:11pt;">
-                        <td colspan="4" style="border:1px solid #cbd5e1; text-align:right; padding:7px 10px; vertical-align:middle; color:#1e293b;">
-                            إجمالي ${escapeHtml(cls.name)} (${escapeHtml(cls.teacher)}): عدد الطلاب (${classStudents.length}) &nbsp;|&nbsp; المسددون (${clsPaidCount}) &nbsp;|&nbsp; غير المسددين (${clsUnpaidCount})
-                        </td>
-                        <td colspan="3" style="border:1px solid #cbd5e1; text-align:center; padding:7px 8px; vertical-align:middle; color:#15803d;">
-                            المحصل: ${clsCollected} ج.م &nbsp;|&nbsp; المتبقي: ${clsRemaining} ج.م
-                        </td>
-                    </tr>
-                `;
+                sectionNumber++;
+                allClassTablesHtml += buildExcelClassSection(cls, classStudents, sectionNumber, monthKey, monthLabel, totals);
             });
+
+            const orphanStudents = students
+                .filter(s => !validClassIds.has(s.classId))
+                .sort((a, b) => a.name.localeCompare(b.name, 'ar'));
+
+            if (orphanStudents.length > 0) {
+                sectionNumber++;
+                const fallbackClass = { id: 'unassigned', name: 'طلاب غير محددين بفصل', teacher: 'غير محدد' };
+                allClassTablesHtml += buildExcelClassSection(fallbackClass, orphanStudents, sectionNumber, monthKey, monthLabel, totals);
+            }
 
             const excelWorkbook = `
                 <html xmlns:o="urn:schemas-microsoft-com:office:office" 
@@ -3217,7 +3282,7 @@
                         </tr>
                         <tr>
                             <td colspan="7" style="background-color:#f8fafc; color:#334155; font-size:11pt; font-weight:bold; text-align:center; padding:8px; border:1px solid #cbd5e1;">
-                                التقرير المالي لشهر: (${monthLabel}) &nbsp;|&nbsp; إجمالي الطلاب: ${grandTotalStudents} &nbsp;|&nbsp; تم الدفع: ${grandPaidCount} &nbsp;|&nbsp; لم يدفع: ${grandUnpaidCount} &nbsp;|&nbsp; إجمالي المحصل: ${grandCollectedSum} ج.م &nbsp;|&nbsp; المتبقي: ${grandRemainingSum} ج.م
+                                التقرير المالي لشهر: (${monthLabel}) &nbsp;|&nbsp; إجمالي الطلاب: ${totals.grandTotalStudents} &nbsp;|&nbsp; تم الدفع: ${totals.grandPaidCount} &nbsp;|&nbsp; لم يدفع: ${totals.grandUnpaidCount} &nbsp;|&nbsp; إجمالي المحصل: ${totals.grandCollectedSum} ج.م &nbsp;|&nbsp; المتبقي: ${totals.grandRemainingSum} ج.م
                             </td>
                         </tr>
                         ${allClassTablesHtml}
@@ -3234,6 +3299,7 @@
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
+            setTimeout(() => URL.revokeObjectURL(url), 1000);
 
             showToast(`تم تحميل شيت Excel لشهر (${monthLabel}) بنجاح!`, "success");
         }
@@ -3578,8 +3644,8 @@
         function resetDemoData() {
             if (currentUserRole !== 'admin') return;
             requestConfirmAction({
-                title: 'استعادة البيانات الافتراضية',
-                message: 'سيتم استبدال القائمة الحالية بالبيانات التجريبية الافتراضية. هل أنت متأكد؟',
+                title: 'تحذير: استعادة البيانات الافتراضية',
+                message: 'سيتم استبدال جميع الطلاب والفصول الحالية بالبيانات التجريبية الافتراضية! هل أنت متأكد تماماً؟',
                 confirmText: 'نعم، استعد البيانات',
                 onConfirm: () => {
                     classes = [...DEFAULT_CLASSES];
@@ -3627,6 +3693,8 @@
         // ==========================================
         // 14. INITIALIZATION & LOADING SPLASH
         // ==========================================
+        let appInitialized = false;
+
         function hideInitialLoadingScreen() {
             const splash = document.getElementById('initialLoadingScreen');
             if (!splash) return;
@@ -3636,12 +3704,37 @@
             }, 300);
         }
 
-        window.onload = function() {
+        function bootstrapApplication() {
+            if (appInitialized) return;
+            appInitialized = true;
+
+            const yesBtn = document.getElementById('confirmModalYesBtn');
+            if (yesBtn) {
+                yesBtn.addEventListener('click', () => {
+                    const fn = pendingConfirmCallback;
+                    closeConfirmModal();
+                    if (fn) fn();
+                });
+            }
+
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && isSystemUnlocked) {
+                    closeConfirmModal();
+                    closeUndoPaymentModal();
+                    closeStudentModal();
+                    closeBulkModal();
+                    closeClassesModal();
+                    closeSecurityModal();
+                    closeCloudModal();
+                    closeGuideModal();
+                }
+            });
+
             const savedLogo = localStorage.getItem(LS_KEYS.LOGO);
             if (savedLogo) applyCustomLogo(savedLogo);
 
             loadLocalSecurityConfig();
-            initSecurityCloudListener();
+            initEarlyCloudBootstrap();
 
             const savedSession = getSavedAuthSession();
             const validRole = validateSessionObject(savedSession);
@@ -3654,7 +3747,13 @@
             }
 
             setTimeout(hideInitialLoadingScreen, 250);
-        };
+        }
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', bootstrapApplication);
+        } else {
+            bootstrapApplication();
+        }
     </script>
 </body>
 </html>
