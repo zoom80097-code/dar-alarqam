@@ -201,7 +201,7 @@
                         </button>
                     </div>
 
-                    <button type="submit" class="w-full bg-gradient-to-l from-arqam-navy to-arqam-blue hover:from-arqam-blue hover:to-arqam-light text-white font-black py-3.5 rounded-2xl shadow-lg border border-arqam-gold/50 flex items-center justify-center gap-2 transition active:scale-98">
+                    <button type="submit" class="w-full bg-gradient-to-l from-arqam-navy to-arqam-blue hover:from-arqam-blue hover:to-arqam-light text-white font-black py-3.5 rounded-2xl shadow-lg border border-arqam-gold/50 flex items-center justify-center gap-2 transition active:scale-95">
                         <i class="fa-solid fa-unlock-keyhole text-arqam-goldLight"></i>
                         <span>فتح دفتر التحصيل</span>
                     </button>
@@ -322,7 +322,7 @@
                                 <span id="activeRoleBadge" class="bg-arqam-gold/25 text-arqam-goldLight border border-arqam-gold/50 text-[10px] font-extrabold px-2 py-0.5 rounded-full">
                                     وضع المدير
                                 </span>
-                                <button onclick="handleCloudBadgeClick()" id="cloudStatusBadge" class="bg-emerald-500/25 hover:bg-emerald-500/35 text-emerald-200 border border-emerald-400/60 text-[11px] font-extrabold px-2.5 py-0.5 rounded-full flex items-center gap-1.5 transition cursor-pointer shadow-xs">
+                                <button onclick="handleCloudBadgeClick()" id="cloudStatusBadge" class="bg-emerald-500/25 hover:bg-emerald-500/35 text-emerald-200 border border-emerald-400/60 text-[11px] font-extrabold px-2.5 py-0.5 rounded-full flex items-center gap-1.5 transition cursor-pointer shadow-sm">
                                     <i id="cloudStatusIcon" class="fa-solid fa-cloud-bolt text-emerald-300"></i>
                                     <span id="cloudStatusText">جاري الاتصال...</span>
                                 </button>
@@ -436,7 +436,7 @@
         <main class="max-w-5xl mx-auto px-3 sm:px-4 pt-4 print-container">
 
             <!-- Quick Period Ribbon -->
-            <div class="bg-white px-3 py-2 rounded-2xl shadow-xs border border-slate-200/80 mb-3 flex items-center gap-2 overflow-x-auto no-print">
+            <div class="bg-white px-3 py-2 rounded-2xl shadow-sm border border-slate-200/80 mb-3 flex items-center gap-2 overflow-x-auto no-print">
                 <span class="text-[11px] font-extrabold text-arqam-navy shrink-0 flex items-center gap-1">
                     <i class="fa-solid fa-bolt text-arqam-gold"></i> انتقال سريع للشهور:
                 </span>
@@ -501,7 +501,7 @@
                 </div>
 
                 <!-- Collection Progress Bar -->
-                <div class="bg-white px-4 py-2 rounded-xl shadow-xs border border-slate-200/80 flex items-center gap-3">
+                <div class="bg-white px-4 py-2 rounded-xl shadow-sm border border-slate-200/80 flex items-center gap-3">
                     <span id="progressMonthLabel" class="text-xs font-extrabold text-arqam-navy shrink-0">نسبة تحصيل الشهر:</span>
                     <div class="flex-1 bg-slate-200 h-2.5 rounded-full overflow-hidden">
                         <div id="collectionProgressBar" class="bg-emerald-500 h-full transition-all duration-300" style="width: 0%"></div>
@@ -569,18 +569,18 @@
                         <i class="fa-solid fa-user-plus text-arqam-goldLight"></i>
                         <span>إضافة طالب</span>
                     </button>
-                    <button id="bulkAddBtn" onclick="openBulkModal()" class="bg-arqam-goldPale hover:bg-amber-100 text-arqam-navy border border-arqam-gold/50 font-extrabold text-xs sm:text-sm px-3 py-2.5 rounded-xl shadow-xs flex items-center gap-1.5 transition">
+                    <button id="bulkAddBtn" onclick="openBulkModal()" class="bg-arqam-goldPale hover:bg-amber-100 text-arqam-navy border border-arqam-gold/50 font-extrabold text-xs sm:text-sm px-3 py-2.5 rounded-xl shadow-sm flex items-center gap-1.5 transition">
                         <i class="fa-solid fa-users-rectangle text-arqam-gold"></i>
                         <span>إضافة أسماء بالجملة</span>
                     </button>
-                    <button id="manageClassesBtn" onclick="openClassesModal()" class="bg-white hover:bg-slate-50 text-slate-700 border border-slate-200 font-bold text-xs sm:text-sm px-3 py-2.5 rounded-xl shadow-xs flex items-center gap-1.5 transition">
+                    <button id="manageClassesBtn" onclick="openClassesModal()" class="bg-white hover:bg-slate-50 text-slate-700 border border-slate-200 font-bold text-xs sm:text-sm px-3 py-2.5 rounded-xl shadow-sm flex items-center gap-1.5 transition">
                         <i class="fa-solid fa-chalkboard-user text-arqam-navy"></i>
                         <span>الفصول والمعلمات</span>
                     </button>
 
                     <!-- View Mode Toggle -->
                     <div class="flex items-center bg-slate-200/80 p-1 rounded-xl border border-slate-300">
-                        <button id="viewTablesBtn" onclick="setViewMode('tables')" class="px-2.5 py-1.5 rounded-lg text-xs font-extrabold transition bg-white text-arqam-navy shadow-xs flex items-center gap-1">
+                        <button id="viewTablesBtn" onclick="setViewMode('tables')" class="px-2.5 py-1.5 rounded-lg text-xs font-extrabold transition bg-white text-arqam-navy shadow-sm flex items-center gap-1">
                             <i class="fa-solid fa-table-list text-arqam-gold"></i>
                             <span>جداول الفصول</span>
                         </button>
@@ -622,7 +622,7 @@
                     <i class="fa-solid fa-magnifying-glass"></i>
                 </div>
                 <h3 class="text-base font-bold text-slate-700 mb-1">لا يوجد طلاب مطابقين للبحث أو الفلتر</h3>
-                <p class="text-xs text-slate-500 mb-4">جرب البحث باسم آخر أو تغيير فلتر الفصل أو حالة الدفع</p>
+                <p class="text-xs text-slate-500 mb-4">جرب البحث باسم آخر أو إضافة فصل وطلاب جدد من الأزرار بالأعلى</p>
                 <button onclick="resetAllFilters()" class="bg-arqam-navy text-white font-bold text-xs px-4 py-2.5 rounded-xl hover:bg-arqam-blue transition">
                     عرض كل الطلاب
                 </button>
@@ -634,7 +634,7 @@
     <!-- ===================================================================== -->
     <!-- MODAL: ADMIN SECURITY, PINS & RECOVERY SETTINGS                       -->
     <!-- ===================================================================== -->
-    <div id="securityModal" class="fixed inset-0 bg-slate-900/70 backdrop-blur-xs z-50 hidden items-center justify-center p-3 sm:p-4 no-print">
+    <div id="securityModal" class="fixed inset-0 bg-slate-900/70 backdrop-blur-sm z-50 hidden items-center justify-center p-3 sm:p-4 no-print">
         <div class="bg-white rounded-3xl max-w-lg w-full p-5 sm:p-6 shadow-2xl border-2 border-arqam-gold max-h-[92vh] overflow-y-auto">
             <div class="flex items-center justify-between pb-3 border-b border-slate-100 mb-4">
                 <h3 class="text-base sm:text-lg font-black text-arqam-navy flex items-center gap-2">
@@ -646,7 +646,7 @@
                 </button>
             </div>
 
-            <!-- Current Active Codes Reminder Box (Visible only to unlocked Admin) -->
+            <!-- Current Active Codes Reminder Box -->
             <div class="bg-arqam-navy text-white p-3.5 rounded-2xl border border-arqam-gold mb-4">
                 <p class="text-xs font-extrabold text-arqam-goldLight mb-2 flex items-center gap-1.5">
                     <i class="fa-solid fa-eye"></i>
@@ -729,7 +729,7 @@
     <!-- ===================================================================== -->
     <!-- MODAL: UNDO BUNDLED PAYMENT CHOICE                                    -->
     <!-- ===================================================================== -->
-    <div id="undoPaymentModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 hidden items-center justify-center p-4 no-print">
+    <div id="undoPaymentModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden items-center justify-center p-4 no-print">
         <div class="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl border-2 border-amber-400">
             <div class="flex items-center justify-between pb-3 border-b border-slate-100 mb-3">
                 <h3 class="text-base font-black text-arqam-navy flex items-center gap-2">
@@ -756,7 +756,7 @@
     </div>
 
     <!-- Modal: Cloud Sync Setup -->
-    <div id="cloudModal" class="fixed inset-0 bg-slate-900/70 backdrop-blur-xs z-50 hidden items-center justify-center p-3 sm:p-4 no-print">
+    <div id="cloudModal" class="fixed inset-0 bg-slate-900/70 backdrop-blur-sm z-50 hidden items-center justify-center p-3 sm:p-4 no-print">
         <div class="bg-white rounded-3xl max-w-lg w-full p-5 sm:p-6 shadow-2xl border-2 border-sky-500 max-h-[92vh] overflow-y-auto">
             <div class="flex items-center justify-between pb-3 border-b border-slate-100 mb-4">
                 <h3 class="text-base sm:text-lg font-black text-arqam-navy flex items-center gap-2">
@@ -770,10 +770,17 @@
 
             <div class="space-y-3.5 text-xs sm:text-sm text-slate-700">
                 <div class="bg-emerald-50 p-3.5 rounded-2xl border border-emerald-200">
-                    <p class="font-extrabold text-emerald-950 mb-1">✅ كود الربط السحابي مثبت تلقائياً داخل البرنامج!</p>
+                    <p class="font-extrabold text-emerald-950 mb-1">✅ نظام الحفظ السحابي المحصّن نشط!</p>
                     <p class="text-xs text-emerald-800 leading-relaxed">
-                        تم دمج بيانات مشروعك <code class="bg-white px-1.5 py-0.5 rounded border text-emerald-700 font-mono font-bold">dar-alarqam-f866c</code> داخل هذا الملف مباشرة.
+                        تم فصل اللوجو وضغطه تلقائياً وتفعيل الحماية ضد فقدان البيانات عند إعادة التحميل على مشروع <code class="bg-white px-1.5 py-0.5 rounded border text-emerald-700 font-mono font-bold">dar-alarqam-f866c</code>.
                     </p>
+                </div>
+
+                <div class="bg-slate-50 p-3 rounded-2xl border border-slate-200 flex items-center justify-between gap-2">
+                    <span class="text-xs font-extrabold text-arqam-navy">مزامنة يدوية فورية للسحابة الآن:</span>
+                    <button type="button" onclick="forceSyncNow()" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-xs rounded-xl shadow transition">
+                        <i class="fa-solid fa-cloud-arrow-up ml-1"></i>رفع وحفظ الآن
+                    </button>
                 </div>
 
                 <details class="bg-slate-50 p-3 rounded-2xl border border-slate-200">
@@ -801,7 +808,7 @@
     </div>
 
     <!-- Modal: Phone Usage Guide -->
-    <div id="guideModal" class="fixed inset-0 bg-slate-900/70 backdrop-blur-xs z-50 hidden items-center justify-center p-3 sm:p-4 no-print">
+    <div id="guideModal" class="fixed inset-0 bg-slate-900/70 backdrop-blur-sm z-50 hidden items-center justify-center p-3 sm:p-4 no-print">
         <div class="bg-white rounded-3xl max-w-lg w-full p-5 sm:p-6 shadow-2xl border-2 border-arqam-gold max-h-[90vh] overflow-y-auto">
             <div class="flex items-center justify-between pb-3 border-b border-slate-100 mb-4">
                 <h3 class="text-base sm:text-lg font-black text-arqam-navy flex items-center gap-2">
@@ -842,7 +849,7 @@
     </div>
 
     <!-- Modal: Bulk Add Students -->
-    <div id="bulkModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 hidden items-center justify-center p-4 no-print">
+    <div id="bulkModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden items-center justify-center p-4 no-print">
         <div class="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl border border-slate-100">
             <div class="flex items-center justify-between pb-3 border-b border-slate-100 mb-4">
                 <h3 class="text-lg font-extrabold text-arqam-navy flex items-center gap-2">
@@ -868,7 +875,7 @@
                     </div>
                     <div>
                         <label class="block text-xs font-bold text-slate-700 mb-1.5">بداية الاشتراك:</label>
-                        <select id="bulkStartMonthInput" class="w-full px-3 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs font-bold focus:outline-none focus:border-arqam-navy">
+                        <select id="bulkStartMonthInput" class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs font-bold focus:outline-none focus:border-arqam-navy">
                         </select>
                     </div>
                 </div>
@@ -891,7 +898,7 @@
     </div>
 
     <!-- Modal: Add / Edit Student -->
-    <div id="studentModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 hidden items-center justify-center p-4 no-print">
+    <div id="studentModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden items-center justify-center p-4 no-print">
         <div class="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl border border-slate-100">
             <div class="flex items-center justify-between pb-3 border-b border-slate-100 mb-4">
                 <h3 id="studentModalTitle" class="text-lg font-extrabold text-arqam-navy flex items-center gap-2">
@@ -931,12 +938,12 @@
                 <div class="grid grid-cols-2 gap-3">
                     <div>
                         <label class="block text-xs font-bold text-slate-700 mb-1.5">شهر بداية الاشتراك</label>
-                        <select id="studentStartMonthInput" class="w-full px-3 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs font-bold focus:outline-none focus:border-arqam-navy focus:bg-white">
+                        <select id="studentStartMonthInput" class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs font-bold focus:outline-none focus:border-arqam-navy focus:bg-white">
                         </select>
                     </div>
                     <div>
                         <label class="block text-xs font-bold text-slate-700 mb-1.5">ملاحظات (اختياري)</label>
-                        <input type="text" id="studentNotesInput" placeholder="جزء عم / خصم إخوة..." class="w-full px-3 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs focus:outline-none focus:border-arqam-navy focus:bg-white">
+                        <input type="text" id="studentNotesInput" placeholder="جزء عم / خصم إخوة..." class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs focus:outline-none focus:border-arqam-navy focus:bg-white">
                     </div>
                 </div>
 
@@ -953,7 +960,7 @@
     </div>
 
     <!-- Modal: Manage Classes & Teachers -->
-    <div id="classesModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 hidden items-center justify-center p-4 no-print">
+    <div id="classesModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden items-center justify-center p-4 no-print">
         <div class="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl border border-slate-100">
             <div class="flex items-center justify-between pb-3 border-b border-slate-100 mb-4">
                 <h3 class="text-lg font-extrabold text-arqam-navy flex items-center gap-2">
@@ -1055,7 +1062,30 @@
         };
 
         // ==========================================
-        // 2. SECURITY, FORGOT PIN RECOVERY & PERMISSIONS
+        // 2. HELPERS: ARABIC NORMALIZATION & HTML ESCAPE
+        // ==========================================
+        function escapeHtml(str) {
+            return String(str ?? '')
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#039;');
+        }
+
+        function normalizeArabicText(text) {
+            return String(text || '')
+                .trim()
+                .toLowerCase()
+                .replace(/[أإآ]/g, 'ا')
+                .replace(/ة/g, 'ه')
+                .replace(/ى/g, 'ي')
+                .replace(/[\u064B-\u065F\u0670]/g, '')
+                .replace(/\s+/g, ' ');
+        }
+
+        // ==========================================
+        // 3. SECURITY, FORGOT PIN RECOVERY & PERMISSIONS
         // ==========================================
         function normalizeSecret(raw) {
             return String(raw || '')
@@ -1093,7 +1123,7 @@
         };
         let pendingRecoveredAdminPin = null;
 
-        let currentUserRole = null; // 'admin' | 'teacher' | null
+        let currentUserRole = null;
         let isSystemUnlocked = false;
         let securityDocRef = null;
 
@@ -1309,6 +1339,10 @@
                 unsubscribeSharedState();
                 unsubscribeSharedState = null;
             }
+            if (unsubscribeLogoState) {
+                unsubscribeLogoState();
+                unsubscribeLogoState = null;
+            }
 
             document.body.classList.add('locked-state');
             document.getElementById('appShell').classList.add('hidden');
@@ -1470,7 +1504,7 @@
                     console.error("Failed to sync security settings:", err);
                 });
             }
-            pushDataToCloud();
+            saveData();
 
             closeSecurityModal();
             applyRolePermissionsUI();
@@ -1479,7 +1513,10 @@
         }
 
         // ==========================================
-        // 3. STATE MANAGEMENT & CLOUD SYNC (FIREBASE FIRESTORE)
+        // 4. PROTECTED CLOUD SYNC (FIREBASE FIRESTORE)
+        //    - Conflict-free timestamped sync
+        //    - Separate compressed logo document (prevents 1MB limit overflow)
+        //    - Auto-retry queue so refresh NEVER wipes unsaved local changes
         // ==========================================
         const HARDCODED_FIREBASE_CONFIG = {
             apiKey: "AIzaSyAI-P5AW9ua8VvDvhUTdCOuwNqKRKBpeYw",
@@ -1490,6 +1527,15 @@
             appId: "1:28715300593:web:d486a7b3c8c4754359db50"
         };
 
+        const LS_KEYS = {
+            CLASSES: 'arqam_classes_v1',
+            STUDENTS: 'arqam_students_v1',
+            PAYMENTS: 'arqam_payments_v1',
+            LOGO: 'arqam_custom_logo_v1',
+            UPDATED_AT: 'arqam_local_updated_at_v2',
+            DIRTY_SYNC: 'arqam_dirty_sync_v2'
+        };
+
         let classes = [];
         let students = [];
         let payments = {};
@@ -1497,9 +1543,32 @@
         let currentViewMode = 'tables';
 
         let firestoreDb = null;
+        let persistenceInitialized = false;
         let sharedDocRef = null;
+        let logoDocRef = null;
         let unsubscribeSharedState = null;
+        let unsubscribeLogoState = null;
         let isReceivingCloudData = false;
+        let syncRetryTimer = null;
+
+        function getLocalUpdatedAt() {
+            return Number(localStorage.getItem(LS_KEYS.UPDATED_AT) || 0);
+        }
+
+        function isLocalDirty() {
+            return localStorage.getItem(LS_KEYS.DIRTY_SYNC) === '1';
+        }
+
+        function markLocalDirty(ts = Date.now()) {
+            localStorage.setItem(LS_KEYS.UPDATED_AT, String(ts));
+            localStorage.setItem(LS_KEYS.DIRTY_SYNC, '1');
+        }
+
+        function clearLocalDirty(confirmedTs) {
+            if (getLocalUpdatedAt() <= confirmedTs) {
+                localStorage.setItem(LS_KEYS.DIRTY_SYNC, '0');
+            }
+        }
 
         function parseFirebaseConfigInput(rawText) {
             if (!rawText) return null;
@@ -1523,6 +1592,12 @@
             if (userConfig && userConfig.projectId) {
                 const app = firebase.apps.length ? firebase.app() : firebase.initializeApp(userConfig);
                 firestoreDb = firebase.firestore(app);
+                if (!persistenceInitialized) {
+                    persistenceInitialized = true;
+                    firestoreDb.enablePersistence({ synchronizeTabs: true }).catch(() => {
+                        // Ignore if multiple tabs or private mode
+                    });
+                }
             }
             return firestoreDb;
         }
@@ -1571,14 +1646,14 @@
 
             label.textContent = text;
             if (status === 'connected') {
-                badge.className = "bg-emerald-500/25 hover:bg-emerald-500/35 text-emerald-200 border border-emerald-400/60 text-[11px] font-extrabold px-2.5 py-0.5 rounded-full flex items-center gap-1.5 transition cursor-pointer shadow-xs";
+                badge.className = "bg-emerald-500/25 hover:bg-emerald-500/35 text-emerald-200 border border-emerald-400/60 text-[11px] font-extrabold px-2.5 py-0.5 rounded-full flex items-center gap-1.5 transition cursor-pointer shadow-sm";
                 icon.className = "fa-solid fa-cloud-bolt text-emerald-300";
             } else if (status === 'error') {
-                badge.className = "bg-rose-500/30 hover:bg-rose-500/40 text-rose-200 border border-rose-400/60 text-[11px] font-extrabold px-2.5 py-0.5 rounded-full flex items-center gap-1.5 transition cursor-pointer shadow-xs";
+                badge.className = "bg-rose-500/30 hover:bg-rose-500/40 text-rose-200 border border-rose-400/60 text-[11px] font-extrabold px-2.5 py-0.5 rounded-full flex items-center gap-1.5 transition cursor-pointer shadow-sm";
                 icon.className = "fa-solid fa-triangle-exclamation text-rose-300";
             } else {
-                badge.className = "bg-amber-500/20 hover:bg-amber-500/30 text-arqam-goldLight border border-arqam-gold/50 text-[11px] font-extrabold px-2.5 py-0.5 rounded-full flex items-center gap-1.5 transition cursor-pointer shadow-xs";
-                icon.className = "fa-solid fa-cloud-arrow-up text-arqam-goldLight";
+                badge.className = "bg-amber-500/20 hover:bg-amber-500/30 text-arqam-goldLight border border-arqam-gold/50 text-[11px] font-extrabold px-2.5 py-0.5 rounded-full flex items-center gap-1.5 transition cursor-pointer shadow-sm";
+                icon.className = "fa-solid fa-arrows-rotate fa-spin text-arqam-goldLight";
             }
         }
 
@@ -1586,8 +1661,20 @@
             if (currentUserRole === 'admin') {
                 openCloudModal();
             } else {
+                if (isLocalDirty()) {
+                    pushDataToCloud(true);
+                }
                 showToast('الاتصال السحابي نشط ويحفظ التحصيل لحظياً', 'info');
             }
+        }
+
+        function startSyncRetryLoop() {
+            if (syncRetryTimer) clearInterval(syncRetryTimer);
+            syncRetryTimer = setInterval(() => {
+                if (isSystemUnlocked && isLocalDirty() && navigator.onLine) {
+                    pushDataToCloud(true);
+                }
+            }, 5000);
         }
 
         function initCloudDataConnection() {
@@ -1596,19 +1683,61 @@
                 const db = getFirebaseInstance();
                 if (!db) return;
 
-                setCloudBadgeState('pending', 'جاري المزامنة...');
+                setCloudBadgeState('pending', 'جاري الاتصال...');
                 sharedDocRef = db.collection('dar_alarqam_system').doc('shared_state');
+                logoDocRef = db.collection('dar_alarqam_system').doc('branding_logo');
+
+                startSyncRetryLoop();
+
+                // Separate listener for logo so logo size never blocks student saves
+                if (unsubscribeLogoState) unsubscribeLogoState();
+                unsubscribeLogoState = logoDocRef.onSnapshot((logoSnap) => {
+                    if (logoSnap.exists) {
+                        const data = logoSnap.data();
+                        if (data && data.customLogo) {
+                            try {
+                                localStorage.setItem(LS_KEYS.LOGO, data.customLogo);
+                            } catch (e) {}
+                            applyCustomLogo(data.customLogo);
+                        }
+                    }
+                }, () => {});
 
                 if (unsubscribeSharedState) unsubscribeSharedState();
 
                 unsubscribeSharedState = sharedDocRef.onSnapshot((docSnap) => {
+                    // Ignore local optimistic snapshots while writing
+                    if (docSnap.metadata && docSnap.metadata.hasPendingWrites) {
+                        return;
+                    }
+
+                    const localTs = getLocalUpdatedAt();
+                    const dirty = isLocalDirty();
+
                     if (docSnap.exists) {
                         const cloudData = docSnap.data();
+                        const cloudTs = Number(cloudData.updatedAtMs || (cloudData.updatedAt ? Date.parse(cloudData.updatedAt) : 0) || 0);
+
+                        // CRITICAL GUARD: If local device has unsaved changes OR newer timestamp,
+                        // NEVER overwrite local students/classes with stale cloud data! Push local UP instead.
+                        if (dirty || (localTs > 0 && localTs > cloudTs)) {
+                            pushDataToCloud(true);
+                            return;
+                        }
+
                         isReceivingCloudData = true;
                         if (Array.isArray(cloudData.classes)) classes = cloudData.classes;
                         if (Array.isArray(cloudData.students)) students = cloudData.students;
                         if (cloudData.payments && typeof cloudData.payments === 'object') payments = cloudData.payments;
-                        if (cloudData.customLogo) applyCustomLogo(cloudData.customLogo);
+
+                        // Migrate legacy logo out of shared_state if still there
+                        if (cloudData.customLogo && !localStorage.getItem(LS_KEYS.LOGO)) {
+                            try {
+                                localStorage.setItem(LS_KEYS.LOGO, cloudData.customLogo);
+                            } catch (e) {}
+                            applyCustomLogo(cloudData.customLogo);
+                        }
+
                         if (cloudData.adminPinVault && typeof cloudData.adminPinVault === 'object') {
                             adminPinVault = { ...adminPinVault, ...cloudData.adminPinVault };
                             if (pendingRecoveredAdminPin) {
@@ -1617,26 +1746,29 @@
                             localStorage.setItem('arqam_admin_vault_v1', JSON.stringify(adminPinVault));
                         }
 
-                        localStorage.setItem('arqam_classes_v1', JSON.stringify(classes));
-                        localStorage.setItem('arqam_students_v1', JSON.stringify(students));
-                        localStorage.setItem('arqam_payments_v1', JSON.stringify(payments));
+                        localStorage.setItem(LS_KEYS.CLASSES, JSON.stringify(classes));
+                        localStorage.setItem(LS_KEYS.STUDENTS, JSON.stringify(students));
+                        localStorage.setItem(LS_KEYS.PAYMENTS, JSON.stringify(payments));
+                        if (cloudTs > 0) {
+                            localStorage.setItem(LS_KEYS.UPDATED_AT, String(cloudTs));
+                        }
+                        localStorage.setItem(LS_KEYS.DIRTY_SYNC, '0');
 
                         populateClassDropdowns();
                         renderStudents();
                         isReceivingCloudData = false;
-                        setCloudBadgeState('connected', 'متصل بالسحابة لحظياً');
+                        setCloudBadgeState('connected', 'محفوظ في السحابة ✓');
 
                         if (pendingRecoveredAdminPin) {
                             pendingRecoveredAdminPin = null;
-                            pushDataToCloud();
+                            saveData();
                         }
                     } else {
-                        pushDataToCloud();
-                        setCloudBadgeState('connected', 'متصل بالسحابة لحظياً');
+                        pushDataToCloud(true);
                     }
                 }, (err) => {
                     console.error("Firestore Listener Error:", err);
-                    setCloudBadgeState('error', 'تحقق من اتصال الإنترنت / السحابة');
+                    setCloudBadgeState('error', 'محفوظ محلياً (تحقق من السحابة)');
                 });
             } catch (err) {
                 console.error("Firebase Init Error:", err);
@@ -1644,19 +1776,41 @@
             }
         }
 
-        function pushDataToCloud() {
+        function pushDataToCloud(showErrorToast = false) {
             if (!sharedDocRef || isReceivingCloudData || !isSystemUnlocked) return;
-            const savedLogo = localStorage.getItem('arqam_custom_logo_v1') || null;
-            sharedDocRef.set({
+
+            const writeTs = getLocalUpdatedAt() || Date.now();
+            setCloudBadgeState('pending', 'جاري الحفظ في السحابة...');
+
+            // Notice: customLogo is NOT sent inside shared_state anymore so document stays tiny (< 50KB)
+            const payload = {
                 classes: classes,
                 students: students,
                 payments: payments,
-                customLogo: savedLogo,
                 adminPinVault: adminPinVault,
-                updatedAt: new Date().toISOString()
-            }, { merge: true }).catch(err => {
-                console.error("Failed to push to cloud:", err);
-            });
+                customLogo: firebase.firestore.FieldValue.delete(),
+                updatedAtMs: writeTs,
+                updatedAt: new Date(writeTs).toISOString()
+            };
+
+            sharedDocRef.set(payload, { merge: true })
+                .then(() => {
+                    clearLocalDirty(writeTs);
+                    setCloudBadgeState('connected', 'تم الحفظ في السحابة ✓');
+                })
+                .catch(err => {
+                    console.error("Failed to push to cloud:", err);
+                    setCloudBadgeState('error', 'تعذر المزامنة (محفوظ على الجهاز)');
+                    if (showErrorToast) {
+                        showToast('تنبيه: البيانات محفوظة على هاتفك، وجاري إعادة محاولة الرفع للسحابة...', 'warning');
+                    }
+                });
+        }
+
+        function forceSyncNow() {
+            markLocalDirty(Date.now());
+            pushDataToCloud(true);
+            showToast('جاري رفع ومزامنة البيانات مع السحابة...', 'info');
         }
 
         function openCloudModal() {
@@ -1698,14 +1852,18 @@
 
         function loadData() {
             try {
-                const savedClasses = localStorage.getItem('arqam_classes_v1');
-                const savedStudents = localStorage.getItem('arqam_students_v1');
-                const savedPayments = localStorage.getItem('arqam_payments_v1');
-                const savedLogo = localStorage.getItem('arqam_custom_logo_v1');
+                const savedClasses = localStorage.getItem(LS_KEYS.CLASSES);
+                const savedStudents = localStorage.getItem(LS_KEYS.STUDENTS);
+                const savedPayments = localStorage.getItem(LS_KEYS.PAYMENTS);
+                const savedLogo = localStorage.getItem(LS_KEYS.LOGO);
 
-                classes = savedClasses ? JSON.parse(savedClasses) : [...DEFAULT_CLASSES];
-                students = savedStudents ? JSON.parse(savedStudents) : [...DEFAULT_STUDENTS];
-                payments = savedPayments ? JSON.parse(savedPayments) : JSON.parse(JSON.stringify(DEFAULT_PAYMENTS));
+                classes = savedClasses !== null ? JSON.parse(savedClasses) : [...DEFAULT_CLASSES];
+                students = savedStudents !== null ? JSON.parse(savedStudents) : [...DEFAULT_STUDENTS];
+                payments = savedPayments !== null ? JSON.parse(savedPayments) : JSON.parse(JSON.stringify(DEFAULT_PAYMENTS));
+
+                if (!Array.isArray(classes)) classes = [...DEFAULT_CLASSES];
+                if (!Array.isArray(students)) students = [...DEFAULT_STUDENTS];
+                if (!payments || typeof payments !== 'object') payments = {};
 
                 if (savedLogo) applyCustomLogo(savedLogo);
             } catch (e) {
@@ -1717,13 +1875,17 @@
 
         function saveData() {
             if (!isSystemUnlocked) return;
+            const nowTs = Date.now();
             try {
-                localStorage.setItem('arqam_classes_v1', JSON.stringify(classes));
-                localStorage.setItem('arqam_students_v1', JSON.stringify(students));
-                localStorage.setItem('arqam_payments_v1', JSON.stringify(payments));
-                pushDataToCloud();
+                localStorage.setItem(LS_KEYS.CLASSES, JSON.stringify(classes));
+                localStorage.setItem(LS_KEYS.STUDENTS, JSON.stringify(students));
+                localStorage.setItem(LS_KEYS.PAYMENTS, JSON.stringify(payments));
+                markLocalDirty(nowTs);
+                pushDataToCloud(true);
             } catch (e) {
-                console.error("Failed to save data", e);
+                console.error("Failed to save data locally:", e);
+                showToast('تنبيه: مساحة المتصفح ممتلئة، جاري الرفع للسحابة مباشرة...', 'warning');
+                pushDataToCloud(true);
             }
         }
 
@@ -1735,21 +1897,57 @@
             document.getElementById('logoFileInput').click();
         }
 
+        function compressImageDataUrl(dataUrl, maxSize = 240, quality = 0.82) {
+            return new Promise((resolve) => {
+                const img = new Image();
+                img.onload = function() {
+                    const canvas = document.createElement('canvas');
+                    let w = img.width;
+                    let h = img.height;
+                    if (w > maxSize || h > maxSize) {
+                        if (w > h) {
+                            h = Math.round((h * maxSize) / w);
+                            w = maxSize;
+                        } else {
+                            w = Math.round((w * maxSize) / h);
+                            h = maxSize;
+                        }
+                    }
+                    canvas.width = w;
+                    canvas.height = h;
+                    const ctx = canvas.getContext('2d');
+                    ctx.fillStyle = '#FFFFFF';
+                    ctx.fillRect(0, 0, w, h);
+                    ctx.drawImage(img, 0, 0, w, h);
+                    resolve(canvas.toDataURL('image/jpeg', quality));
+                };
+                img.onerror = function() {
+                    resolve(dataUrl);
+                };
+                img.src = dataUrl;
+            });
+        }
+
         function handleLogoUpload(event) {
             const file = event.target.files[0];
             if (!file) return;
 
             const reader = new FileReader();
-            reader.onload = function(e) {
-                const dataUrl = e.target.result;
+            reader.onload = async function(e) {
+                const compressedUrl = await compressImageDataUrl(e.target.result, 240, 0.82);
                 try {
-                    localStorage.setItem('arqam_custom_logo_v1', dataUrl);
-                    applyCustomLogo(dataUrl);
-                    pushDataToCloud();
-                    showToast('تم تثبيت صورة شعار دار الأرقم بنجاح!', 'success');
-                } catch (err) {
-                    applyCustomLogo(dataUrl);
+                    localStorage.setItem(LS_KEYS.LOGO, compressedUrl);
+                } catch (err) {}
+                applyCustomLogo(compressedUrl);
+                if (logoDocRef) {
+                    logoDocRef.set({
+                        customLogo: compressedUrl,
+                        updatedAt: new Date().toISOString()
+                    }, { merge: true }).catch(err => {
+                        console.error("Failed to upload logo:", err);
+                    });
                 }
+                showToast('تم تثبيت وضغط صورة شعار دار الأرقم بنجاح!', 'success');
             };
             reader.readAsDataURL(file);
         }
@@ -1779,7 +1977,7 @@
         }
 
         // ==========================================
-        // 4. MONTH NAVIGATION & MULTI-MONTH ARREARS ENGINE
+        // 5. MONTH NAVIGATION & MULTI-MONTH ARREARS ENGINE
         // ==========================================
         function getCurrentMonthKey() {
             const month = document.getElementById('monthSelect').value;
@@ -1912,7 +2110,7 @@
                         onclick="selectPeriod('${p.y}', '${p.m}')" 
                         class="px-2.5 py-1 rounded-xl text-[11px] font-extrabold shrink-0 transition border ${
                             isActive 
-                            ? 'bg-arqam-navy text-arqam-goldLight border-arqam-gold shadow-xs' 
+                            ? 'bg-arqam-navy text-arqam-goldLight border-arqam-gold shadow-sm' 
                             : 'bg-slate-50 hover:bg-slate-100 text-slate-600 border-slate-200'
                         }"
                     >
@@ -1923,7 +2121,7 @@
         }
 
         function getClassById(classId) {
-            return classes.find(c => c.id === classId) || { id: 'unknown', name: 'غير محدد', teacher: 'غير محدد', color: 'slate' };
+            return classes.find(c => c.id === classId) || { id: 'unknown', name: 'غير محدد بفصل', teacher: 'غير محدد', color: 'slate' };
         }
 
         function isStudentPaid(studentId, monthKey = getCurrentMonthKey()) {
@@ -1938,7 +2136,7 @@
         }
 
         // ==========================================
-        // 5. CORE UI RENDERING & STATS
+        // 6. CORE UI RENDERING & STATS
         // ==========================================
         function populateClassDropdowns() {
             const classFilter = document.getElementById('classFilter');
@@ -1950,12 +2148,17 @@
             studentClassInput.innerHTML = '';
             if (bulkClassInput) bulkClassInput.innerHTML = '';
 
-            classes.forEach(cls => {
-                const label = `${cls.name} — ${cls.teacher}`;
-                classFilter.innerHTML += `<option value="${cls.id}">${label}</option>`;
-                studentClassInput.innerHTML += `<option value="${cls.id}">${label}</option>`;
-                if (bulkClassInput) bulkClassInput.innerHTML += `<option value="${cls.id}">${label}</option>`;
-            });
+            if (classes.length === 0) {
+                studentClassInput.innerHTML = `<option value="">-- أضف فصلاً أولاً من زر الفصول والمعلمات --</option>`;
+                if (bulkClassInput) bulkClassInput.innerHTML = `<option value="">-- أضف فصلاً أولاً من زر الفصول والمعلمات --</option>`;
+            } else {
+                classes.forEach(cls => {
+                    const label = `${escapeHtml(cls.name)} — ${escapeHtml(cls.teacher)}`;
+                    classFilter.innerHTML += `<option value="${cls.id}">${label}</option>`;
+                    studentClassInput.innerHTML += `<option value="${cls.id}">${label}</option>`;
+                    if (bulkClassInput) bulkClassInput.innerHTML += `<option value="${cls.id}">${label}</option>`;
+                });
+            }
 
             if ([...classFilter.options].some(o => o.value === currentFilterVal)) {
                 classFilter.value = currentFilterVal;
@@ -1972,10 +2175,10 @@
             let html = `<span class="text-xs text-slate-500 font-bold ml-1"><i class="fa-solid fa-bolt text-arqam-gold ml-1"></i>وصول سريع:</span>`;
 
             sampleClasses.forEach(cls => {
-                const safeTeacher = cls.teacher.replace(/'/g, "\\'");
+                const safeTeacher = String(cls.teacher || '').replace(/\\/g, '\\\\').replace(/'/g, "\\'");
                 html += `
                     <button onclick="quickSearch('${safeTeacher}')" class="text-xs bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold px-2.5 py-1 rounded-full transition">
-                        ${cls.teacher}
+                        ${escapeHtml(cls.teacher)}
                     </button>
                 `;
             });
@@ -2072,10 +2275,10 @@
             const cardsBtn = document.getElementById('viewCardsBtn');
             if (tablesBtn && cardsBtn) {
                 if (mode === 'tables') {
-                    tablesBtn.className = "px-2.5 py-1.5 rounded-lg text-xs font-extrabold transition bg-white text-arqam-navy shadow-xs flex items-center gap-1";
+                    tablesBtn.className = "px-2.5 py-1.5 rounded-lg text-xs font-extrabold transition bg-white text-arqam-navy shadow-sm flex items-center gap-1";
                     cardsBtn.className = "px-2.5 py-1.5 rounded-lg text-xs font-bold transition text-slate-600 hover:text-slate-900 flex items-center gap-1";
                 } else {
-                    cardsBtn.className = "px-2.5 py-1.5 rounded-lg text-xs font-extrabold transition bg-white text-arqam-navy shadow-xs flex items-center gap-1";
+                    cardsBtn.className = "px-2.5 py-1.5 rounded-lg text-xs font-extrabold transition bg-white text-arqam-navy shadow-sm flex items-center gap-1";
                     tablesBtn.className = "px-2.5 py-1.5 rounded-lg text-xs font-bold transition text-slate-600 hover:text-slate-900 flex items-center gap-1";
                 }
             }
@@ -2091,7 +2294,7 @@
                         onclick="togglePayment('${st.id}')" 
                         class="check-btn px-3.5 py-2 rounded-xl font-extrabold text-xs sm:text-sm inline-flex items-center justify-center gap-1.5 cursor-pointer border transition ${
                             isPaid 
-                            ? 'bg-emerald-600 text-white border-emerald-700 shadow-xs' 
+                            ? 'bg-emerald-600 text-white border-emerald-700 shadow-sm' 
                             : 'bg-slate-100 hover:bg-arqam-goldPale text-slate-700 border-slate-300 hover:border-arqam-navy'
                         }"
                     >
@@ -2147,12 +2350,208 @@
                     </button>
                     <button 
                         onclick="collectPreviousOnly('${st.id}')" 
-                        class="check-btn px-2.5 py-1 rounded-lg font-extrabold text-[11px] bg-amber-500 hover:bg-amber-600 text-white inline-flex items-center justify-center gap-1 cursor-pointer shadow-xs"
+                        class="check-btn px-2.5 py-1 rounded-lg font-extrabold text-[11px] bg-amber-500 hover:bg-amber-600 text-white inline-flex items-center justify-center gap-1 cursor-pointer shadow-sm"
                     >
                         <i class="fa-solid fa-bolt"></i>
                         <span>تحصيل المتأخر (${prevFeeTotal} ج.م)</span>
                     </button>
                 </div>
+            `;
+        }
+
+        function renderClassGroupBlock(cls, classStudents, monthKey, monthLabel, currentShortName, searchQuery, allowEdit, allowDelete) {
+            let clsPaidCount = 0;
+            let clsCollectedMoney = 0;
+            classStudents.forEach(st => {
+                if (isStudentPaid(st.id, monthKey)) {
+                    clsPaidCount++;
+                    clsCollectedMoney += Number(st.fee || 0);
+                }
+            });
+
+            let innerContentHtml = '';
+
+            if (currentViewMode === 'tables') {
+                const tableRows = classStudents.map((st, idx) => {
+                    const isPaid = isStudentPaid(st.id, monthKey);
+                    const paymentInfo = getPaymentInfo(st.id, monthKey);
+                    const unpaidPrev = getUnpaidPreviousMonths(st, monthKey);
+                    const bundledHere = getBundledMonthsCollectedIn(st.id, monthKey);
+                    const prevMonthsNames = unpaidPrev.map(formatMonthKeyLabel).join(' ، ');
+                    const prevFeeSum = unpaidPrev.length * Number(st.fee || 0);
+
+                    return `
+                    <tr class="border-b border-slate-100 last:border-b-0 transition ${isPaid ? 'bg-emerald-50/50' : (unpaidPrev.length > 0 ? 'bg-amber-50/30 hover:bg-amber-50/50' : 'hover:bg-slate-50')}">
+                        <td class="p-3 text-center text-xs font-black text-slate-400 w-10">${idx + 1}</td>
+                        <td class="p-3">
+                            <div class="font-extrabold text-sm sm:text-base text-slate-800">${highlightSearchMatch(st.name, searchQuery)}</div>
+                            ${st.notes ? `<span class="text-[11px] text-slate-500 bg-slate-100 px-2 py-0.5 rounded inline-block mt-0.5">${escapeHtml(st.notes)}</span>` : ''}
+                            ${unpaidPrev.length > 0 ? `
+                                <div class="text-[11px] font-extrabold text-rose-700 bg-rose-50 border border-rose-200 px-2 py-0.5 rounded-lg inline-flex items-center gap-1 mt-1">
+                                    <i class="fa-solid fa-triangle-exclamation text-rose-500"></i>
+                                    <span>متأخر سابق: ${prevMonthsNames} (${prevFeeSum} ج.م)</span>
+                                </div>
+                            ` : ''}
+                            ${isPaid && paymentInfo?.date ? `
+                                <div class="text-[11px] text-emerald-700 font-bold mt-0.5">
+                                    <i class="fa-regular fa-clock ml-1"></i>${escapeHtml(paymentInfo.date)}
+                                    ${bundledHere.length > 0 ? `<span class="text-arqam-navy bg-emerald-100 px-1.5 py-0.5 rounded mr-1">شامل: ${bundledHere.map(formatMonthKeyShort).join(' + ')}</span>` : ''}
+                                </div>
+                            ` : ''}
+                        </td>
+                        <td class="p-3 text-xs font-bold text-slate-600 hidden sm:table-cell">${escapeHtml(cls.teacher)}</td>
+                        <td class="p-3 text-xs sm:text-sm font-extrabold text-arqam-navy whitespace-nowrap">${Number(st.fee || 0)} ج.م</td>
+                        <td class="p-3 text-center">
+                            ${buildTablePaymentControlHtml(st, isPaid, unpaidPrev, currentShortName)}
+                        </td>
+                        <td class="p-3 text-center no-print">
+                            <div class="flex items-center justify-center gap-1">
+                                <button onclick="sendWhatsAppReceipt('${st.id}')" title="واتساب" class="w-8 h-8 rounded-lg bg-emerald-50 hover:bg-emerald-100 text-emerald-600 flex items-center justify-center text-sm transition">
+                                    <i class="fa-brands fa-whatsapp"></i>
+                                </button>
+                                ${allowEdit ? `
+                                <button onclick="openStudentModal('${st.id}')" title="تعديل" class="w-8 h-8 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-600 flex items-center justify-center text-xs transition">
+                                    <i class="fa-solid fa-pen"></i>
+                                </button>
+                                ` : ''}
+                                ${allowDelete ? `
+                                <button onclick="deleteStudent('${st.id}')" title="حذف" class="w-8 h-8 rounded-lg bg-rose-50 hover:bg-rose-100 text-rose-500 flex items-center justify-center text-xs transition">
+                                    <i class="fa-solid fa-trash-can"></i>
+                                </button>
+                                ` : ''}
+                            </div>
+                        </td>
+                    </tr>
+                    `;
+                }).join('');
+
+                innerContentHtml = `
+                <div class="overflow-x-auto">
+                    <table class="w-full text-right border-collapse">
+                        <thead>
+                            <tr class="bg-slate-50 text-slate-600 text-xs font-extrabold border-b border-slate-200">
+                                <th class="p-3 text-center w-10">م</th>
+                                <th class="p-3">اسم الطالب</th>
+                                <th class="p-3 hidden sm:table-cell">المعلمة</th>
+                                <th class="p-3">الاشتراك</th>
+                                <th class="p-3 text-center">حالة الدفع (${monthLabel})</th>
+                                <th class="p-3 text-center no-print">إجراءات</th>
+                            </tr>
+                        </thead>
+                        <tbody>${tableRows}</tbody>
+                    </table>
+                </div>
+                `;
+            } else {
+                innerContentHtml = `<div class="divide-y divide-slate-100">` + classStudents.map((st, idx) => {
+                    const isPaid = isStudentPaid(st.id, monthKey);
+                    const paymentInfo = getPaymentInfo(st.id, monthKey);
+                    const unpaidPrev = getUnpaidPreviousMonths(st, monthKey);
+                    const prevMonthsNames = unpaidPrev.map(formatMonthKeyLabel).join(' ، ');
+                    const fee = Number(st.fee || 0);
+                    const prevFeeSum = unpaidPrev.length * fee;
+                    const combinedTotal = (unpaidPrev.length + 1) * fee;
+
+                    return `
+                    <div class="p-3.5 sm:p-4 transition-all duration-200 border-b last:border-b-0 ${isPaid ? 'bg-emerald-50/40' : (unpaidPrev.length > 0 ? 'bg-amber-50/30' : 'bg-white hover:bg-slate-50/80')}">
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                            <div class="flex items-start sm:items-center gap-3 flex-1 min-w-0">
+                                <span class="w-6 text-center text-xs font-black text-slate-400 shrink-0 mt-2 sm:mt-0">${idx + 1}</span>
+                                <button 
+                                    onclick="togglePayment('${st.id}')" 
+                                    class="check-btn w-12 h-12 sm:w-14 sm:h-14 rounded-2xl flex flex-col items-center justify-center shrink-0 cursor-pointer select-none border-2 ${
+                                        isPaid 
+                                        ? 'bg-emerald-500 text-white border-emerald-600 shadow-md shadow-emerald-500/20' 
+                                        : 'bg-slate-50 text-slate-400 border-slate-300 hover:border-arqam-navy hover:text-arqam-navy'
+                                    }"
+                                >
+                                    <i class="fa-solid fa-check text-xl ${isPaid ? 'scale-110' : 'opacity-40'}"></i>
+                                    <span class="text-[9px] font-extrabold mt-0.5">${isPaid ? 'خالص' : currentShortName}</span>
+                                </button>
+                                <div class="min-w-0 flex-1">
+                                    <div class="flex flex-wrap items-center gap-2 mb-1">
+                                        <h3 class="text-base sm:text-lg font-extrabold text-slate-800 truncate">${highlightSearchMatch(st.name, searchQuery)}</h3>
+                                        <span class="font-extrabold text-xs text-arqam-navy bg-arqam-goldPale border border-arqam-gold/40 px-2 py-0.5 rounded-lg">${fee} ج.م</span>
+                                    </div>
+
+                                    ${unpaidPrev.length > 0 ? `
+                                        <div class="mb-1.5">
+                                            <span class="inline-flex items-center gap-1 bg-rose-50 text-rose-700 border border-rose-200 text-[11px] font-extrabold px-2.5 py-0.5 rounded-lg">
+                                                <i class="fa-solid fa-triangle-exclamation text-rose-500"></i>
+                                                متأخر سابق: ${prevMonthsNames} (${prevFeeSum} ج.م)
+                                            </span>
+                                        </div>
+                                    ` : ''}
+
+                                    ${unpaidPrev.length > 0 && !isPaid ? `
+                                        <div class="flex flex-wrap items-center gap-1.5 mt-1.5">
+                                            <button onclick="collectAllDue('${st.id}')" class="px-3 py-1.5 rounded-xl bg-arqam-navy hover:bg-arqam-blue text-white border border-arqam-gold text-xs font-extrabold flex items-center gap-1.5 shadow-sm">
+                                                <i class="fa-solid fa-bolt text-arqam-goldLight"></i>
+                                                <span>تحصيل الكل (${combinedTotal} ج.م)</span>
+                                            </button>
+                                            <button onclick="collectPreviousOnly('${st.id}')" class="px-2.5 py-1.5 rounded-xl bg-amber-100 hover:bg-amber-200 text-amber-950 text-[11px] font-extrabold">
+                                                السابق فقط (${prevFeeSum} ج.م)
+                                            </button>
+                                        </div>
+                                    ` : ''}
+
+                                    ${unpaidPrev.length > 0 && isPaid ? `
+                                        <button onclick="collectPreviousOnly('${st.id}')" class="mt-1 px-3 py-1 rounded-lg bg-amber-500 hover:bg-amber-600 text-white text-xs font-extrabold inline-flex items-center gap-1">
+                                            <i class="fa-solid fa-bolt"></i>
+                                            <span>تحصيل المتأخر (${prevFeeSum} ج.م)</span>
+                                        </button>
+                                    ` : ''}
+
+                                    ${isPaid && paymentInfo?.date ? `
+                                        <p class="text-[11px] text-emerald-700 font-bold mt-1"><i class="fa-regular fa-clock ml-1"></i>${escapeHtml(paymentInfo.date)}</p>
+                                    ` : ''}
+                                </div>
+                            </div>
+
+                            <div class="flex items-center justify-end gap-1.5 shrink-0 no-print">
+                                <button onclick="sendWhatsAppReceipt('${st.id}')" class="px-3 py-2 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-200 flex items-center gap-1.5 text-xs font-bold transition">
+                                    <i class="fa-brands fa-whatsapp text-base text-emerald-600"></i>
+                                    <span>${isPaid ? 'إيصال' : 'تذكير'}</span>
+                                </button>
+                                ${allowEdit ? `
+                                <button onclick="openStudentModal('${st.id}')" class="w-9 h-9 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-600 flex items-center justify-center text-xs transition">
+                                    <i class="fa-solid fa-pen"></i>
+                                </button>
+                                ` : ''}
+                                ${allowDelete ? `
+                                <button onclick="deleteStudent('${st.id}')" class="w-9 h-9 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-500 flex items-center justify-center text-xs transition">
+                                    <i class="fa-solid fa-trash-can"></i>
+                                </button>
+                                ` : ''}
+                            </div>
+                        </div>
+                    </div>
+                    `;
+                }).join('') + `</div>`;
+            }
+
+            return `
+            <div class="class-print-block bg-white rounded-3xl shadow-md overflow-hidden border-2 border-arqam-navy/15">
+                <div class="bg-gradient-to-l from-arqam-navy to-arqam-blue text-white px-4 py-3 flex flex-wrap items-center justify-between gap-2 border-b-2 border-arqam-gold">
+                    <div class="flex items-center gap-2.5">
+                        <div class="w-9 h-9 rounded-xl bg-arqam-gold/20 border border-arqam-gold/50 text-arqam-goldLight flex items-center justify-center font-black">
+                            <i class="fa-solid fa-book-quran"></i>
+                        </div>
+                        <div>
+                            <h2 class="text-sm sm:text-base font-black text-white">${escapeHtml(cls.name)}</h2>
+                            <p class="text-xs text-arqam-goldLight font-bold">المعلمة المسؤولة: ${escapeHtml(cls.teacher)}</p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center gap-2 text-xs font-extrabold">
+                        <span class="bg-white/15 px-2.5 py-1 rounded-lg">الطلاب: ${classStudents.length}</span>
+                        <span class="bg-emerald-500/30 border border-emerald-400/40 text-emerald-100 px-2.5 py-1 rounded-lg">دفع: ${clsPaidCount}</span>
+                        <span class="bg-arqam-gold/30 border border-arqam-gold/50 text-arqam-goldLight px-2.5 py-1 rounded-lg">المحصل: ${clsCollectedMoney} ج.م</span>
+                    </div>
+                </div>
+
+                ${innerContentHtml}
+            </div>
             `;
         }
 
@@ -2162,7 +2561,8 @@
             renderQuickMonthsBar();
             updateDashboardStats();
 
-            const searchQuery = document.getElementById('searchInput').value.trim().toLowerCase();
+            const rawSearchQuery = document.getElementById('searchInput').value.trim();
+            const normQuery = normalizeArabicText(rawSearchQuery);
             const selectedClassId = document.getElementById('classFilter').value;
             const monthKey = getCurrentMonthKey();
             const monthLabel = getCurrentMonthLabel();
@@ -2175,11 +2575,11 @@
 
             const filtered = students.filter(st => {
                 const cls = getClassById(st.classId);
-                const matchesSearch = !searchQuery || 
-                    st.name.toLowerCase().includes(searchQuery) ||
-                    cls.name.toLowerCase().includes(searchQuery) ||
-                    cls.teacher.toLowerCase().includes(searchQuery) ||
-                    (st.phone && st.phone.includes(searchQuery));
+                const matchesSearch = !normQuery || 
+                    normalizeArabicText(st.name).includes(normQuery) ||
+                    normalizeArabicText(cls.name).includes(normQuery) ||
+                    normalizeArabicText(cls.teacher).includes(normQuery) ||
+                    (st.phone && st.phone.includes(rawSearchQuery));
 
                 const matchesClass = selectedClassId === 'all' || st.classId === selectedClassId;
 
@@ -2205,6 +2605,7 @@
             emptyState.classList.add('hidden');
 
             let htmlSections = '';
+            const validClassIds = new Set(classes.map(c => c.id));
 
             classes.forEach(cls => {
                 const classStudents = filtered
@@ -2213,212 +2614,32 @@
 
                 if (classStudents.length === 0) return;
 
-                let clsPaidCount = 0;
-                let clsCollectedMoney = 0;
-                classStudents.forEach(st => {
-                    if (isStudentPaid(st.id, monthKey)) {
-                        clsPaidCount++;
-                        clsCollectedMoney += Number(st.fee || 0);
-                    }
-                });
-
-                let innerContentHtml = '';
-
-                if (currentViewMode === 'tables') {
-                    const tableRows = classStudents.map((st, idx) => {
-                        const isPaid = isStudentPaid(st.id, monthKey);
-                        const paymentInfo = getPaymentInfo(st.id, monthKey);
-                        const unpaidPrev = getUnpaidPreviousMonths(st, monthKey);
-                        const bundledHere = getBundledMonthsCollectedIn(st.id, monthKey);
-                        const prevMonthsNames = unpaidPrev.map(formatMonthKeyLabel).join(' ، ');
-                        const prevFeeSum = unpaidPrev.length * Number(st.fee || 0);
-
-                        return `
-                        <tr class="border-b border-slate-100 last:border-b-0 transition ${isPaid ? 'bg-emerald-50/50' : (unpaidPrev.length > 0 ? 'bg-amber-50/30 hover:bg-amber-50/50' : 'hover:bg-slate-50')}">
-                            <td class="p-3 text-center text-xs font-black text-slate-400 w-10">${idx + 1}</td>
-                            <td class="p-3">
-                                <div class="font-extrabold text-sm sm:text-base text-slate-800">${highlightSearchMatch(st.name, searchQuery)}</div>
-                                ${st.notes ? `<span class="text-[11px] text-slate-500 bg-slate-100 px-2 py-0.5 rounded inline-block mt-0.5">${st.notes}</span>` : ''}
-                                ${unpaidPrev.length > 0 ? `
-                                    <div class="text-[11px] font-extrabold text-rose-700 bg-rose-50 border border-rose-200 px-2 py-0.5 rounded-lg inline-flex items-center gap-1 mt-1">
-                                        <i class="fa-solid fa-triangle-exclamation text-rose-500"></i>
-                                        <span>متأخر سابق: ${prevMonthsNames} (${prevFeeSum} ج.م)</span>
-                                    </div>
-                                ` : ''}
-                                ${isPaid && paymentInfo?.date ? `
-                                    <div class="text-[11px] text-emerald-700 font-bold mt-0.5">
-                                        <i class="fa-regular fa-clock ml-1"></i>${paymentInfo.date}
-                                        ${bundledHere.length > 0 ? `<span class="text-arqam-navy bg-emerald-100 px-1.5 py-0.5 rounded mr-1">شامل: ${bundledHere.map(formatMonthKeyShort).join(' + ')}</span>` : ''}
-                                    </div>
-                                ` : ''}
-                            </td>
-                            <td class="p-3 text-xs font-bold text-slate-600 hidden sm:table-cell">${cls.teacher}</td>
-                            <td class="p-3 text-xs sm:text-sm font-extrabold text-arqam-navy whitespace-nowrap">${st.fee} ج.م</td>
-                            <td class="p-3 text-center">
-                                ${buildTablePaymentControlHtml(st, isPaid, unpaidPrev, currentShortName)}
-                            </td>
-                            <td class="p-3 text-center no-print">
-                                <div class="flex items-center justify-center gap-1">
-                                    <button onclick="sendWhatsAppReceipt('${st.id}')" title="واتساب" class="w-8 h-8 rounded-lg bg-emerald-50 hover:bg-emerald-100 text-emerald-600 flex items-center justify-center text-sm transition">
-                                        <i class="fa-brands fa-whatsapp"></i>
-                                    </button>
-                                    ${allowEdit ? `
-                                    <button onclick="openStudentModal('${st.id}')" title="تعديل" class="w-8 h-8 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-600 flex items-center justify-center text-xs transition">
-                                        <i class="fa-solid fa-pen"></i>
-                                    </button>
-                                    ` : ''}
-                                    ${allowDelete ? `
-                                    <button onclick="deleteStudent('${st.id}')" title="حذف" class="w-8 h-8 rounded-lg bg-rose-50 hover:bg-rose-100 text-rose-500 flex items-center justify-center text-xs transition">
-                                        <i class="fa-solid fa-trash-can"></i>
-                                    </button>
-                                    ` : ''}
-                                </div>
-                            </td>
-                        </tr>
-                        `;
-                    }).join('');
-
-                    innerContentHtml = `
-                    <div class="overflow-x-auto">
-                        <table class="w-full text-right border-collapse">
-                            <thead>
-                                <tr class="bg-slate-50 text-slate-600 text-xs font-extrabold border-b border-slate-200">
-                                    <th class="p-3 text-center w-10">م</th>
-                                    <th class="p-3">اسم الطالب</th>
-                                    <th class="p-3 hidden sm:table-cell">المعلمة</th>
-                                    <th class="p-3">الاشتراك</th>
-                                    <th class="p-3 text-center">حالة الدفع (${monthLabel})</th>
-                                    <th class="p-3 text-center no-print">إجراءات</th>
-                                </tr>
-                            </thead>
-                            <tbody>${tableRows}</tbody>
-                        </table>
-                    </div>
-                    `;
-                } else {
-                    innerContentHtml = `<div class="divide-y divide-slate-100">` + classStudents.map((st, idx) => {
-                        const isPaid = isStudentPaid(st.id, monthKey);
-                        const paymentInfo = getPaymentInfo(st.id, monthKey);
-                        const unpaidPrev = getUnpaidPreviousMonths(st, monthKey);
-                        const prevMonthsNames = unpaidPrev.map(formatMonthKeyLabel).join(' ، ');
-                        const fee = Number(st.fee || 0);
-                        const prevFeeSum = unpaidPrev.length * fee;
-                        const combinedTotal = (unpaidPrev.length + 1) * fee;
-
-                        return `
-                        <div class="p-3.5 sm:p-4 transition-all duration-200 border-b last:border-b-0 ${isPaid ? 'bg-emerald-50/40' : (unpaidPrev.length > 0 ? 'bg-amber-50/30' : 'bg-white hover:bg-slate-50/80')}">
-                            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-                                <div class="flex items-start sm:items-center gap-3 flex-1 min-w-0">
-                                    <span class="w-6 text-center text-xs font-black text-slate-400 shrink-0 mt-2 sm:mt-0">${idx + 1}</span>
-                                    <button 
-                                        onclick="togglePayment('${st.id}')" 
-                                        class="check-btn w-12 h-12 sm:w-14 sm:h-14 rounded-2xl flex flex-col items-center justify-center shrink-0 cursor-pointer select-none border-2 ${
-                                            isPaid 
-                                            ? 'bg-emerald-500 text-white border-emerald-600 shadow-md shadow-emerald-500/20' 
-                                            : 'bg-slate-50 text-slate-400 border-slate-300 hover:border-arqam-navy hover:text-arqam-navy'
-                                        }"
-                                    >
-                                        <i class="fa-solid fa-check text-xl ${isPaid ? 'scale-110' : 'opacity-40'}"></i>
-                                        <span class="text-[9px] font-extrabold mt-0.5">${isPaid ? 'خالص' : currentShortName}</span>
-                                    </button>
-                                    <div class="min-w-0 flex-1">
-                                        <div class="flex flex-wrap items-center gap-2 mb-1">
-                                            <h3 class="text-base sm:text-lg font-extrabold text-slate-800 truncate">${highlightSearchMatch(st.name, searchQuery)}</h3>
-                                            <span class="font-extrabold text-xs text-arqam-navy bg-arqam-goldPale border border-arqam-gold/40 px-2 py-0.5 rounded-lg">${fee} ج.م</span>
-                                        </div>
-
-                                        ${unpaidPrev.length > 0 ? `
-                                            <div class="mb-1.5">
-                                                <span class="inline-flex items-center gap-1 bg-rose-50 text-rose-700 border border-rose-200 text-[11px] font-extrabold px-2.5 py-0.5 rounded-lg">
-                                                    <i class="fa-solid fa-triangle-exclamation text-rose-500"></i>
-                                                    متأخر سابق: ${prevMonthsNames} (${prevFeeSum} ج.م)
-                                                </span>
-                                            </div>
-                                        ` : ''}
-
-                                        ${unpaidPrev.length > 0 && !isPaid ? `
-                                            <div class="flex flex-wrap items-center gap-1.5 mt-1.5">
-                                                <button onclick="collectAllDue('${st.id}')" class="px-3 py-1.5 rounded-xl bg-arqam-navy hover:bg-arqam-blue text-white border border-arqam-gold text-xs font-extrabold flex items-center gap-1.5 shadow-xs">
-                                                    <i class="fa-solid fa-bolt text-arqam-goldLight"></i>
-                                                    <span>تحصيل الكل (${combinedTotal} ج.م)</span>
-                                                </button>
-                                                <button onclick="collectPreviousOnly('${st.id}')" class="px-2.5 py-1.5 rounded-xl bg-amber-100 hover:bg-amber-200 text-amber-950 text-[11px] font-extrabold">
-                                                    السابق فقط (${prevFeeSum} ج.م)
-                                                </button>
-                                            </div>
-                                        ` : ''}
-
-                                        ${unpaidPrev.length > 0 && isPaid ? `
-                                            <button onclick="collectPreviousOnly('${st.id}')" class="mt-1 px-3 py-1 rounded-lg bg-amber-500 hover:bg-amber-600 text-white text-xs font-extrabold inline-flex items-center gap-1">
-                                                <i class="fa-solid fa-bolt"></i>
-                                                <span>تحصيل المتأخر (${prevFeeSum} ج.م)</span>
-                                            </button>
-                                        ` : ''}
-
-                                        ${isPaid && paymentInfo?.date ? `
-                                            <p class="text-[11px] text-emerald-700 font-bold mt-1"><i class="fa-regular fa-clock ml-1"></i>${paymentInfo.date}</p>
-                                        ` : ''}
-                                    </div>
-                                </div>
-
-                                <div class="flex items-center justify-end gap-1.5 shrink-0 no-print">
-                                    <button onclick="sendWhatsAppReceipt('${st.id}')" class="px-3 py-2 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-200 flex items-center gap-1.5 text-xs font-bold transition">
-                                        <i class="fa-brands fa-whatsapp text-base text-emerald-600"></i>
-                                        <span>${isPaid ? 'إيصال' : 'تذكير'}</span>
-                                    </button>
-                                    ${allowEdit ? `
-                                    <button onclick="openStudentModal('${st.id}')" class="w-9 h-9 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-600 flex items-center justify-center text-xs transition">
-                                        <i class="fa-solid fa-pen"></i>
-                                    </button>
-                                    ` : ''}
-                                    ${allowDelete ? `
-                                    <button onclick="deleteStudent('${st.id}')" class="w-9 h-9 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-500 flex items-center justify-center text-xs transition">
-                                        <i class="fa-solid fa-trash-can"></i>
-                                    </button>
-                                    ` : ''}
-                                </div>
-                            </div>
-                        </div>
-                        `;
-                    }).join('') + `</div>`;
-                }
-
-                htmlSections += `
-                <div class="class-print-block bg-white rounded-3xl shadow-md overflow-hidden border-2 border-arqam-navy/15">
-                    <div class="bg-gradient-to-l from-arqam-navy to-arqam-blue text-white px-4 py-3 flex flex-wrap items-center justify-between gap-2 border-b-2 border-arqam-gold">
-                        <div class="flex items-center gap-2.5">
-                            <div class="w-9 h-9 rounded-xl bg-arqam-gold/20 border border-arqam-gold/50 text-arqam-goldLight flex items-center justify-center font-black">
-                                <i class="fa-solid fa-book-quran"></i>
-                            </div>
-                            <div>
-                                <h2 class="text-sm sm:text-base font-black text-white">${cls.name}</h2>
-                                <p class="text-xs text-arqam-goldLight font-bold">المعلمة المسؤولة: ${cls.teacher}</p>
-                            </div>
-                        </div>
-
-                        <div class="flex items-center gap-2 text-xs font-extrabold">
-                            <span class="bg-white/15 px-2.5 py-1 rounded-lg">الطلاب: ${classStudents.length}</span>
-                            <span class="bg-emerald-500/30 border border-emerald-400/40 text-emerald-100 px-2.5 py-1 rounded-lg">دفع: ${clsPaidCount}</span>
-                            <span class="bg-arqam-gold/30 border border-arqam-gold/50 text-arqam-goldLight px-2.5 py-1 rounded-lg">المحصل: ${clsCollectedMoney} ج.م</span>
-                        </div>
-                    </div>
-
-                    ${innerContentHtml}
-                </div>
-                `;
+                htmlSections += renderClassGroupBlock(cls, classStudents, monthKey, monthLabel, currentShortName, rawSearchQuery, allowEdit, allowDelete);
             });
+
+            // Fallback group so students whose class was removed or unlinked are NEVER hidden
+            const orphanStudents = filtered
+                .filter(st => !validClassIds.has(st.classId))
+                .sort((a, b) => a.name.localeCompare(b.name, 'ar'));
+
+            if (orphanStudents.length > 0) {
+                const fallbackClass = { id: 'unassigned', name: 'طلاب غير محددين بفصل (اضغط تعديل لتعيين الفصل)', teacher: 'غير محدد' };
+                htmlSections += renderClassGroupBlock(fallbackClass, orphanStudents, monthKey, monthLabel, currentShortName, rawSearchQuery, allowEdit, allowDelete);
+            }
 
             listContainer.innerHTML = htmlSections;
         }
 
         function highlightSearchMatch(text, query) {
-            if (!query) return text;
-            const regex = new RegExp(`(${query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
-            return text.replace(regex, '<mark class="bg-amber-200 text-slate-900 rounded px-1">$1</mark>');
+            const safeText = escapeHtml(text);
+            if (!query) return safeText;
+            const safeQuery = escapeHtml(query);
+            const regex = new RegExp(`(${safeQuery.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
+            return safeText.replace(regex, '<mark class="bg-amber-200 text-slate-900 rounded px-1">$1</mark>');
         }
 
         // ==========================================
-        // 6. INSTANT AUTOCOMPLETE & SEARCH LOGIC
+        // 7. INSTANT AUTOCOMPLETE & SEARCH LOGIC
         // ==========================================
         function handleSearchInput() {
             const input = document.getElementById('searchInput');
@@ -2441,15 +2662,15 @@
 
         function renderAutocompleteSuggestions(query) {
             const autocompleteBox = document.getElementById('autocompleteBox');
-            const lowerQ = query.toLowerCase();
+            const normQ = normalizeArabicText(query);
             const monthKey = getCurrentMonthKey();
             const currentShortName = getCurrentMonthShortName();
 
             const matches = students.filter(st => {
                 const cls = getClassById(st.classId);
-                return st.name.toLowerCase().includes(lowerQ) || 
-                       cls.teacher.toLowerCase().includes(lowerQ) ||
-                       cls.name.toLowerCase().includes(lowerQ);
+                return normalizeArabicText(st.name).includes(normQ) || 
+                       normalizeArabicText(cls.teacher).includes(normQ) ||
+                       normalizeArabicText(cls.name).includes(normQ);
             }).slice(0, 6);
 
             if (matches.length === 0) {
@@ -2475,7 +2696,7 @@
                         <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-1.5 shrink-0">
                             <button 
                                 onclick="collectAllDue('${st.id}'); handleSearchInput();" 
-                                class="px-3 py-2 rounded-xl font-extrabold text-xs bg-arqam-navy hover:bg-arqam-blue text-white border border-arqam-gold flex items-center justify-center gap-1 shadow-xs"
+                                class="px-3 py-2 rounded-xl font-extrabold text-xs bg-arqam-navy hover:bg-arqam-blue text-white border border-arqam-gold flex items-center justify-center gap-1 shadow-sm"
                             >
                                 <i class="fa-solid fa-bolt text-arqam-goldLight"></i>
                                 <span>تحصيل الكل (${combinedTotal} ج.م)</span>
@@ -2492,7 +2713,7 @@
                     actionButtonsHtml = `
                         <button 
                             onclick="togglePayment('${st.id}'); handleSearchInput();" 
-                            class="px-3.5 py-2 rounded-xl font-extrabold text-xs flex items-center gap-1.5 transition shadow-xs shrink-0 ${
+                            class="px-3.5 py-2 rounded-xl font-extrabold text-xs flex items-center gap-1.5 transition shadow-sm shrink-0 ${
                                 isPaid 
                                 ? 'bg-emerald-500 text-white' 
                                 : 'bg-arqam-navy hover:bg-arqam-blue text-white border border-arqam-gold'
@@ -2509,7 +2730,7 @@
                     <div onclick="selectStudentByIdFromAutocomplete('${st.id}')" class="flex-1 min-w-[160px] cursor-pointer">
                         <div class="font-extrabold text-sm text-slate-800">${highlightSearchMatch(st.name, query)}</div>
                         <div class="text-xs text-slate-600 font-bold mt-0.5">
-                            <span class="text-arqam-navy">${cls.name}</span> — <span class="text-amber-700">${cls.teacher}</span> (${fee} ج.م)
+                            <span class="text-arqam-navy">${escapeHtml(cls.name)}</span> — <span class="text-amber-700">${escapeHtml(cls.teacher)}</span> (${fee} ج.م)
                         </div>
                         ${unpaidPrev.length > 0 ? `
                             <div class="text-[11px] text-rose-600 font-extrabold mt-0.5">
@@ -2560,7 +2781,7 @@
         }
 
         // ==========================================
-        // 7. SINGLE & ONE-CLICK COMBINED PAYMENT ACTIONS
+        // 8. SINGLE & ONE-CLICK COMBINED PAYMENT ACTIONS
         // ==========================================
         function getFormattedTimestamp() {
             const now = new Date();
@@ -2732,7 +2953,7 @@
         }
 
         // ==========================================
-        // 8. ORGANIZED RIGHT-TO-LEFT (RTL) EXCEL EXPORT BY CLASS
+        // 9. ORGANIZED RIGHT-TO-LEFT (RTL) EXCEL EXPORT BY CLASS
         // ==========================================
         function exportToExcel() {
             const monthKey = getCurrentMonthKey();
@@ -2761,7 +2982,7 @@
                     <tr><td colspan="7" style="height: 16px; border: none; background-color: #ffffff;"></td></tr>
                     <tr>
                         <td colspan="7" style="background-color:#dbeafe; color:#1e3a8a; font-family:'Calibri','Segoe UI',Tahoma,sans-serif; font-weight:bold; font-size:11pt; text-align:right; padding:8px 12px; border:1px solid #cbd5e1; vertical-align:middle;">
-                            جدول (${classIndex + 1}): ${cls.name} &nbsp;|&nbsp; المعلمة المسؤولة: ${cls.teacher} &nbsp;|&nbsp; الشهر: ${monthLabel}
+                            جدول (${classIndex + 1}): ${escapeHtml(cls.name)} &nbsp;|&nbsp; المعلمة المسؤولة: ${escapeHtml(cls.teacher)} &nbsp;|&nbsp; الشهر: ${monthLabel}
                         </td>
                     </tr>
                     <tr style="background-color:#f8fafc; color:#334155; font-family:'Calibri','Segoe UI',Tahoma,sans-serif; font-weight:bold; font-size:11pt; text-align:center;">
@@ -2804,12 +3025,12 @@
                     allClassTablesHtml += `
                         <tr style="background-color:${rowBg}; color:#1e293b; font-family:'Calibri','Segoe UI',Tahoma,sans-serif; font-size:11pt;">
                             <td style="border:1px solid #cbd5e1; text-align:center; padding:6px 8px; vertical-align:middle; color:#475569;">${idx + 1}</td>
-                            <td style="border:1px solid #cbd5e1; text-align:right; font-weight:bold; padding:6px 10px; vertical-align:middle; color:#0f172a;">${st.name}</td>
-                            <td style="border:1px solid #cbd5e1; text-align:center; padding:6px 8px; vertical-align:middle; color:#334155;">${cls.name}</td>
-                            <td style="border:1px solid #cbd5e1; text-align:center; padding:6px 8px; vertical-align:middle; color:#334155;">${cls.teacher}</td>
+                            <td style="border:1px solid #cbd5e1; text-align:right; font-weight:bold; padding:6px 10px; vertical-align:middle; color:#0f172a;">${escapeHtml(st.name)}</td>
+                            <td style="border:1px solid #cbd5e1; text-align:center; padding:6px 8px; vertical-align:middle; color:#334155;">${escapeHtml(cls.name)}</td>
+                            <td style="border:1px solid #cbd5e1; text-align:center; padding:6px 8px; vertical-align:middle; color:#334155;">${escapeHtml(cls.teacher)}</td>
                             <td style="border:1px solid #cbd5e1; text-align:center; font-weight:bold; padding:6px 8px; vertical-align:middle; color:#1e293b;">${fee} ج.م</td>
-                            <td style="border:1px solid #cbd5e1; text-align:center; font-weight:bold; color:${statusColor}; padding:6px 8px; vertical-align:middle;">${statusText}</td>
-                            <td style="border:1px solid #cbd5e1; text-align:center; padding:6px 8px; vertical-align:middle; color:#475569;">${extraInfo}</td>
+                            <td style="border:1px solid #cbd5e1; text-align:center; font-weight:bold; color:${statusColor}; padding:6px 8px; vertical-align:middle;">${escapeHtml(statusText)}</td>
+                            <td style="border:1px solid #cbd5e1; text-align:center; padding:6px 8px; vertical-align:middle; color:#475569;">${escapeHtml(extraInfo)}</td>
                         </tr>
                     `;
                 });
@@ -2817,7 +3038,7 @@
                 allClassTablesHtml += `
                     <tr style="background-color:#f8fafc; color:#334155; font-family:'Calibri','Segoe UI',Tahoma,sans-serif; font-weight:bold; font-size:11pt;">
                         <td colspan="4" style="border:1px solid #cbd5e1; text-align:right; padding:7px 10px; vertical-align:middle; color:#1e293b;">
-                            إجمالي ${cls.name} (${cls.teacher}): عدد الطلاب (${classStudents.length}) &nbsp;|&nbsp; المسددون (${clsPaidCount}) &nbsp;|&nbsp; غير المسددين (${clsUnpaidCount})
+                            إجمالي ${escapeHtml(cls.name)} (${escapeHtml(cls.teacher)}): عدد الطلاب (${classStudents.length}) &nbsp;|&nbsp; المسددون (${clsPaidCount}) &nbsp;|&nbsp; غير المسددين (${clsUnpaidCount})
                         </td>
                         <td colspan="3" style="border:1px solid #cbd5e1; text-align:center; padding:7px 8px; vertical-align:middle; color:#15803d;">
                             المحصل: ${clsCollected} ج.م &nbsp;|&nbsp; المتبقي: ${clsRemaining} ج.م
@@ -2887,7 +3108,7 @@
         }
 
         // ==========================================
-        // 9. WHATSAPP BRANDED RECEIPT & ARREARS REMINDER
+        // 10. WHATSAPP BRANDED RECEIPT & ARREARS REMINDER
         // ==========================================
         function sendWhatsAppReceipt(studentId) {
             const st = students.find(s => s.id === studentId);
@@ -2924,7 +3145,7 @@
         }
 
         // ==========================================
-        // 10. MODALS: GUIDE, BULK ADD, SINGLE STUDENT & CLASSES
+        // 11. MODALS: GUIDE, BULK ADD, SINGLE STUDENT & CLASSES
         // ==========================================
         function openGuideModal() {
             const modal = document.getElementById('guideModal');
@@ -2941,6 +3162,11 @@
         function openBulkModal() {
             if (!canEditStudents()) {
                 showToast('إضافة الطلاب غير مفعلة لحساب المعلمات حالياً', 'warning');
+                return;
+            }
+            if (classes.length === 0) {
+                showToast('من فضلك أضف فصلاً ومعلمة أولاً من زر "الفصول والمعلمات"', 'warning');
+                openClassesModal();
                 return;
             }
             populateClassDropdowns();
@@ -2963,6 +3189,11 @@
             if (!canEditStudents()) return;
 
             const classId = document.getElementById('bulkClassInput').value;
+            if (!classId) {
+                showToast('برجاء اختيار الفصل / الحلقة أولاً', 'warning');
+                return;
+            }
+
             const fee = Number(document.getElementById('bulkFeeInput').value || 150);
             const startMonth = document.getElementById('bulkStartMonthInput').value || getCurrentMonthKey();
             const rawNames = document.getElementById('bulkNamesInput').value;
@@ -2970,9 +3201,10 @@
             const lines = rawNames.split('\n').map(n => n.trim()).filter(n => n.length > 1);
             if (lines.length === 0) return;
 
-            lines.reverse().forEach((name, idx) => {
+            const baseTs = Date.now();
+            [...lines].reverse().forEach((name, idx) => {
                 students.unshift({
-                    id: 's_' + Date.now() + '_' + idx,
+                    id: 's_' + baseTs + '_' + idx + '_' + Math.random().toString(36).slice(2, 6),
                     name,
                     classId,
                     fee,
@@ -2994,6 +3226,11 @@
                 showToast('تعديل أو إضافة الطلاب غير مفعل لحساب المعلمات حالياً', 'warning');
                 return;
             }
+            if (!studentId && classes.length === 0) {
+                showToast('من فضلك أضف فصلاً ومعلمة أولاً من زر "الفصول والمعلمات"', 'warning');
+                openClassesModal();
+                return;
+            }
             populateClassDropdowns();
             populateStartMonthDropdowns();
 
@@ -3006,7 +3243,9 @@
                 title.innerHTML = `<i class="fa-solid fa-user-pen text-arqam-gold"></i><span>تعديل بيانات الطالب</span>`;
                 document.getElementById('editStudentId').value = st.id;
                 document.getElementById('studentNameInput').value = st.name;
-                document.getElementById('studentClassInput').value = st.classId;
+                if (classes.some(c => c.id === st.classId)) {
+                    document.getElementById('studentClassInput').value = st.classId;
+                }
                 document.getElementById('studentFeeInput').value = st.fee;
                 document.getElementById('studentPhoneInput').value = st.phone || '';
                 document.getElementById('studentNotesInput').value = st.notes || '';
@@ -3042,6 +3281,10 @@
             const startMonth = document.getElementById('studentStartMonthInput').value || SYSTEM_BASE_MONTH;
 
             if (!name) return;
+            if (!classId) {
+                showToast('برجاء اختيار الفصل / الحلقة للطالب', 'warning');
+                return;
+            }
 
             if (editId) {
                 const index = students.findIndex(s => s.id === editId);
@@ -3051,7 +3294,7 @@
                 }
             } else {
                 students.unshift({
-                    id: 's_' + Date.now(),
+                    id: 's_' + Date.now() + '_' + Math.random().toString(36).slice(2, 6),
                     name,
                     classId,
                     fee,
@@ -3100,13 +3343,17 @@
 
         function renderClassesModalList() {
             const list = document.getElementById('classesModalList');
+            if (classes.length === 0) {
+                list.innerHTML = `<p class="text-center text-xs text-slate-400 py-4 font-bold">لا توجد فصول مضافة حالياً — أضف فصلاً جديداً من النموذج أعلاه</p>`;
+                return;
+            }
             list.innerHTML = classes.map(cls => {
                 const count = students.filter(s => s.classId === cls.id).length;
                 return `
                 <div class="flex items-center justify-between bg-slate-50 px-3.5 py-2.5 rounded-xl border border-slate-200">
                     <div>
-                        <p class="text-sm font-extrabold text-arqam-navy">${cls.name}</p>
-                        <p class="text-xs text-amber-700 font-bold">المعلمة: ${cls.teacher} • (${count} طلاب)</p>
+                        <p class="text-sm font-extrabold text-arqam-navy">${escapeHtml(cls.name)}</p>
+                        <p class="text-xs text-amber-700 font-bold">المعلمة: ${escapeHtml(cls.teacher)} • (${count} طلاب)</p>
                     </div>
                     <button onclick="deleteClass('${cls.id}')" class="text-rose-500 hover:bg-rose-50 p-2 rounded-lg text-xs transition" title="حذف الفصل">
                         <i class="fa-solid fa-trash-can"></i>
@@ -3126,7 +3373,7 @@
             const randomColor = colors[classes.length % colors.length];
 
             const newCls = {
-                id: 'c_' + Date.now(),
+                id: 'c_' + Date.now() + '_' + Math.random().toString(36).slice(2, 5),
                 name: nameInput.value.trim(),
                 teacher: teacherInput.value.trim(),
                 color: randomColor
@@ -3153,14 +3400,16 @@
             saveData();
             populateClassDropdowns();
             renderClassesModalList();
+            renderStudents();
+            showToast('تم حذف الفصل بنجاح', 'warning');
         }
 
         function resetDemoData() {
             if (currentUserRole !== 'admin') return;
-            localStorage.removeItem('arqam_classes_v1');
-            localStorage.removeItem('arqam_students_v1');
-            localStorage.removeItem('arqam_payments_v1');
-            loadData();
+            classes = [...DEFAULT_CLASSES];
+            students = [...DEFAULT_STUDENTS];
+            payments = JSON.parse(JSON.stringify(DEFAULT_PAYMENTS));
+            saveData();
             populateClassDropdowns();
             renderClassesModalList();
             renderStudents();
@@ -3169,7 +3418,7 @@
         }
 
         // ==========================================
-        // 11. TOAST NOTIFICATION SYSTEM
+        // 12. TOAST NOTIFICATION SYSTEM
         // ==========================================
         let toastTimeout;
         function showToast(message, type = 'success') {
@@ -3194,14 +3443,14 @@
             toastTimeout = setTimeout(() => {
                 toast.classList.add('opacity-0', 'translate-y-[-20px]');
                 toast.classList.remove('opacity-100', 'translate-y-0');
-            }, 3000);
+            }, 3200);
         }
 
         // ==========================================
-        // 12. INITIALIZATION ON LOAD
+        // 13. INITIALIZATION ON LOAD
         // ==========================================
         window.onload = function() {
-            const savedLogo = localStorage.getItem('arqam_custom_logo_v1');
+            const savedLogo = localStorage.getItem(LS_KEYS.LOGO);
             if (savedLogo) applyCustomLogo(savedLogo);
 
             loadLocalSecurityConfig();
