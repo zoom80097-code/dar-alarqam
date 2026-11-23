@@ -701,9 +701,9 @@
 
             <div class="space-y-3.5 text-xs sm:text-sm text-slate-700">
                 <div class="bg-emerald-50 p-3.5 rounded-2xl border border-emerald-200">
-                    <p class="font-extrabold text-emerald-950 mb-1">✅ نظام الحفظ السحابي المشفّر نشط!</p>
+                    <p class="font-extrabold text-emerald-950 mb-1">✅ نظام الحفظ السحابي السريع والمشفّر نشط!</p>
                     <p class="text-xs text-emerald-800 leading-relaxed">
-                        يتم مزامنة الطلاب والمدفوعات لحظياً على مشروع <code class="bg-white px-1.5 py-0.5 rounded border text-emerald-700 font-mono font-bold">dar-alarqam-f866c</code> مع مصادقة آمنة وعدم رفع أي أرقام سرية نصية.
+                        يتم مزامنة عمليات التحصيل فورياً بتقنية التحديث الجزئي السريع على مشروع <code class="bg-white px-1.5 py-0.5 rounded border text-emerald-700 font-mono font-bold">dar-alarqam-f866c</code> لضمان السرعة الفائقة حتى مع ضعف الإنترنت.
                     </p>
                 </div>
 
@@ -1575,7 +1575,7 @@
         }
 
         // ==========================================
-        // 5. PROTECTED CLOUD SYNC (FIREBASE AUTH + FIRESTORE)
+        // 5. FAST DELTA CLOUD SYNC (FIREBASE AUTH + FIRESTORE)
         // ==========================================
         const HARDCODED_FIREBASE_CONFIG = {
             apiKey: "AIzaSyAI-P5AW9ua8VvDvhUTdCOuwNqKRKBpeYw",
@@ -1610,6 +1610,19 @@
         let unsubscribeLogoState = null;
         let isReceivingCloudData = false;
         let syncRetryTimer = null;
+
+        let isSyncInFlight = false;
+        let syncDebounceTimer = null;
+        let needsFullSync = false;
+        let pendingPatchMap = {};
+
+        function getFirestoreDeleteSentinel() {
+            if (typeof firebase !== 'undefined' && firebase.firestore && firebase.firestore.FieldValue) {
+                return firebase.firestore.FieldValue.delete();
+            }
+            needsFullSync = true;
+            return null;
+        }
 
         function getLocalUpdatedAt() {
             return Number(localStorage.getItem(LS_KEYS.UPDATED_AT) || 0);
@@ -1772,7 +1785,7 @@
             if (currentUserRole === 'admin') {
                 openCloudModal();
             } else {
-                if (isLocalDirty()) {
+                if (isLocalDirty() && !isSyncInFlight) {
                     pushDataToCloud(true);
                 }
                 showToast('الاتصال السحابي نشط ويحفظ التحصيل لحظياً', 'info');
@@ -1782,10 +1795,10 @@
         function startSyncRetryLoop() {
             if (syncRetryTimer) clearInterval(syncRetryTimer);
             syncRetryTimer = setInterval(() => {
-                if (isSystemUnlocked && isLocalDirty() && navigator.onLine) {
-                    pushDataToCloud(true);
+                if (isSystemUnlocked && isLocalDirty() && !isSyncInFlight && navigator.onLine) {
+                    pushDataToCloud(false);
                 }
-            }, 5000);
+            }, 20000);
         }
 
         async function initCloudDataConnection() {
@@ -1821,8 +1834,8 @@
                         const cloudData = docSnap.data();
                         const cloudTs = Number(cloudData.updatedAtMs || (cloudData.updatedAt ? Date.parse(cloudData.updatedAt) : 0) || 0);
 
-                        if (dirty || (localTs > 0 && localTs > cloudTs)) {
-                            pushDataToCloud(true);
+                        if (dirty || isSyncInFlight || (localTs > 0 && localTs > cloudTs)) {
+                            if (!isSyncInFlight) scheduleCloudPush(200);
                             return;
                         }
 
@@ -1851,6 +1864,7 @@
                         isReceivingCloudData = false;
                         setCloudBadgeState('connected', 'محفوظ في السحابة ✓');
                     } else {
+                        needsFullSync = true;
                         pushDataToCloud(true);
                     }
                 }, (err) => {
@@ -1863,36 +1877,93 @@
             }
         }
 
+        function scheduleCloudPush(delayMs = 700) {
+            if (!sharedDocRef || isReceivingCloudData || !isSystemUnlocked) return;
+            setCloudBadgeState('pending', 'جاري المزامنة...');
+            clearTimeout(syncDebounceTimer);
+            syncDebounceTimer = setTimeout(() => {
+                pushDataToCloud(false);
+            }, delayMs);
+        }
+
         function pushDataToCloud(showErrorToast = false) {
             if (!sharedDocRef || isReceivingCloudData || !isSystemUnlocked) return;
+            if (isSyncInFlight) return;
 
+            isSyncInFlight = true;
             const writeTs = getLocalUpdatedAt() || Date.now();
             setCloudBadgeState('pending', 'جاري الحفظ في السحابة...');
 
-            const payload = {
-                classes: classes,
-                students: students,
-                payments: payments,
-                updatedAtMs: writeTs,
-                updatedAt: new Date(writeTs).toISOString()
-            };
+            const patchKeys = Object.keys(pendingPatchMap);
+            const useDeltaUpdate = !needsFullSync && patchKeys.length > 0;
 
-            sharedDocRef.set(payload)
+            let writePromise;
+            let sentPatchSnapshot = null;
+
+            if (useDeltaUpdate) {
+                sentPatchSnapshot = { ...pendingPatchMap };
+                pendingPatchMap = {};
+                const deltaPayload = {
+                    ...sentPatchSnapshot,
+                    updatedAtMs: writeTs,
+                    updatedAt: new Date(writeTs).toISOString()
+                };
+                writePromise = sharedDocRef.update(deltaPayload).catch(err => {
+                    if (err && err.code === 'not-found') {
+                        needsFullSync = true;
+                        const fullPayload = {
+                            classes: classes,
+                            students: students,
+                            payments: payments,
+                            updatedAtMs: writeTs,
+                            updatedAt: new Date(writeTs).toISOString()
+                        };
+                        return sharedDocRef.set(fullPayload);
+                    }
+                    throw err;
+                });
+            } else {
+                needsFullSync = false;
+                pendingPatchMap = {};
+                const fullPayload = {
+                    classes: classes,
+                    students: students,
+                    payments: payments,
+                    updatedAtMs: writeTs,
+                    updatedAt: new Date(writeTs).toISOString()
+                };
+                writePromise = sharedDocRef.set(fullPayload);
+            }
+
+            writePromise
                 .then(() => {
+                    isSyncInFlight = false;
                     clearLocalDirty(writeTs);
-                    setCloudBadgeState('connected', 'تم الحفظ في السحابة ✓');
+                    if (isLocalDirty() || needsFullSync || Object.keys(pendingPatchMap).length > 0) {
+                        scheduleCloudPush(250);
+                    } else {
+                        setCloudBadgeState('connected', 'محفوظ في السحابة ✓');
+                    }
                 })
                 .catch(err => {
+                    isSyncInFlight = false;
+                    if (sentPatchSnapshot) {
+                        pendingPatchMap = { ...sentPatchSnapshot, ...pendingPatchMap };
+                    } else {
+                        needsFullSync = true;
+                    }
                     console.error("Failed to push to cloud:", err);
-                    setCloudBadgeState('error', 'تعذر المزامنة (محفوظ على الجهاز)');
+                    setCloudBadgeState('error', 'محفوظ على الهاتف (بانتظار الشبكة)');
                     if (showErrorToast) {
-                        showToast('تنبيه: البيانات محفوظة على هاتفك، وجاري إعادة محاولة الرفع للسحابة...', 'warning');
+                        showToast('بياناتك محفوظة على الهاتف بأمان، وسيُستكمل الرفع فور تحسن الشبكة', 'warning');
                     }
                 });
         }
 
         function forceSyncNow() {
+            needsFullSync = true;
             markLocalDirty(Date.now());
+            isSyncInFlight = false;
             pushDataToCloud(true);
             showToast('جاري رفع ومزامنة البيانات مع السحابة...', 'info');
         }
@@ -1957,7 +2028,7 @@
             }
         }
 
-        function saveData() {
+        function saveData(patchFields = null) {
             if (!isSystemUnlocked) return;
             const nowTs = Date.now();
             try {
@@ -1965,10 +2036,17 @@
                 localStorage.setItem(LS_KEYS.STUDENTS, JSON.stringify(students));
                 localStorage.setItem(LS_KEYS.PAYMENTS, JSON.stringify(payments));
                 markLocalDirty(nowTs);
-                pushDataToCloud(true);
+
+                if (patchFields && typeof patchFields === 'object') {
+                    Object.assign(pendingPatchMap, patchFields);
+                } else {
+                    needsFullSync = true;
+                    pendingPatchMap = {};
+                }
+                scheduleCloudPush(700);
             } catch (e) {
                 console.error("Failed to save data locally:", e);
-                showToast('تنبيه: مساحة المتصفح ممتلئة، جاري الرفع للسحابة مباشرة...', 'warning');
+                needsFullSync = true;
                 pushDataToCloud(true);
             }
         }
@@ -2934,7 +3012,7 @@
         }
 
         // ==========================================
-        // 9. COLLECT & CANCEL PAYMENT ACTIONS
+        // 9. COLLECT & CANCEL PAYMENT ACTIONS (FAST DELTA PATCHES)
         // ==========================================
         function getFormattedTimestamp() {
             const now = new Date();
@@ -2953,11 +3031,12 @@
                 payments[monthKey] = {};
             }
             const student = students.find(s => s.id === studentId);
-            payments[monthKey][studentId] = {
+            const record = {
                 paid: true,
                 date: getFormattedTimestamp()
             };
-            saveData();
+            payments[monthKey][studentId] = record;
+            saveData({ [`payments.${monthKey}.${studentId}`]: record });
             renderStudents(true);
             showToast(`تم تسجيل دفع اشتراك: ${student ? student.name : ''} (${getCurrentMonthLabel()}) ✓`, 'success');
         }
@@ -2978,7 +3057,7 @@
                 cleanupEmptyMonthBucket(monthKey);
             }
 
-            saveData();
+            saveData({ [`payments.${monthKey}.${studentId}`]: getFirestoreDeleteSentinel() });
             renderStudents(true);
             showToast(`تم إلغاء تحصيل الطالب: ${student ? student.name : ''} ✓`, 'warning');
         }
@@ -2992,27 +3071,21 @@
             const unpaidPrev = getUnpaidPreviousMonths(st, currentKey);
             const allToCollect = [...unpaidPrev, currentKey];
             const dateStr = getFormattedTimestamp();
+            const patchObj = {};
 
             allToCollect.forEach(mKey => {
                 if (!payments[mKey]) payments[mKey] = {};
-                if (mKey === currentKey) {
-                    payments[mKey][studentId] = {
-                        paid: true,
-                        date: dateStr
-                    };
-                } else {
-                    payments[mKey][studentId] = {
-                        paid: true,
-                        date: `${dateStr} (محصل مجمع مع ${currentLabel})`,
-                        collectedIn: currentKey
-                    };
-                }
+                const record = (mKey === currentKey)
+                    ? { paid: true, date: dateStr }
+                    : { paid: true, date: `${dateStr} (محصل مجمع مع ${currentLabel})`, collectedIn: currentKey };
+                payments[mKey][studentId] = record;
+                patchObj[`payments.${mKey}.${studentId}`] = record;
             });
 
             const totalMoney = allToCollect.length * Number(st.fee || 0);
             const monthsNames = allToCollect.map(formatMonthKeyShort).join(' + ');
 
-            saveData();
+            saveData(patchObj);
             renderStudents(true);
             showToast(`تم تحصيل (${monthsNames}) بإجمالي ${totalMoney} ج.م للطالب: ${st.name} ✓`, 'success');
         }
@@ -3027,19 +3100,22 @@
             if (unpaidPrev.length === 0) return;
 
             const dateStr = getFormattedTimestamp();
+            const patchObj = {};
             unpaidPrev.forEach(mKey => {
                 if (!payments[mKey]) payments[mKey] = {};
-                payments[mKey][studentId] = {
+                const record = {
                     paid: true,
                     date: `${dateStr} (متأخر سُدد في ${currentLabel})`,
                     collectedIn: currentKey
                 };
+                payments[mKey][studentId] = record;
+                patchObj[`payments.${mKey}.${studentId}`] = record;
             });
 
             const totalPrevMoney = unpaidPrev.length * Number(st.fee || 0);
             const prevNames = unpaidPrev.map(formatMonthKeyShort).join(' + ');
 
-            saveData();
+            saveData(patchObj);
             renderStudents(true);
             showToast(`تم تحصيل المتأخر (${prevNames} • ${totalPrevMoney} ج.م) للطالب: ${st.name} ✓`, 'success');
         }
@@ -3056,34 +3132,42 @@
             desc.textContent = `الطالب "${student.name}" تم تحصيل متأخرات سابقة له (${bundledNames}) مجمعة مع شهر (${currentLabel}). كيف ترغب في إلغاء الدفع؟`;
 
             undoAllBtn.onclick = function() {
+                const patchObj = {};
                 if (payments[monthKey]) {
                     delete payments[monthKey][student.id];
                     cleanupEmptyMonthBucket(monthKey);
                 }
+                patchObj[`payments.${monthKey}.${student.id}`] = getFirestoreDeleteSentinel();
+
                 bundledMonths.forEach(mKey => {
                     if (payments[mKey]) {
                         delete payments[mKey][student.id];
                         cleanupEmptyMonthBucket(mKey);
                     }
+                    patchObj[`payments.${mKey}.${student.id}`] = getFirestoreDeleteSentinel();
                 });
                 closeUndoPaymentModal();
-                saveData();
+                saveData(patchObj);
                 renderStudents(true);
                 showToast(`تم إلغاء التحصيل المجمع بالكامل للطالب: ${student.name}`, 'warning');
             };
 
             undoCurrBtn.onclick = function() {
+                const patchObj = {};
                 if (payments[monthKey]) {
                     delete payments[monthKey][student.id];
                     cleanupEmptyMonthBucket(monthKey);
                 }
+                patchObj[`payments.${monthKey}.${student.id}`] = getFirestoreDeleteSentinel();
+
                 bundledMonths.forEach(mKey => {
                     if (payments[mKey] && payments[mKey][student.id]) {
                         delete payments[mKey][student.id].collectedIn;
+                        patchObj[`payments.${mKey}.${student.id}`] = payments[mKey][student.id];
                     }
                 });
                 closeUndoPaymentModal();
-                saveData();
+                saveData(patchObj);
                 renderStudents(true);
                 showToast(`تم إلغاء شهر ${currentLabel} فقط للطالب: ${student.name}`, 'warning');
             };
