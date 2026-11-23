@@ -1,77 +1,55 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>دار الأرقم بن أبي الأرقم - دفتر تحصيل الاشتراكات</title>
-    <meta name="theme-color" content="#0B2559">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="دار الأرقم">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>دار الأرقم بن أبي الأرقم لتحفيظ القرآن الكريم — نظام التحصيل والاشتراكات</title>
+
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Fonts: Cairo & Amiri -->
-    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@700&family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <!-- Font Awesome Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Firebase SDKs for Real-Time Cloud Sync across Phones & Laptops -->
-    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
-    
     <script>
         tailwind.config = {
             theme: {
                 extend: {
-                    fontFamily: {
-                        sans: ['Cairo', 'sans-serif'],
-                        quran: ['Amiri', 'serif'],
-                    },
                     colors: {
                         arqam: {
-                            navy: '#0B2559',
-                            blue: '#13387E',
-                            light: '#1E4BA0',
-                            gold: '#C59B27',
-                            goldLight: '#E5C158',
-                            goldPale: '#FDF8E7'
+                            navy: '#0f2942',
+                            blue: '#1e3a8a',
+                            light: '#2563eb',
+                            gold: '#d97706',
+                            goldLight: '#fbbf24',
+                            goldPale: '#fef3c7'
                         }
+                    },
+                    fontFamily: {
+                        cairo: ['Cairo', 'sans-serif']
                     }
                 }
             }
         }
     </script>
 
+    <!-- Google Fonts: Cairo -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
+    <!-- Firebase SDKs (App, Auth & Firestore) -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+
     <style>
         body {
             font-family: 'Cairo', sans-serif;
             background-color: #f1f5f9;
-            -webkit-tap-highlight-color: transparent;
         }
-
-        ::-webkit-scrollbar {
-            width: 6px;
-            height: 6px;
+        body.locked-state {
+            overflow: hidden;
         }
-        ::-webkit-scrollbar-track {
-            background: #f1f5f9;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #cbd5e1;
-            border-radius: 3px;
-        }
-
-        .check-btn {
-            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        .check-btn:active {
-            transform: scale(0.92);
-        }
-
-        .gold-ring {
-            box-shadow: 0 0 0 2.5px #C59B27, 0 4px 12px rgba(11, 37, 89, 0.3);
-        }
-
         @keyframes shake {
             0%, 100% { transform: translateX(0); }
             20%, 60% { transform: translateX(-8px); }
@@ -80,459 +58,365 @@
         .shake-anim {
             animation: shake 0.35s ease-in-out;
         }
-
-        body.locked-state #appShell {
-            display: none !important;
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
         }
-
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
         @media print {
-            body {
-                background-color: #ffffff !important;
-                padding-bottom: 0 !important;
-            }
-            body.locked-state * {
-                display: none !important;
-            }
-            .no-print {
-                display: none !important;
-            }
-            .print-only {
-                display: block !important;
-            }
-            .print-container {
-                box-shadow: none !important;
-                border: none !important;
-                padding: 0 !important;
-                margin: 0 !important;
-                width: 100% !important;
-                max-width: 100% !important;
-            }
+            .no-print { display: none !important; }
+            .print-only { display: block !important; }
+            body { background: #ffffff !important; }
             .class-print-block {
                 break-inside: avoid;
                 page-break-inside: avoid;
-                margin-bottom: 20px !important;
-                border: 2px solid #0B2559 !important;
+                margin-bottom: 16px;
+                box-shadow: none !important;
             }
         }
     </style>
 </head>
-<body class="text-slate-800 pb-24 locked-state">
+<body class="locked-state text-slate-800 antialiased">
 
-    <!-- Hidden File Input for Custom Logo -->
-    <input type="file" id="logoFileInput" accept="image/*" class="hidden" onchange="handleLogoUpload(event)">
-
-    <!-- Toast Notification -->
-    <div id="toast" class="fixed top-4 left-1/2 transform -translate-x-1/2 z-[120] transition-all duration-300 opacity-0 pointer-events-none translate-y-[-20px] no-print w-[92%] max-w-md">
-        <div id="toastContent" class="bg-arqam-navy text-white px-5 py-3.5 rounded-2xl shadow-2xl flex items-center gap-3 text-sm font-bold border-2 border-arqam-gold">
-            <i id="toastIcon" class="fa-solid fa-circle-check text-arqam-goldLight text-lg shrink-0"></i>
-            <span id="toastMessage" class="leading-snug">تم الحفظ بنجاح</span>
+    <!-- ===================================================================== -->
+    <!-- INITIAL LOADING SPLASH SCREEN                                         -->
+    <!-- ===================================================================== -->
+    <div id="initialLoadingScreen" class="fixed inset-0 bg-arqam-navy z-[200] flex flex-col items-center justify-center text-white transition-opacity duration-300 no-print">
+        <div class="w-16 h-16 rounded-2xl bg-arqam-gold/20 border-2 border-arqam-gold flex items-center justify-center mb-3 animate-pulse">
+            <i class="fa-solid fa-book-quran text-3xl text-arqam-goldLight"></i>
         </div>
+        <h2 class="text-base sm:text-lg font-black text-arqam-goldLight">دار الأرقم بن أبي الأرقم</h2>
+        <p class="text-xs text-slate-300 mt-1 font-bold">جاري تحميل وتجهيز دفتر التحصيل...</p>
     </div>
 
     <!-- ===================================================================== -->
-    <!-- SECURITY GATE / FULL-SCREEN LOCK OVERLAY (WITH FORGOT PIN BUTTON)     -->
+    <!-- TOAST NOTIFICATION                                                    -->
     <!-- ===================================================================== -->
-    <div id="authLockScreen" class="fixed inset-0 z-[100] bg-gradient-to-br from-arqam-navy via-arqam-blue to-slate-900 flex items-center justify-center p-4 no-print overflow-y-auto">
-        <div id="lockCard" class="bg-white rounded-3xl max-w-md w-full p-6 sm:p-8 shadow-2xl border-4 border-arqam-gold text-center relative my-auto">
-            <!-- Emblem Logo -->
-            <div class="w-24 h-24 rounded-full bg-white p-1 gold-ring mx-auto mb-4 flex items-center justify-center overflow-hidden">
-                <img id="lockCustomLogoImg" src="" alt="لوجو دار الأرقم" class="hidden w-full h-full object-contain rounded-full">
-                <svg id="lockDefaultLogoSvg" viewBox="0 0 200 200" class="w-full h-full">
-                    <circle cx="100" cy="100" r="97" fill="#FFFFFF" stroke="#C59B27" stroke-width="4"/>
-                    <circle cx="100" cy="100" r="87" fill="#FFFFFF" stroke="#0B2559" stroke-width="14"/>
-                    <circle cx="100" cy="100" r="78" fill="#FFFFFF" stroke="#C59B27" stroke-width="2.5"/>
-                    <rect x="68" y="64" width="8" height="32" fill="#0B2559" stroke="#C59B27" stroke-width="1"/>
-                    <path d="M 66,64 L 78,64 M 67,56 Q 72,46 77,56 Z" fill="#0B2559" stroke="#C59B27" stroke-width="1"/>
-                    <path d="M 78,94 Q 78,60 100,52 Q 122,60 122,94 Z" fill="#0B2559" stroke="#C59B27" stroke-width="1.5"/>
-                    <path d="M 96,42 A 5,5 0 1,0 105,45 A 4,4 0 1,1 96,42 Z" fill="#C59B27"/>
-                    <path d="M 72,115 L 128,102 M 128,115 L 72,102" stroke="#0B2559" stroke-width="5" stroke-linecap="round"/>
-                    <path d="M 60,96 L 100,103 L 140,96 L 134,82 L 100,89 L 66,82 Z" fill="#FFFFFF" stroke="#C59B27" stroke-width="2"/>
-                    <line x1="100" y1="89" x2="100" y2="103" stroke="#0B2559" stroke-width="2"/>
-                    <rect x="42" y="114" width="116" height="22" rx="8" fill="#0B2559" stroke="#C59B27" stroke-width="2"/>
-                    <text x="100" y="129" text-anchor="middle" fill="#FFFFFF" font-family="Cairo, sans-serif" font-weight="800" font-size="11">لتحفيظ القرآن الكريم</text>
-                    <text x="100" y="34" text-anchor="middle" fill="#0B2559" font-family="Cairo, sans-serif" font-weight="900" font-size="12.5">دار الأرقم بن أبي الأرقم</text>
-                </svg>
+    <div id="toast" class="fixed top-4 left-1/2 -translate-x-1/2 z-[150] bg-arqam-navy text-white border border-arqam-gold px-4 py-3 rounded-2xl shadow-2xl flex items-center gap-2.5 text-xs sm:text-sm font-bold opacity-0 translate-y-[-20px] pointer-events-none transition-all duration-300 no-print max-w-[92vw]">
+        <i id="toastIcon" class="fa-solid fa-circle-check text-arqam-goldLight text-lg shrink-0"></i>
+        <span id="toastMessage">تم الحفظ بنجاح</span>
+    </div>
+
+    <!-- ===================================================================== -->
+    <!-- AUTH LOCK SCREEN                                                      -->
+    <!-- ===================================================================== -->
+    <div id="authLockScreen" class="fixed inset-0 bg-gradient-to-br from-arqam-navy via-slate-900 to-arqam-blue z-[100] flex items-center justify-center p-4 no-print">
+        <div id="lockCard" class="bg-white rounded-3xl max-w-md w-full p-6 sm:p-8 shadow-2xl border-2 border-arqam-gold">
+            <!-- Brand Header -->
+            <div class="text-center mb-5">
+                <div class="w-20 h-20 rounded-2xl bg-arqam-goldPale border-2 border-arqam-gold mx-auto mb-3 flex items-center justify-center overflow-hidden shadow-md">
+                    <img id="lockCustomLogoImg" src="" alt="شعار دار الأرقم" class="w-full h-full object-cover hidden">
+                    <i id="lockDefaultLogoSvg" class="fa-solid fa-mosque text-3xl text-arqam-navy"></i>
+                </div>
+                <h1 class="text-lg sm:text-xl font-black text-arqam-navy">دار الأرقم بن أبي الأرقم</h1>
+                <p class="text-xs font-bold text-amber-700 mt-0.5">لتحفيظ القرآن الكريم • إدارة الشيخ ربيع يوسف حسين</p>
             </div>
 
-            <div class="inline-flex items-center gap-1.5 bg-arqam-goldPale text-arqam-navy border border-arqam-gold/50 px-3 py-1 rounded-full text-xs font-extrabold mb-2">
-                <i class="fa-solid fa-shield-halved text-arqam-gold"></i>
-                <span>نظام محمي — خاص بالإدارة والمعلمات</span>
-            </div>
-
-            <h1 class="text-xl sm:text-2xl font-black text-arqam-navy">دار الأرقم بن أبي الأرقم</h1>
-            <p class="text-xs text-slate-500 font-bold mt-1 mb-5">إدارة الشيخ: ربيع يوسف حسين • عنك - إطسا - الفيوم</p>
-
-            <!-- 1. MAIN PIN LOGIN VIEW -->
+            <!-- Main PIN Login View -->
             <div id="mainLoginView">
-                <form onsubmit="handleUnlockSubmit(event)" class="space-y-4 text-right">
+                <form onsubmit="handleUnlockSubmit(event)" class="space-y-4">
                     <div>
-                        <label class="block text-xs font-extrabold text-arqam-navy mb-1.5">
-                            <i class="fa-solid fa-key text-arqam-gold ml-1"></i>أدخل الرقم السري (للإدارة أو المعلمات):
+                        <label class="block text-xs font-extrabold text-slate-700 mb-1.5 text-center">
+                            أدخل الرقم السري للمدير أو المعلمات لفتح النظام
                         </label>
-                        <div class="relative flex items-center">
-                            <input 
-                                type="password" 
-                                id="lockPinInput" 
-                                required 
-                                dir="ltr"
-                                placeholder="••••••" 
+                        <div class="relative">
+                            <input
+                                type="password"
+                                id="lockPinInput"
+                                required
                                 autocomplete="current-password"
-                                class="w-full px-11 py-3.5 bg-slate-50 border-2 border-slate-300 rounded-2xl text-center text-lg font-black tracking-widest text-arqam-navy focus:outline-none focus:border-arqam-navy focus:bg-white transition"
+                                placeholder="••••••"
+                                dir="ltr"
+                                class="w-full px-4 py-3.5 bg-slate-50 border-2 border-slate-300 rounded-2xl text-center text-lg font-black tracking-widest focus:outline-none focus:border-arqam-navy focus:bg-white transition"
                             >
-                            <button type="button" onclick="toggleLockPinVisibility()" class="absolute left-3.5 text-slate-400 hover:text-arqam-navy transition p-1">
+                            <button
+                                type="button"
+                                onclick="toggleLockPinVisibility()"
+                                class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-arqam-navy p-1.5"
+                                title="إظهار / إخفاء الرقم"
+                            >
                                 <i id="lockPinEyeIcon" class="fa-solid fa-eye"></i>
                             </button>
                         </div>
                     </div>
 
-                    <div id="lockErrorMsg" class="hidden bg-rose-50 border border-rose-200 text-rose-700 text-xs font-extrabold p-3 rounded-xl flex items-center gap-2">
-                        <i class="fa-solid fa-circle-exclamation text-rose-500 text-base shrink-0"></i>
-                        <span>الرقم السري غير صحيح! إذا نسيته اضغط على "نسيت الرقم السري؟" بالأسفل.</span>
+                    <div id="lockErrorMsg" class="hidden bg-rose-50 border border-rose-200 text-rose-700 text-xs font-extrabold p-2.5 rounded-xl text-center">
+                        <i class="fa-solid fa-circle-exclamation ml-1"></i>
+                        الرقم السري غير صحيح، يرجى المحاولة مرة أخرى!
                     </div>
 
-                    <div class="flex flex-wrap items-center justify-between gap-2 bg-slate-50 p-2.5 rounded-xl border border-slate-200/80">
-                        <label class="flex items-center gap-2 cursor-pointer select-none">
-                            <input type="checkbox" id="rememberDeviceCheck" checked class="w-4 h-4 accent-arqam-navy rounded cursor-pointer">
-                            <span class="text-xs font-bold text-slate-700">تذكر دخولي على هذا الجهاز</span>
+                    <div class="flex items-center justify-between text-xs">
+                        <label class="flex items-center gap-2 cursor-pointer font-bold text-slate-600">
+                            <input type="checkbox" id="rememberDeviceCheck" checked class="w-4 h-4 accent-arqam-navy rounded">
+                            <span>تذكر دخولي على هذا الجهاز</span>
                         </label>
-                        <button type="button" onclick="switchLockView('recovery')" class="text-xs font-extrabold text-arqam-blue hover:text-arqam-navy underline flex items-center gap-1 shrink-0">
-                            <i class="fa-solid fa-life-ring text-arqam-gold"></i>
-                            <span>نسيت الرقم السري؟</span>
+                        <button type="button" onclick="switchLockView('recovery')" class="text-arqam-blue hover:underline font-extrabold">
+                            نسيت الرقم السري؟
                         </button>
                     </div>
 
-                    <button type="submit" class="w-full bg-gradient-to-l from-arqam-navy to-arqam-blue hover:from-arqam-blue hover:to-arqam-light text-white font-black py-3.5 rounded-2xl shadow-lg border border-arqam-gold/50 flex items-center justify-center gap-2 transition active:scale-95">
+                    <button type="submit" class="w-full bg-arqam-navy hover:bg-arqam-blue text-white font-black py-3.5 rounded-2xl shadow-lg border border-arqam-gold/50 transition flex items-center justify-center gap-2">
                         <i class="fa-solid fa-unlock-keyhole text-arqam-goldLight"></i>
                         <span>فتح دفتر التحصيل</span>
                     </button>
                 </form>
             </div>
 
-            <!-- 2. FORGOT PIN / RECOVERY VIEW -->
-            <div id="recoveryLoginView" class="hidden text-right">
-                <div class="bg-amber-50 border border-amber-200 rounded-2xl p-3 mb-3.5 text-xs text-amber-950 font-bold leading-relaxed">
-                    <i class="fa-solid fa-key text-amber-600 ml-1"></i>
-                    <strong>استعادة وتغيير الرقم السري للمدير:</strong>
-                    <p id="recoveryQuestionPrompt" class="text-arqam-navy font-extrabold mt-1">أدخل مفتاح الطوارئ الدائم الخاص بالشيخ ربيع:</p>
-                </div>
-
+            <!-- Emergency PIN Recovery View -->
+            <div id="recoveryLoginView" class="hidden">
                 <form onsubmit="handleRecoveryResetSubmit(event)" class="space-y-3.5">
+                    <div class="bg-sky-50 border border-sky-200 p-3 rounded-2xl text-xs font-bold text-sky-950">
+                        <p id="recoveryQuestionPrompt">أدخل مفتاح الطوارئ الدائم الخاص بالشيخ ربيع:</p>
+                    </div>
+
                     <div>
-                        <label class="block text-xs font-extrabold text-arqam-navy mb-1">
-                            مفتاح الطوارئ / إجابة سؤال الأمان:
-                        </label>
-                        <input 
-                            type="password" 
-                            id="recoveryMasterInput" 
-                            required 
+                        <input
+                            type="text"
+                            id="recoveryMasterInput"
+                            required
                             dir="ltr"
-                            placeholder="اكتب مفتاح الطوارئ أو الإجابة هنا" 
-                            class="w-full px-4 py-3 bg-slate-50 border-2 border-slate-300 rounded-xl text-center text-sm font-black text-arqam-navy focus:outline-none focus:border-arqam-navy focus:bg-white"
+                            placeholder="مفتاح الطوارئ"
+                            class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-center text-sm font-black focus:outline-none focus:border-arqam-navy"
                         >
                     </div>
 
                     <div>
-                        <label class="block text-xs font-extrabold text-emerald-800 mb-1">
-                            الرقم السري الجديد للمدير (الذي تريد تعيينه الآن):
-                        </label>
-                        <input 
-                            type="text" 
-                            id="recoveryNewAdminPinInput" 
-                            required 
+                        <label class="block text-xs font-bold text-slate-700 mb-1">الرقم السري الجديد للمدير:</label>
+                        <input
+                            type="text"
+                            id="recoveryNewAdminPinInput"
+                            required
                             dir="ltr"
-                            placeholder="مثال: 992026" 
-                            class="w-full px-4 py-3 bg-emerald-50/50 border-2 border-emerald-300 rounded-xl text-center text-sm font-black text-emerald-950 focus:outline-none focus:border-emerald-600 focus:bg-white"
+                            placeholder="اكتب رقماً جديداً (4 خانات فأكثر)"
+                            class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-center text-sm font-black focus:outline-none focus:border-arqam-navy"
                         >
                     </div>
 
-                    <div id="recoveryErrorMsg" class="hidden bg-rose-50 border border-rose-200 text-rose-700 text-xs font-extrabold p-2.5 rounded-xl flex items-center gap-2">
-                        <i class="fa-solid fa-circle-exclamation text-rose-500 shrink-0"></i>
-                        <span id="recoveryErrorText">مفتاح الطوارئ أو الإجابة غير صحيحة!</span>
+                    <div id="recoveryErrorMsg" class="hidden bg-rose-50 border border-rose-200 text-rose-700 text-xs font-extrabold p-2.5 rounded-xl text-center">
+                        <i class="fa-solid fa-circle-exclamation ml-1"></i>
+                        <span id="recoveryErrorText">خطأ في التحقق</span>
                     </div>
 
                     <div class="flex items-center gap-2 pt-1">
-                        <button type="submit" class="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white font-black py-3 rounded-xl shadow-md text-xs sm:text-sm transition">
-                            <i class="fa-solid fa-check-double ml-1"></i>حفظ الرقم الجديد والدخول
+                        <button type="submit" class="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold py-2.5 rounded-xl text-xs sm:text-sm shadow transition">
+                            تعيين الرقم الجديد والدخول
                         </button>
-                        <button type="button" onclick="switchLockView('main')" class="px-4 py-3 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-xl text-xs sm:text-sm transition">
+                        <button type="button" onclick="switchLockView('main')" class="px-4 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-xl text-xs sm:text-sm transition">
                             رجوع
                         </button>
                     </div>
                 </form>
             </div>
-
-            <p id="lockCloudSyncHint" class="text-[11px] text-slate-400 font-semibold mt-4 flex items-center justify-center gap-1.5">
-                <i class="fa-solid fa-cloud-shield text-sky-500"></i>
-                <span>متصل بنظام الحماية السحابي لدار الأرقم</span>
-            </p>
         </div>
     </div>
 
     <!-- ===================================================================== -->
-    <!-- PROTECTED APPLICATION SHELL                                           -->
+    <!-- MAIN APPLICATION SHELL                                                -->
     <!-- ===================================================================== -->
-    <div id="appShell" class="hidden">
+    <div id="appShell" class="hidden min-h-screen flex flex-col">
+        <input type="file" id="logoFileInput" accept="image/*" class="hidden" onchange="handleLogoUpload(event)">
 
-        <!-- Top Navigation & Official Dar Al-Arqam Header -->
-        <header class="bg-gradient-to-l from-arqam-navy via-arqam-blue to-arqam-navy text-white shadow-xl sticky top-0 z-30 border-b-4 border-arqam-gold no-print">
-            <div class="max-w-5xl mx-auto px-3 sm:px-4 py-3">
-                <div class="flex flex-wrap items-center justify-between gap-3">
-                    
-                    <!-- Brand & Emblem Logo -->
-                    <div class="flex items-center gap-3">
-                        <div onclick="triggerLogoUpload()" title="اضغط هنا لرفع صورة اللوجو الأصلية من هاتفك" class="relative w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-white p-0.5 gold-ring cursor-pointer shrink-0 group overflow-hidden flex items-center justify-center">
-                            <img id="customLogoImg" src="" alt="لوجو دار الأرقم" class="hidden w-full h-full object-contain rounded-full">
-                            
-                            <svg id="defaultLogoSvg" viewBox="0 0 200 200" class="w-full h-full">
-                                <defs>
-                                    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                                        <stop offset="0%" stop-color="#E5C158" />
-                                        <stop offset="50%" stop-color="#C59B27" />
-                                        <stop offset="100%" stop-color="#9A7414" />
-                                    </linearGradient>
-                                </defs>
-                                <circle cx="100" cy="100" r="97" fill="#FFFFFF" stroke="url(#goldGrad)" stroke-width="4"/>
-                                <circle cx="100" cy="100" r="87" fill="#FFFFFF" stroke="#0B2559" stroke-width="14"/>
-                                <circle cx="100" cy="100" r="78" fill="#FFFFFF" stroke="url(#goldGrad)" stroke-width="2.5"/>
-                                <rect x="68" y="64" width="8" height="32" fill="#0B2559" stroke="url(#goldGrad)" stroke-width="1"/>
-                                <path d="M 66,64 L 78,64 M 67,56 Q 72,46 77,56 Z" fill="#0B2559" stroke="url(#goldGrad)" stroke-width="1"/>
-                                <path d="M 78,94 Q 78,60 100,52 Q 122,60 122,94 Z" fill="#0B2559" stroke="url(#goldGrad)" stroke-width="1.5"/>
-                                <path d="M 96,42 A 5,5 0 1,0 105,45 A 4,4 0 1,1 96,42 Z" fill="url(#goldGrad)"/>
-                                <path d="M 72,115 L 128,102 M 128,115 L 72,102" stroke="#0B2559" stroke-width="5" stroke-linecap="round"/>
-                                <path d="M 60,96 L 100,103 L 140,96 L 134,82 L 100,89 L 66,82 Z" fill="#FFFFFF" stroke="url(#goldGrad)" stroke-width="2"/>
-                                <line x1="100" y1="89" x2="100" y2="103" stroke="#0B2559" stroke-width="2"/>
-                                <rect x="42" y="114" width="116" height="22" rx="8" fill="#0B2559" stroke="url(#goldGrad)" stroke-width="2"/>
-                                <text x="100" y="129" text-anchor="middle" fill="#FFFFFF" font-family="Cairo, sans-serif" font-weight="800" font-size="11">لتحفيظ القرآن الكريم</text>
-                                <text x="100" y="34" text-anchor="middle" fill="#0B2559" font-family="Cairo, sans-serif" font-weight="900" font-size="12.5">دار الأرقم بن أبي الأرقم</text>
-                                <text x="100" y="149" text-anchor="middle" fill="#0B2559" font-family="Cairo, sans-serif" font-weight="800" font-size="8.5">إدارة الشيخ: ربيع يوسف حسين</text>
-                                <text x="100" y="161" text-anchor="middle" fill="#0B2559" font-family="Cairo, sans-serif" font-weight="900" font-size="9">01000832656</text>
-                                <text x="100" y="189" text-anchor="middle" fill="url(#goldGrad)" font-family="Cairo, sans-serif" font-weight="800" font-size="9">عنك _ إطسا _ الفيوم</text>
-                            </svg>
+        <!-- Print-Only Formal Header -->
+        <div class="hidden print-only border-b-2 border-slate-800 pb-4 mb-4 text-center">
+            <div class="flex items-center justify-center gap-3 mb-1">
+                <img id="printCustomLogo" src="" alt="شعار الدار" class="w-12 h-12 rounded-xl object-cover hidden border border-slate-300">
+                <div>
+                    <h1 class="text-xl font-black text-slate-900">دار الأرقم بن أبي الأرقم لتحفيظ القرآن الكريم</h1>
+                    <p class="text-xs font-bold text-slate-600">إدارة الشيخ: ربيع يوسف حسين — عنك - إطسا - الفيوم (ت: 01000832656)</p>
+                </div>
+            </div>
+            <p id="printSubtitle" class="text-sm font-extrabold text-slate-800 mt-2"></p>
+            <div class="flex justify-between text-xs font-bold text-slate-600 mt-2 px-4">
+                <span id="printStatsSummary"></span>
+                <span>تاريخ الطباعة: <span id="printDate"></span></span>
+            </div>
+        </div>
 
-                            <div class="absolute inset-0 bg-arqam-navy/75 opacity-0 group-hover:opacity-100 flex flex-col items-center justify-center text-[9px] text-white font-bold text-center p-1 transition">
-                                <i class="fa-solid fa-camera text-arqam-goldLight mb-0.5"></i>
-                                <span>تغيير اللوجو</span>
-                            </div>
+        <!-- Top Navigation Header -->
+        <header class="bg-gradient-to-l from-arqam-navy via-arqam-navy to-arqam-blue text-white shadow-lg border-b-4 border-arqam-gold sticky top-0 z-40 no-print">
+            <div class="max-w-6xl mx-auto px-3 sm:px-6 py-3 flex flex-wrap items-center justify-between gap-3">
+                <!-- Brand Identity -->
+                <div class="flex items-center gap-3">
+                    <button onclick="triggerLogoUpload()" title="اضغط لتغيير شعار الدار" class="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-white/10 border-2 border-arqam-gold flex items-center justify-center overflow-hidden shrink-0 hover:scale-105 transition">
+                        <img id="customLogoImg" src="" alt="شعار الدار" class="w-full h-full object-cover hidden">
+                        <i id="defaultLogoSvg" class="fa-solid fa-book-quran text-2xl text-arqam-goldLight"></i>
+                    </button>
+                    <div>
+                        <div class="flex flex-wrap items-center gap-2">
+                            <h1 class="text-base sm:text-xl font-black tracking-tight text-white">دار الأرقم بن أبي الأرقم</h1>
+                            <span id="activeRoleBadge" class="bg-arqam-gold/30 text-arqam-goldLight border border-arqam-gold/60 text-[10px] font-extrabold px-2.5 py-0.5 rounded-full">
+                                👑 وضع المدير
+                            </span>
                         </div>
-
-                        <!-- Title & Director Info -->
-                        <div>
-                            <div class="flex flex-wrap items-center gap-1.5">
-                                <h1 class="text-base sm:text-xl font-black text-white tracking-tight">دار الأرقم بن أبي الأرقم</h1>
-                                <span id="activeRoleBadge" class="bg-arqam-gold/25 text-arqam-goldLight border border-arqam-gold/50 text-[10px] font-extrabold px-2 py-0.5 rounded-full">
-                                    وضع المدير
-                                </span>
-                                <button onclick="handleCloudBadgeClick()" id="cloudStatusBadge" class="bg-emerald-500/25 hover:bg-emerald-500/35 text-emerald-200 border border-emerald-400/60 text-[11px] font-extrabold px-2.5 py-0.5 rounded-full flex items-center gap-1.5 transition cursor-pointer shadow-sm">
-                                    <i id="cloudStatusIcon" class="fa-solid fa-cloud-bolt text-emerald-300"></i>
-                                    <span id="cloudStatusText">جاري الاتصال...</span>
-                                </button>
-                            </div>
-                            <p class="text-xs text-arqam-goldLight font-bold mt-0.5">
-                                إدارة الشيخ: ربيع يوسف حسين <span class="text-white/40 mx-1">|</span> <span dir="ltr" class="text-white font-semibold">01000832656</span>
-                            </p>
-                            <p class="text-[11px] text-slate-300 flex items-center gap-1 mt-0.5">
-                                <i class="fa-solid fa-location-dot text-arqam-gold text-[10px]"></i>
-                                <span>عنك - إطسا - الفيوم • دفتر تحصيل الاشتراكات الشهرية</span>
-                            </p>
-                        </div>
+                        <p class="text-[11px] sm:text-xs text-arqam-goldLight/90 font-bold">
+                            إدارة الشيخ: ربيع يوسف حسين • عنك - إطسا - الفيوم
+                        </p>
                     </div>
+                </div>
 
-                    <!-- Right Controls -->
-                    <div class="flex flex-wrap items-center gap-1.5 sm:gap-2 w-full lg:w-auto justify-between lg:justify-end border-t border-white/10 lg:border-none pt-2.5 lg:pt-0">
-                        
-                        <div class="flex items-center gap-1 bg-white/10 backdrop-blur-md p-1 rounded-2xl border-2 border-arqam-gold/60 shadow-inner">
-                            <button onclick="stepMonth(-1)" title="الشهر السابق" class="w-8 h-8 rounded-xl bg-white/10 hover:bg-arqam-gold hover:text-arqam-navy text-white flex items-center justify-center transition">
-                                <i class="fa-solid fa-chevron-right text-xs"></i>
-                            </button>
+                <!-- Header Controls -->
+                <div class="flex flex-wrap items-center gap-1.5 sm:gap-2">
+                    <button id="cloudStatusBadge" onclick="handleCloudBadgeClick()" class="bg-amber-500/20 hover:bg-amber-500/30 text-arqam-goldLight border border-arqam-gold/50 text-[11px] font-extrabold px-2.5 py-1 rounded-full flex items-center gap-1.5 transition cursor-pointer shadow-sm">
+                        <i id="cloudStatusIcon" class="fa-solid fa-arrows-rotate fa-spin text-arqam-goldLight"></i>
+                        <span id="cloudStatusText">جاري الاتصال...</span>
+                    </button>
 
-                            <div class="flex items-center px-1.5">
-                                <i class="fa-regular fa-calendar-check text-arqam-goldLight text-xs ml-1.5"></i>
-                                <div class="flex flex-col">
-                                    <span class="text-[9px] text-arqam-goldLight font-bold leading-none">الشهر</span>
-                                    <select id="monthSelect" onchange="handleMonthChange()" class="bg-transparent text-white font-black text-xs sm:text-sm focus:outline-none cursor-pointer [&>option]:text-slate-900">
-                                        <option value="01">يناير (1)</option>
-                                        <option value="02">فبراير (2)</option>
-                                        <option value="03">مارس (3)</option>
-                                        <option value="04">أبريل (4)</option>
-                                        <option value="05">مايو (5)</option>
-                                        <option value="06">يونيو (6)</option>
-                                        <option value="07">يوليو (7)</option>
-                                        <option value="08">أغسطس (8)</option>
-                                        <option value="09">سبتمبر (9)</option>
-                                        <option value="10">أكتوبر (10)</option>
-                                        <option value="11" selected>نوفمبر (11)</option>
-                                        <option value="12">ديسمبر (12)</option>
-                                    </select>
-                                </div>
-                            </div>
+                    <button id="adminSecurityBtn" onclick="openSecurityModal()" class="bg-white/10 hover:bg-white/20 text-white border border-white/20 text-xs font-extrabold px-2.5 py-1.5 rounded-xl flex items-center gap-1.5 transition" title="إعدادات الحماية والأرقام السرية">
+                        <i class="fa-solid fa-user-shield text-arqam-goldLight"></i>
+                        <span class="hidden md:inline">الحماية</span>
+                    </button>
 
-                            <span class="text-arqam-gold/50 font-black">|</span>
+                    <button id="adminCloudBtn" onclick="openCloudModal()" class="bg-white/10 hover:bg-white/20 text-white border border-white/20 text-xs font-extrabold px-2.5 py-1.5 rounded-xl flex items-center gap-1.5 transition" title="إعدادات المزامنة السحابية">
+                        <i class="fa-solid fa-cloud text-sky-300"></i>
+                        <span class="hidden md:inline">السحابة</span>
+                    </button>
 
-                            <div class="flex flex-col px-1.5">
-                                <span class="text-[9px] text-arqam-goldLight font-bold leading-none">السنة</span>
-                                <select id="yearSelect" onchange="handleMonthChange()" class="bg-transparent text-arqam-goldLight font-black text-xs sm:text-sm focus:outline-none cursor-pointer [&>option]:text-slate-900">
-                                    <option value="2026" selected>2026</option>
-                                    <option value="2027">2027</option>
-                                    <option value="2028">2028</option>
-                                    <option value="2029">2029</option>
-                                    <option value="2030">2030</option>
-                                </select>
-                            </div>
+                    <button onclick="openGuideModal()" class="bg-arqam-gold/25 hover:bg-arqam-gold/40 text-arqam-goldLight border border-arqam-gold/60 text-xs font-extrabold px-2.5 py-1.5 rounded-xl flex items-center gap-1.5 transition" title="دليل الاستخدام">
+                        <i class="fa-solid fa-circle-question"></i>
+                        <span class="hidden sm:inline">الدليل</span>
+                    </button>
 
-                            <button onclick="stepMonth(1)" title="الشهر التالي" class="w-8 h-8 rounded-xl bg-white/10 hover:bg-arqam-gold hover:text-arqam-navy text-white flex items-center justify-center transition">
-                                <i class="fa-solid fa-chevron-left text-xs"></i>
-                            </button>
-                        </div>
-
-                        <div class="flex items-center gap-1.5">
-                            <!-- Admin Only: Security & Passwords Button -->
-                            <button id="adminSecurityBtn" onclick="openSecurityModal()" class="bg-arqam-gold hover:bg-arqam-goldLight text-arqam-navy font-extrabold text-xs px-3 py-2.5 rounded-xl shadow-md flex items-center gap-1.5 transition shrink-0" title="إدارة الأرقام السرية والاسترداد">
-                                <i class="fa-solid fa-user-shield text-sm"></i>
-                                <span>الحماية</span>
-                            </button>
-
-                            <!-- Admin Only: Cloud Sync Status Button -->
-                            <button id="adminCloudBtn" onclick="openCloudModal()" class="bg-sky-500 hover:bg-sky-400 text-white font-extrabold text-xs px-2.5 py-2.5 rounded-xl shadow-md flex items-center gap-1.5 transition shrink-0" title="إعدادات السحابة">
-                                <i class="fa-solid fa-cloud text-sm"></i>
-                                <span class="hidden sm:inline">السحابة</span>
-                            </button>
-
-                            <!-- Guide Button -->
-                            <button onclick="openGuideModal()" class="bg-white/15 hover:bg-white/25 text-white font-bold text-xs px-2.5 py-2.5 rounded-xl flex items-center gap-1 transition shrink-0" title="دليل الاستخدام">
-                                <i class="fa-solid fa-circle-question text-arqam-goldLight text-sm"></i>
-                            </button>
-
-                            <!-- Lock / Logout Button -->
-                            <button onclick="lockSystem('تم قفل النظام بنجاح لحماية البيانات')" class="bg-rose-500/85 hover:bg-rose-600 text-white font-extrabold text-xs px-2.5 py-2.5 rounded-xl shadow-md flex items-center gap-1 transition shrink-0" title="قفل الموقع والخروج">
-                                <i class="fa-solid fa-lock text-xs"></i>
-                                <span class="hidden sm:inline">قفل</span>
-                            </button>
-                        </div>
-                    </div>
-
+                    <button onclick="lockSystem('تم قفل النظام بنجاح')" class="bg-rose-500/25 hover:bg-rose-500/40 text-rose-200 border border-rose-400/50 text-xs font-extrabold px-2.5 py-1.5 rounded-xl flex items-center gap-1.5 transition" title="قفل الشاشة">
+                        <i class="fa-solid fa-lock"></i>
+                        <span class="hidden sm:inline">قفل</span>
+                    </button>
                 </div>
             </div>
         </header>
 
-        <!-- Print Only Official Header -->
-        <div class="hidden print-only max-w-5xl mx-auto p-6 border-b-4 border-arqam-navy mb-6">
-            <div class="flex justify-between items-center">
-                <div class="flex items-center gap-4">
-                    <img id="printCustomLogo" src="" class="hidden w-20 h-20 object-contain rounded-full border-2 border-arqam-gold">
-                    <div>
-                        <h1 class="text-2xl font-black text-arqam-navy">دار الأرقم بن أبي الأرقم لتحفيظ القرآن الكريم</h1>
-                        <p class="text-sm font-bold text-slate-700 mt-0.5">إدارة الشيخ: ربيع يوسف حسين | ت: 01000832656 | عنك - إطسا - الفيوم</p>
-                        <p id="printSubtitle" class="text-base font-extrabold text-arqam-blue mt-1">كشف تحصيل اشتراكات شهر نوفمبر 2026</p>
-                    </div>
-                </div>
-                <div class="text-left text-sm text-slate-700 bg-slate-50 p-3 rounded-xl border border-slate-300">
-                    <p>تاريخ الطباعة: <span id="printDate" class="font-bold"></span></p>
-                    <p id="printStatsSummary" class="font-extrabold text-arqam-navy mt-1"></p>
-                </div>
-            </div>
-        </div>
+        <!-- Main Workspace -->
+        <main class="max-w-6xl mx-auto w-full px-3 sm:px-6 py-5 flex-1">
 
-        <!-- Main Container -->
-        <main class="max-w-5xl mx-auto px-3 sm:px-4 pt-4 print-container">
+            <!-- Period Selector & Dynamic Quick Months Strip -->
+            <section class="bg-white rounded-3xl p-3.5 sm:p-4 shadow-sm border border-slate-200/80 mb-4 no-print">
+                <div class="flex flex-wrap items-center justify-between gap-2.5 mb-2.5">
+                    <div class="flex items-center gap-1.5">
+                        <button onclick="stepMonth(-1)" class="w-9 h-9 rounded-xl bg-slate-100 hover:bg-slate-200 text-arqam-navy font-black flex items-center justify-center transition" title="الشهر السابق">
+                            <i class="fa-solid fa-chevron-right"></i>
+                        </button>
 
-            <!-- Quick Period Ribbon -->
-            <div class="bg-white px-3 py-2 rounded-2xl shadow-sm border border-slate-200/80 mb-3 flex items-center gap-2 overflow-x-auto no-print">
-                <span class="text-[11px] font-extrabold text-arqam-navy shrink-0 flex items-center gap-1">
-                    <i class="fa-solid fa-bolt text-arqam-gold"></i> انتقال سريع للشهور:
-                </span>
-                <div id="quickMonthsBar" class="flex items-center gap-1.5">
-                </div>
-            </div>
-
-            <!-- Dashboard Summary Cards -->
-            <section class="mb-4 no-print space-y-2.5">
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-2.5 sm:gap-3">
-                    <div onclick="setPaymentFilter('all')" class="bg-white p-3.5 rounded-2xl shadow-sm border-2 border-slate-200/80 flex items-center gap-3 cursor-pointer hover:border-arqam-navy transition">
-                        <div class="w-11 h-11 rounded-xl bg-arqam-navy/10 text-arqam-navy flex items-center justify-center text-lg shrink-0">
-                            <i class="fa-solid fa-users"></i>
+                        <div class="flex items-center gap-1.5 bg-arqam-goldPale border border-arqam-gold/50 rounded-xl px-2.5 py-1.5">
+                            <i class="fa-regular fa-calendar-check text-arqam-gold"></i>
+                            <select id="monthSelect" onchange="handleMonthChange()" class="bg-transparent text-arqam-navy font-black text-xs sm:text-sm focus:outline-none cursor-pointer">
+                                <option value="01">يناير</option>
+                                <option value="02">فبراير</option>
+                                <option value="03">مارس</option>
+                                <option value="04">أبريل</option>
+                                <option value="05">مايو</option>
+                                <option value="06">يونيو</option>
+                                <option value="07">يوليو</option>
+                                <option value="08">أغسطس</option>
+                                <option value="09">سبتمبر</option>
+                                <option value="10">أكتوبر</option>
+                                <option value="11">نوفمبر</option>
+                                <option value="12">ديسمبر</option>
+                            </select>
+                            <select id="yearSelect" onchange="handleMonthChange()" class="bg-transparent text-arqam-navy font-black text-xs sm:text-sm focus:outline-none cursor-pointer border-r border-arqam-gold/40 pr-1.5">
+                            </select>
                         </div>
-                        <div>
-                            <p class="text-xs text-slate-500 font-bold">إجمالي الطلاب</p>
-                            <div class="flex items-baseline gap-1.5">
-                                <p id="statTotalStudents" class="text-xl font-black text-arqam-navy">0</p>
-                                <span id="statTotalClasses" class="text-[10px] font-bold text-slate-400">في 0 فصول</span>
-                            </div>
-                        </div>
+
+                        <button onclick="stepMonth(1)" class="w-9 h-9 rounded-xl bg-slate-100 hover:bg-slate-200 text-arqam-navy font-black flex items-center justify-center transition" title="الشهر التالي">
+                            <i class="fa-solid fa-chevron-left"></i>
+                        </button>
                     </div>
 
-                    <div onclick="setPaymentFilter('paid')" class="bg-white p-3.5 rounded-2xl shadow-sm border-2 border-emerald-200/90 flex items-center gap-3 cursor-pointer hover:bg-emerald-50/40 transition">
-                        <div class="w-11 h-11 rounded-xl bg-emerald-100 text-emerald-600 flex items-center justify-center text-lg shrink-0">
-                            <i class="fa-solid fa-circle-check"></i>
-                        </div>
-                        <div>
-                            <p class="text-xs text-emerald-700 font-bold">تم التحصيل ✅</p>
-                            <div class="flex items-baseline gap-1.5">
-                                <p id="statPaidCount" class="text-xl font-black text-emerald-600">0</p>
-                                <span id="statPaidPercent" class="text-[11px] font-extrabold text-emerald-700 bg-emerald-100 px-1.5 py-0.5 rounded-md">0%</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div onclick="setPaymentFilter('unpaid')" class="bg-white p-3.5 rounded-2xl shadow-sm border-2 border-rose-200/90 flex items-center gap-3 cursor-pointer hover:bg-rose-50/40 transition">
-                        <div class="w-11 h-11 rounded-xl bg-rose-100 text-rose-600 flex items-center justify-center text-lg shrink-0">
-                            <i class="fa-solid fa-clock-rotate-left"></i>
-                        </div>
-                        <div class="min-w-0">
-                            <p class="text-xs text-rose-700 font-bold">لم يدفع بعد ⏳</p>
-                            <div class="flex items-baseline gap-1.5">
-                                <p id="statUnpaidCount" class="text-xl font-black text-rose-600">0</p>
-                                <span id="statRemainingAmount" class="text-[10px] font-bold text-rose-500 truncate">متبقي 0 ج.م</span>
-                            </div>
-                            <p id="statPrevArrearsHint" class="hidden text-[10px] font-extrabold text-amber-700 mt-0.5">+ متأخرات سابقة: 0 ج.م</p>
-                        </div>
-                    </div>
-
-                    <div class="bg-gradient-to-br from-arqam-navy to-arqam-blue text-white p-3.5 rounded-2xl shadow-md border-2 border-arqam-gold/60 flex items-center gap-3">
-                        <div class="w-11 h-11 rounded-xl bg-arqam-gold/25 text-arqam-goldLight border border-arqam-gold/40 flex items-center justify-center text-lg shrink-0">
-                            <i class="fa-solid fa-coins"></i>
-                        </div>
-                        <div class="min-w-0">
-                            <p class="text-xs text-arqam-goldLight font-bold">إجمالي المحصل 💰</p>
-                            <p class="text-lg font-black text-white"><span id="statTotalAmount">0</span> <span class="text-xs font-normal text-slate-200">ج.م</span></p>
-                            <p id="statExpectedTotal" class="text-[10px] text-arqam-goldLight/80 font-semibold truncate">من إجمالي: 0 ج.م</p>
-                            <p id="statBundledCollectedHint" class="hidden text-[10px] text-emerald-300 font-extrabold mt-0.5"></p>
-                        </div>
-                    </div>
+                    <button onclick="jumpToCurrentMonth()" class="text-xs font-extrabold bg-arqam-navy hover:bg-arqam-blue text-arqam-goldLight px-3 py-2 rounded-xl transition flex items-center gap-1.5 shadow-sm">
+                        <i class="fa-solid fa-calendar-day"></i>
+                        <span>الشهر الحالي</span>
+                    </button>
                 </div>
 
-                <!-- Collection Progress Bar -->
-                <div class="bg-white px-4 py-2 rounded-xl shadow-sm border border-slate-200/80 flex items-center gap-3">
-                    <span id="progressMonthLabel" class="text-xs font-extrabold text-arqam-navy shrink-0">نسبة تحصيل الشهر:</span>
-                    <div class="flex-1 bg-slate-200 h-2.5 rounded-full overflow-hidden">
-                        <div id="collectionProgressBar" class="bg-emerald-500 h-full transition-all duration-300" style="width: 0%"></div>
-                    </div>
-                    <span id="collectionProgressText" class="text-xs font-black text-emerald-700 shrink-0">0%</span>
+                <!-- Dynamic Quick Months Strip -->
+                <div id="quickMonthsBar" class="flex items-center gap-1.5 overflow-x-auto no-scrollbar pt-1 border-t border-slate-100">
                 </div>
             </section>
 
-            <!-- Smart Search & Quick Filter Bar -->
-            <section class="bg-white p-4 rounded-3xl shadow-md border-2 border-arqam-navy/10 mb-4 no-print">
-                <div class="relative mb-3">
-                    <div class="relative flex items-center">
-                        <i class="fa-solid fa-magnifying-glass text-arqam-navy text-lg absolute right-4 pointer-events-none"></i>
-                        <input 
-                            type="text" 
-                            id="searchInput" 
+            <!-- Financial Summary KPI Cards -->
+            <section class="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-4 no-print">
+                <!-- Card 1: Total Students -->
+                <div class="bg-white rounded-3xl p-4 shadow-sm border border-slate-200/80 flex items-center justify-between">
+                    <div>
+                        <p class="text-xs font-bold text-slate-500">إجمالي الطلاب</p>
+                        <p id="statTotalStudents" class="text-2xl sm:text-3xl font-black text-arqam-navy mt-0.5">0</p>
+                        <p id="statTotalClasses" class="text-[11px] font-bold text-amber-700 mt-0.5">في 0 فصول</p>
+                    </div>
+                    <div class="w-11 h-11 rounded-2xl bg-arqam-navy/10 text-arqam-navy flex items-center justify-center text-lg">
+                        <i class="fa-solid fa-users"></i>
+                    </div>
+                </div>
+
+                <!-- Card 2: Paid Students -->
+                <div class="bg-white rounded-3xl p-4 shadow-sm border border-emerald-200/80 flex items-center justify-between">
+                    <div>
+                        <p class="text-xs font-bold text-emerald-700">تم الدفع</p>
+                        <p id="statPaidCount" class="text-2xl sm:text-3xl font-black text-emerald-600 mt-0.5">0</p>
+                        <p class="text-[11px] font-bold text-emerald-700 mt-0.5">نسبة السداد: <span id="statPaidPercent">0%</span></p>
+                    </div>
+                    <div class="w-11 h-11 rounded-2xl bg-emerald-100 text-emerald-600 flex items-center justify-center text-lg">
+                        <i class="fa-solid fa-circle-check"></i>
+                    </div>
+                </div>
+
+                <!-- Card 3: Unpaid Students -->
+                <div class="bg-white rounded-3xl p-4 shadow-sm border border-rose-200/80 flex items-center justify-between">
+                    <div>
+                        <p class="text-xs font-bold text-rose-700">لم يدفع بعد</p>
+                        <p id="statUnpaidCount" class="text-2xl sm:text-3xl font-black text-rose-600 mt-0.5">0</p>
+                        <p id="statRemainingAmount" class="text-[11px] font-bold text-rose-700 mt-0.5">متبقي 0 ج.م</p>
+                    </div>
+                    <div class="w-11 h-11 rounded-2xl bg-rose-100 text-rose-600 flex items-center justify-center text-lg">
+                        <i class="fa-solid fa-hourglass-half"></i>
+                    </div>
+                </div>
+
+                <!-- Card 4: Collected Revenue -->
+                <div class="bg-gradient-to-br from-arqam-navy to-arqam-blue text-white rounded-3xl p-4 shadow-md border border-arqam-gold/50">
+                    <div class="flex items-center justify-between">
+                        <p class="text-xs font-bold text-arqam-goldLight">محصل الشهر (ج.م)</p>
+                        <i class="fa-solid fa-coins text-arqam-goldLight"></i>
+                    </div>
+                    <p id="statTotalAmount" class="text-2xl sm:text-3xl font-black text-white mt-0.5">0</p>
+                    <p id="statExpectedTotal" class="text-[11px] font-bold text-slate-200 mt-0.5">من إجمالي: 0 ج.م</p>
+                    <p id="statPrevArrearsHint" class="hidden text-[10px] font-extrabold text-amber-300 mt-1"></p>
+                    <p id="statBundledCollectedHint" class="hidden text-[10px] font-extrabold text-emerald-300 mt-0.5"></p>
+                </div>
+            </section>
+
+            <!-- Collection Progress Bar -->
+            <section class="bg-white rounded-2xl px-4 py-3 shadow-sm border border-slate-200/80 mb-4 no-print">
+                <div class="flex items-center justify-between text-xs font-extrabold mb-1.5">
+                    <span id="progressMonthLabel" class="text-arqam-navy">نسبة تحصيل الشهر:</span>
+                    <span id="collectionProgressText" class="text-emerald-600">0%</span>
+                </div>
+                <div class="w-full h-2.5 bg-slate-100 rounded-full overflow-hidden">
+                    <div id="collectionProgressBar" class="h-full bg-gradient-to-l from-emerald-500 to-arqam-gold rounded-full transition-all duration-300" style="width: 0%"></div>
+                </div>
+            </section>
+
+            <!-- Search, Instant Autocomplete & Filters -->
+            <section class="bg-white rounded-3xl p-3.5 sm:p-4 shadow-sm border border-slate-200/80 mb-4 space-y-3 no-print">
+                <div class="relative">
+                    <div class="flex items-center bg-slate-50 border-2 border-slate-200 focus-within:border-arqam-navy focus-within:bg-white rounded-2xl px-3.5 py-2.5 transition">
+                        <i class="fa-solid fa-magnifying-glass text-arqam-navy ml-2.5"></i>
+                        <input
+                            type="text"
+                            id="searchInput"
                             oninput="handleSearchInput()"
-                            onfocus="handleSearchInput()"
-                            placeholder="ابحث باسم الطالب (مثلاً: حازم) أو اسم المعلمة أو الفصل..." 
-                            class="w-full pl-10 pr-12 py-3.5 bg-slate-50 border-2 border-slate-200 rounded-2xl text-slate-900 placeholder-slate-400 font-bold text-base focus:outline-none focus:border-arqam-navy focus:bg-white transition shadow-inner"
-                            autocomplete="off"
+                            placeholder="ابحث فوراً باسم الطالب، المعلمة، الحلقة، أو رقم الهاتف..."
+                            class="w-full bg-transparent text-sm font-bold text-slate-800 focus:outline-none"
                         >
-                        <button id="clearSearchBtn" onclick="clearSearch()" class="hidden absolute left-3 w-8 h-8 rounded-full bg-slate-200 hover:bg-slate-300 text-slate-700 items-center justify-center transition">
+                        <button id="clearSearchBtn" onclick="clearSearch()" class="hidden w-7 h-7 rounded-full bg-slate-200 hover:bg-slate-300 text-slate-600 items-center justify-center text-xs transition shrink-0">
                             <i class="fa-solid fa-xmark"></i>
                         </button>
                     </div>
 
-                    <div id="quickSearchChips" class="flex flex-wrap items-center gap-1.5 mt-2.5 px-1">
-                    </div>
+                    <!-- Quick Search Chips -->
+                    <div id="quickSearchChips" class="flex flex-wrap items-center gap-1.5 mt-2"></div>
 
-                    <div id="autocompleteBox" class="hidden absolute right-0 left-0 top-[60px] bg-white rounded-2xl shadow-2xl border-2 border-arqam-navy z-40 max-h-96 overflow-y-auto divide-y divide-slate-100">
+                    <!-- Instant Autocomplete Dropdown -->
+                    <div id="autocompleteBox" class="hidden absolute left-0 right-0 top-full mt-1.5 bg-white rounded-2xl shadow-2xl border-2 border-arqam-gold z-30 max-h-96 overflow-y-auto divide-y divide-slate-100">
                     </div>
                 </div>
 
@@ -540,7 +424,7 @@
                 <div class="grid grid-cols-1 lg:grid-cols-12 gap-3 pt-2.5 border-t border-slate-100">
                     <div class="lg:col-span-4 flex items-center bg-slate-50 border border-slate-200 rounded-xl px-3 py-2">
                         <i class="fa-solid fa-book-quran text-arqam-navy ml-2.5"></i>
-                        <select id="classFilter" onchange="renderStudents()" class="w-full bg-transparent text-slate-800 font-bold text-sm focus:outline-none cursor-pointer">
+                        <select id="classFilter" onchange="renderStudents(true)" class="w-full bg-transparent text-slate-800 font-bold text-sm focus:outline-none cursor-pointer">
                             <option value="all">كل الفصول والحلقات والمعلمات</option>
                         </select>
                     </div>
@@ -632,6 +516,27 @@
     </div>
 
     <!-- ===================================================================== -->
+    <!-- MODAL: CONFIRMATION DIALOG                                            -->
+    <!-- ===================================================================== -->
+    <div id="confirmActionModal" class="fixed inset-0 bg-slate-900/70 backdrop-blur-sm z-[110] hidden items-center justify-center p-4 no-print">
+        <div class="bg-white rounded-3xl max-w-sm w-full p-6 shadow-2xl border-2 border-rose-300 text-center">
+            <div class="w-14 h-14 rounded-full bg-rose-100 text-rose-600 flex items-center justify-center mx-auto mb-3 text-2xl">
+                <i class="fa-solid fa-triangle-exclamation"></i>
+            </div>
+            <h3 id="confirmModalTitle" class="text-base sm:text-lg font-black text-arqam-navy mb-1.5">تأكيد الحذف</h3>
+            <p id="confirmModalMessage" class="text-xs sm:text-sm font-bold text-slate-600 leading-relaxed mb-5">هل أنت متأكد من تنفيذ هذا الإجراء؟</p>
+            <div class="flex items-center gap-2">
+                <button id="confirmModalYesBtn" type="button" class="flex-1 bg-rose-600 hover:bg-rose-700 text-white font-extrabold py-2.5 rounded-xl shadow-md text-xs sm:text-sm transition">
+                    نعم، احذف
+                </button>
+                <button type="button" onclick="closeConfirmModal()" class="flex-1 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold py-2.5 rounded-xl text-xs sm:text-sm transition">
+                    إلغاء
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===================================================================== -->
     <!-- MODAL: ADMIN SECURITY, PINS & RECOVERY SETTINGS                       -->
     <!-- ===================================================================== -->
     <div id="securityModal" class="fixed inset-0 bg-slate-900/70 backdrop-blur-sm z-50 hidden items-center justify-center p-3 sm:p-4 no-print">
@@ -646,24 +551,23 @@
                 </button>
             </div>
 
-            <!-- Current Active Codes Reminder Box -->
             <div class="bg-arqam-navy text-white p-3.5 rounded-2xl border border-arqam-gold mb-4">
                 <p class="text-xs font-extrabold text-arqam-goldLight mb-2 flex items-center gap-1.5">
-                    <i class="fa-solid fa-eye"></i>
-                    <span>الأرقام السرية المحفوظة حالياً (تظهر للمدير فقط للتذكير):</span>
+                    <i class="fa-solid fa-lock"></i>
+                    <span>الأرقام السرية المحفوظة محلياً على هذا الجهاز فقط (لا تُرفع للسحابة):</span>
                 </p>
                 <div class="grid grid-cols-3 gap-2 text-center">
                     <div class="bg-white/10 p-2 rounded-xl">
                         <span class="block text-[10px] text-slate-300 font-bold">رقم المدير</span>
-                        <span id="currentAdminPinDisplay" dir="ltr" class="font-mono font-black text-sm text-arqam-goldLight">992026</span>
+                        <span id="currentAdminPinDisplay" dir="ltr" class="font-mono font-black text-xs sm:text-sm text-arqam-goldLight">محمي ومشفر</span>
                     </div>
                     <div class="bg-white/10 p-2 rounded-xl">
                         <span class="block text-[10px] text-slate-300 font-bold">رقم المعلمات</span>
-                        <span id="currentTeacherPinDisplay" dir="ltr" class="font-mono font-black text-sm text-emerald-300">112026</span>
+                        <span id="currentTeacherPinDisplay" dir="ltr" class="font-mono font-black text-xs sm:text-sm text-emerald-300">محمي ومشفر</span>
                     </div>
                     <div class="bg-white/10 p-2 rounded-xl">
                         <span class="block text-[10px] text-slate-300 font-bold">مفتاح الطوارئ</span>
-                        <span id="currentRecoveryKeyDisplay" dir="ltr" class="font-mono font-black text-sm text-sky-300">rabie2026</span>
+                        <span id="currentRecoveryKeyDisplay" dir="ltr" class="font-mono font-black text-xs sm:text-sm text-sky-300">محمي ومشفر</span>
                     </div>
                 </div>
             </div>
@@ -685,7 +589,6 @@
                     </div>
                 </div>
 
-                <!-- Custom Recovery Question & Emergency Key -->
                 <div class="bg-sky-50/70 p-3.5 rounded-2xl border border-sky-200 space-y-2.5">
                     <p class="text-xs font-extrabold text-sky-950">
                         <i class="fa-solid fa-life-ring text-sky-600 ml-1"></i>إعدادات زر "نسيت الرقم السري؟":
@@ -770,9 +673,9 @@
 
             <div class="space-y-3.5 text-xs sm:text-sm text-slate-700">
                 <div class="bg-emerald-50 p-3.5 rounded-2xl border border-emerald-200">
-                    <p class="font-extrabold text-emerald-950 mb-1">✅ نظام الحفظ السحابي المحصّن نشط!</p>
+                    <p class="font-extrabold text-emerald-950 mb-1">✅ نظام الحفظ السحابي المشفّر نشط!</p>
                     <p class="text-xs text-emerald-800 leading-relaxed">
-                        تم فصل اللوجو وضغطه تلقائياً وتفعيل الحماية ضد فقدان البيانات عند إعادة التحميل على مشروع <code class="bg-white px-1.5 py-0.5 rounded border text-emerald-700 font-mono font-bold">dar-alarqam-f866c</code>.
+                        يتم مزامنة الطلاب والمدفوعات لحظياً على مشروع <code class="bg-white px-1.5 py-0.5 rounded border text-emerald-700 font-mono font-bold">dar-alarqam-f866c</code> مع مصادقة آمنة وعدم رفع أي أرقام سرية نصية.
                     </p>
                 </div>
 
@@ -807,36 +710,52 @@
         </div>
     </div>
 
-    <!-- Modal: Phone Usage Guide -->
+    <!-- Modal: Comprehensive Usage Guide -->
     <div id="guideModal" class="fixed inset-0 bg-slate-900/70 backdrop-blur-sm z-50 hidden items-center justify-center p-3 sm:p-4 no-print">
         <div class="bg-white rounded-3xl max-w-lg w-full p-5 sm:p-6 shadow-2xl border-2 border-arqam-gold max-h-[90vh] overflow-y-auto">
             <div class="flex items-center justify-between pb-3 border-b border-slate-100 mb-4">
                 <h3 class="text-base sm:text-lg font-black text-arqam-navy flex items-center gap-2">
                     <i class="fa-solid fa-mobile-screen-button text-arqam-gold text-xl"></i>
-                    <span>دليل استخدام نظام "دار الأرقم"</span>
+                    <span>الدليل الشامل لاستخدام نظام "دار الأرقم"</span>
                 </h3>
                 <button onclick="closeGuideModal()" class="w-8 h-8 rounded-full bg-slate-100 text-slate-500 hover:bg-slate-200 flex items-center justify-center">
                     <i class="fa-solid fa-xmark"></i>
                 </button>
             </div>
 
-            <div class="space-y-3.5 text-xs sm:text-sm leading-relaxed text-slate-700">
+            <div class="space-y-3 text-xs sm:text-sm leading-relaxed text-slate-700">
                 <div class="bg-arqam-goldPale p-3.5 rounded-2xl border border-arqam-gold/40">
                     <p class="font-extrabold text-arqam-navy mb-1"><i class="fa-solid fa-star text-arqam-gold ml-1"></i> تثبيت صورة اللوجو الأصلية من هاتفك</p>
-                    <button onclick="triggerLogoUpload()" class="mt-1 bg-arqam-navy text-white font-bold text-xs px-4 py-2 rounded-xl flex items-center gap-2 hover:bg-arqam-blue transition">
+                    <p class="text-xs text-slate-600 mb-2">يمكن للمدير رفع شعار الدار ليظهر في شاشة القفل، رأس الصفحة، وكشوف الطباعة:</p>
+                    <button onclick="triggerLogoUpload()" class="bg-arqam-navy text-white font-bold text-xs px-4 py-2 rounded-xl flex items-center gap-2 hover:bg-arqam-blue transition">
                         <i class="fa-solid fa-image text-arqam-goldLight"></i>
                         <span>اختيار صورة لوجو دار الأرقم من الهاتف</span>
                     </button>
                 </div>
 
                 <div class="bg-slate-50 p-3.5 rounded-2xl border border-slate-200">
-                    <p class="font-extrabold text-arqam-navy mb-1">1️⃣ كيف يعمل تحصيل المتأخرات المجمع بضغطة واحدة؟</p>
-                    <p class="text-xs text-slate-600">إذا تأخر الطالب عن سداد شهر سابق (مثلاً نوفمبر) وانتقلت إلى شهر ديسمبر، يظهر تنبيه تلقائي أمام اسمه مع زر <strong>"⚡ تحصيل الكل"</strong> لتسجيل سداد الشهرين معاً بضغطة واحدة.</p>
+                    <p class="font-extrabold text-arqam-navy mb-1">1️⃣ تسجيل التحصيل أو إلغاء تحصيل مسجل بالخطأ</p>
+                    <p class="text-xs text-slate-600">اضغط على زر <strong>"تحصيل"</strong> بجانب اسم الطالب لتسجيل الدفع فوراً. وإذا ضغطت بالخطأ، سيظهر بجانب شارة <strong>"تم الدفع ✓"</strong> زر <strong>"إلغاء"</strong>؛ اضغط عليه لحذف الدفع وتحديث السحابة فوراً.</p>
                 </div>
 
                 <div class="bg-slate-50 p-3.5 rounded-2xl border border-slate-200">
-                    <p class="font-extrabold text-arqam-navy mb-1">2️⃣ ماذا أفعل لو نسيت الرقم السري للمدير؟</p>
-                    <p class="text-xs text-slate-600">اضغط على <strong>"نسيت الرقم السري؟"</strong> من شاشة القفل الخارجية، وأدخل مفتاح الطوارئ (أو إجابة سؤال الأمان) لتعيين رقم سري جديد فوراً.</p>
+                    <p class="font-extrabold text-arqam-navy mb-1">2️⃣ نظام المتأخرات والتحصيل المجمع بضغطة واحدة</p>
+                    <p class="text-xs text-slate-600">يحسب النظام تلقائياً الشهور غير المسددة منذ <strong>شهر بداية اشتراك الطالب</strong>، ويُظهر أمام اسمه تنبيهاً بالمتأخرات مع خيار <strong>"⚡ تحصيل الكل"</strong> لسداد المتأخر والشهر الحالي معاً.</p>
+                </div>
+
+                <div class="bg-slate-50 p-3.5 rounded-2xl border border-slate-200">
+                    <p class="font-extrabold text-arqam-navy mb-1">3️⃣ إضافة الطلاب والفصول (فردي أو بالجملة)</p>
+                    <p class="text-xs text-slate-600">من شريط الأدوات: استخدم <strong>"الفصول والمعلمات"</strong> لإنشاء الحلقات، و<strong>"إضافة أسماء بالجملة"</strong> للصق قائمة أسماء كاملة دفعة واحدة (كل اسم في سطر مستقل).</p>
+                </div>
+
+                <div class="bg-slate-50 p-3.5 rounded-2xl border border-slate-200">
+                    <p class="font-extrabold text-arqam-navy mb-1">4️⃣ إيصالات واتساب، تصدير Excel، والطباعة</p>
+                    <p class="text-xs text-slate-600">أيقونة <strong>واتساب</strong> بجانب كل طالب ترسل إيصال دفع جاهز أو رسالة تذكير بالمبلغ المستحق تلقائياً، وزر <strong>Excel</strong> يصدر كشفاً مرتباً حسب الفصول والحلقات.</p>
+                </div>
+
+                <div class="bg-slate-50 p-3.5 rounded-2xl border border-slate-200">
+                    <p class="font-extrabold text-arqam-navy mb-1">5️⃣ الحماية، صلاحيات المعلمات، واسترداد الرقم السري</p>
+                    <p class="text-xs text-slate-600">يوجد رقمان للدخول: <strong>رقم المدير</strong> (صلاحية كاملة) و<strong>رقم المعلمات</strong> (تتحكم الإدارة في صلاحياتهن من زر <strong>"الحماية"</strong>). وعند نسيان رقم المدير استخدم <strong>"نسيت الرقم السري؟"</strong> من شاشة القفل.</p>
                 </div>
             </div>
 
@@ -931,7 +850,7 @@
                     </div>
                     <div>
                         <label class="block text-xs font-bold text-slate-700 mb-1.5">رقم واتساب ولي الأمر</label>
-                        <input type="tel" id="studentPhoneInput" placeholder="010xxxxxxxx" class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm font-semibold focus:outline-none focus:border-arqam-navy focus:bg-white" dir="ltr">
+                        <input type="tel" id="studentPhoneInput" placeholder="010xxxxxxxx أو +966..." class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm font-semibold focus:outline-none focus:border-arqam-navy focus:bg-white" dir="ltr">
                     </div>
                 </div>
 
@@ -1000,7 +919,7 @@
     <!-- JavaScript Application Logic -->
     <script>
         // ==========================================
-        // 1. DEFAULT CONSTANTS, MONTHS & INITIAL DATA
+        // 1. DEFAULT CONSTANTS, DYNAMIC DATES & INITIAL DATA
         // ==========================================
         const MONTH_NAMES = {
             "01": "يناير",
@@ -1019,21 +938,80 @@
 
         const SYSTEM_BASE_MONTH = "2026-11";
 
-        const QUICK_PERIODS = [
-            { y: "2026", m: "11", label: "نوفمبر 2026" },
-            { y: "2026", m: "12", label: "ديسمبر 2026" },
-            { y: "2027", m: "01", label: "يناير 2027" },
-            { y: "2027", m: "02", label: "فبراير 2027" },
-            { y: "2027", m: "03", label: "مارس 2027" },
-            { y: "2027", m: "04", label: "أبريل 2027" },
-            { y: "2027", m: "05", label: "مايو 2027" },
-            { y: "2027", m: "06", label: "يونيو 2027" },
-            { y: "2027", m: "07", label: "يوليو 2027" },
-            { y: "2027", m: "08", label: "أغسطس 2027" },
-            { y: "2027", m: "09", label: "سبتمبر 2027" },
-            { y: "2027", m: "10", label: "أكتوبر 2027" },
-            { y: "2027", m: "11", label: "نوفمبر 2027" }
-        ];
+        function getTodayYearMonth() {
+            const now = new Date();
+            const y = now.getFullYear();
+            const m = String(now.getMonth() + 1).padStart(2, '0');
+            if (y < 2026 || (y === 2026 && Number(m) < 11)) {
+                return { year: "2026", month: "11", key: "2026-11" };
+            }
+            return { year: String(y), month: m, key: `${y}-${m}` };
+        }
+
+        function getMaxSystemYear() {
+            const currentYear = new Date().getFullYear();
+            return Math.max(2030, currentYear + 4);
+        }
+
+        function initDynamicDateSelectors() {
+            const yearSelect = document.getElementById('yearSelect');
+            const monthSelect = document.getElementById('monthSelect');
+            const today = getTodayYearMonth();
+            const maxYear = getMaxSystemYear();
+
+            if (yearSelect) {
+                let options = '';
+                for (let y = 2026; y <= maxYear; y++) {
+                    options += `<option value="${y}">${y}</option>`;
+                }
+                yearSelect.innerHTML = options;
+                yearSelect.value = today.year;
+            }
+            if (monthSelect) {
+                monthSelect.value = today.month;
+            }
+        }
+
+        function jumpToCurrentMonth() {
+            const today = getTodayYearMonth();
+            selectPeriod(today.year, today.month);
+        }
+
+        function getDynamicQuickPeriods() {
+            const monthSelect = document.getElementById('monthSelect');
+            const yearSelect = document.getElementById('yearSelect');
+            let centerY = parseInt(yearSelect?.value || getTodayYearMonth().year, 10);
+            let centerM = parseInt(monthSelect?.value || getTodayYearMonth().month, 10);
+
+            let startY = centerY;
+            let startM = centerM - 2;
+            while (startM < 1) {
+                startM += 12;
+                startY -= 1;
+            }
+            if (startY < 2026 || (startY === 2026 && startM < 11)) {
+                startY = 2026;
+                startM = 11;
+            }
+
+            const periods = [];
+            let y = startY;
+            let m = startM;
+            for (let i = 0; i < 13; i++) {
+                const mm = String(m).padStart(2, '0');
+                periods.push({
+                    y: String(y),
+                    m: mm,
+                    label: `${MONTH_NAMES[mm]} ${y}`
+                });
+                m++;
+                if (m > 12) {
+                    m = 1;
+                    y++;
+                }
+            }
+            return periods;
+        }
 
         const DEFAULT_CLASSES = [
             { id: 'c1', name: 'حلقة النور (أ)', teacher: 'معلمة سارة أحمد', color: 'emerald' },
@@ -1062,7 +1040,7 @@
         };
 
         // ==========================================
-        // 2. HELPERS: ARABIC NORMALIZATION & HTML ESCAPE
+        // 2. HELPERS: ARABIC NORMALIZATION, HTML ESCAPE & PHONE VALIDATION
         // ==========================================
         function escapeHtml(str) {
             return String(str ?? '')
@@ -1071,6 +1049,12 @@
                 .replace(/>/g, '&gt;')
                 .replace(/"/g, '&quot;')
                 .replace(/'/g, '&#039;');
+        }
+
+        function normalizeDigitsToWestern(str) {
+            return String(str || '')
+                .replace(/[٠-٩]/g, d => '٠١٢٣٤٥٦٧٨٩'.indexOf(d))
+                .replace(/[۰-۹]/g, d => '۰۱۲۳۴۵۶۷۸۹'.indexOf(d));
         }
 
         function normalizeArabicText(text) {
@@ -1084,15 +1068,67 @@
                 .replace(/\s+/g, ' ');
         }
 
+        function formatWhatsAppPhone(rawPhone) {
+            const western = normalizeDigitsToWestern(rawPhone).trim();
+            if (!western) return { empty: true, valid: false, phone: '' };
+
+            let cleaned = western.replace(/[\s\-().]/g, '');
+            if (cleaned.startsWith('+')) {
+                cleaned = cleaned.slice(1);
+            } else if (cleaned.startsWith('00')) {
+                cleaned = cleaned.slice(2);
+            } else if (/^01[0125]\d{8}$/.test(cleaned)) {
+                cleaned = '2' + cleaned;
+            } else if (cleaned.startsWith('0') && cleaned.length >= 10) {
+                cleaned = '2' + cleaned;
+            }
+
+            if (!/^\d{10,15}$/.test(cleaned)) {
+                return { empty: false, valid: false, phone: '' };
+            }
+            return { empty: false, valid: true, phone: cleaned };
+        }
+
         // ==========================================
-        // 3. SECURITY, FORGOT PIN RECOVERY & PERMISSIONS
+        // 3. CUSTOM CONFIRMATION DIALOG
+        // ==========================================
+        let pendingConfirmCallback = null;
+
+        function requestConfirmAction({ title, message, confirmText = 'نعم، احذف', onConfirm }) {
+            document.getElementById('confirmModalTitle').textContent = title || 'تأكيد الإجراء';
+            document.getElementById('confirmModalMessage').textContent = message || 'هل أنت متأكد؟';
+            document.getElementById('confirmModalYesBtn').textContent = confirmText;
+            pendingConfirmCallback = typeof onConfirm === 'function' ? onConfirm : null;
+
+            const modal = document.getElementById('confirmActionModal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function closeConfirmModal() {
+            pendingConfirmCallback = null;
+            const modal = document.getElementById('confirmActionModal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const yesBtn = document.getElementById('confirmModalYesBtn');
+            if (yesBtn) {
+                yesBtn.addEventListener('click', () => {
+                    const fn = pendingConfirmCallback;
+                    closeConfirmModal();
+                    if (fn) fn();
+                });
+            }
+        });
+
+        // ==========================================
+        // 4. SECURITY, FORGOT PIN RECOVERY & PERMISSIONS
+        //    (NO plain-text PINs ever synced to Firestore)
         // ==========================================
         function normalizeSecret(raw) {
-            return String(raw || '')
-                .trim()
-                .replace(/[٠-٩]/g, d => '٠١٢٣٤٥٦٧٨٩'.indexOf(d))
-                .replace(/[۰-۹]/g, d => '۰۱۲۳۴۵۶۷۸۹'.indexOf(d))
-                .toLowerCase();
+            return normalizeDigitsToWestern(raw).trim().toLowerCase();
         }
 
         function hashPinCode(rawPin) {
@@ -1116,12 +1152,11 @@
         };
 
         let securityConfig = { ...DEFAULT_SECURITY_CONFIG };
-        let adminPinVault = {
-            adminPin: '992026',
-            teacherPin: '112026',
-            recoveryKey: 'rabie2026'
+        let localAdminPinHints = {
+            adminPin: '',
+            teacherPin: '',
+            recoveryKey: ''
         };
-        let pendingRecoveredAdminPin = null;
 
         let currentUserRole = null;
         let isSystemUnlocked = false;
@@ -1134,14 +1169,21 @@
                     const parsed = JSON.parse(cached);
                     securityConfig = { ...DEFAULT_SECURITY_CONFIG, ...parsed };
                 }
-                const cachedVault = localStorage.getItem('arqam_admin_vault_v1');
-                if (cachedVault) {
-                    adminPinVault = { ...adminPinVault, ...JSON.parse(cachedVault) };
+                const cachedHints = localStorage.getItem('arqam_local_pin_hints_v1');
+                if (cachedHints) {
+                    localAdminPinHints = { ...localAdminPinHints, ...JSON.parse(cachedHints) };
                 }
+                localStorage.removeItem('arqam_admin_vault_v1');
             } catch (e) {
                 securityConfig = { ...DEFAULT_SECURITY_CONFIG };
             }
             updateRecoveryPromptUI();
+        }
+
+        function saveLocalPinHints() {
+            try {
+                localStorage.setItem('arqam_local_pin_hints_v1', JSON.stringify(localAdminPinHints));
+            } catch (e) {}
         }
 
         function updateRecoveryPromptUI() {
@@ -1223,11 +1265,9 @@
                 updatedAt: new Date().toISOString()
             };
 
-            adminPinVault.adminPin = newAdminPinRaw;
-            pendingRecoveredAdminPin = newAdminPinRaw;
-
+            localAdminPinHints.adminPin = newAdminPinRaw;
+            saveLocalPinHints();
             localStorage.setItem('arqam_security_cfg_v2', JSON.stringify(securityConfig));
-            localStorage.setItem('arqam_admin_vault_v1', JSON.stringify(adminPinVault));
 
             if (securityDocRef) {
                 securityDocRef.set(securityConfig, { merge: true }).catch(err => {
@@ -1265,18 +1305,23 @@
             const remember = document.getElementById('rememberDeviceCheck').checked;
             const errorBox = document.getElementById('lockErrorMsg');
             const lockCard = document.getElementById('lockCard');
-            const enteredHash = hashPinCode(pinInput.value);
+            const rawEntered = pinInput.value.trim();
+            const enteredHash = hashPinCode(rawEntered);
 
             let matchedRole = null;
             let activeHashForSession = enteredHash;
 
             if (enteredHash === securityConfig.adminHash) {
                 matchedRole = 'admin';
+                localAdminPinHints.adminPin = rawEntered;
+                saveLocalPinHints();
             } else if (enteredHash === securityConfig.teacherHash) {
                 matchedRole = 'teacher';
             } else if (enteredHash === (securityConfig.recoveryHash || hashPinCode('rabie2026'))) {
                 matchedRole = 'admin';
                 activeHashForSession = securityConfig.adminHash;
+                localAdminPinHints.recoveryKey = rawEntered;
+                saveLocalPinHints();
             }
 
             if (!matchedRole) {
@@ -1316,11 +1361,12 @@
             document.getElementById('authLockScreen').classList.add('hidden');
             document.getElementById('appShell').classList.remove('hidden');
 
+            initDynamicDateSelectors();
             loadData();
             populateStartMonthDropdowns();
             populateClassDropdowns();
             applyRolePermissionsUI();
-            renderStudents();
+            renderStudents(true);
             initCloudDataConnection();
 
             if (showWelcomeToast) {
@@ -1355,6 +1401,7 @@
             closeBulkModal();
             closeClassesModal();
             closeUndoPaymentModal();
+            closeConfirmModal();
 
             if (reasonMessage) {
                 showToast(reasonMessage, 'info');
@@ -1419,9 +1466,9 @@
             document.getElementById('newRecoveryKeyInput').value = '';
             document.getElementById('recoveryPromptInput').value = securityConfig.recoveryPrompt || DEFAULT_RECOVERY_PROMPT;
 
-            document.getElementById('currentAdminPinDisplay').textContent = adminPinVault.adminPin || '992026';
-            document.getElementById('currentTeacherPinDisplay').textContent = adminPinVault.teacherPin || '112026';
-            document.getElementById('currentRecoveryKeyDisplay').textContent = adminPinVault.recoveryKey || 'rabie2026';
+            document.getElementById('currentAdminPinDisplay').textContent = localAdminPinHints.adminPin || 'محمي ومشفر';
+            document.getElementById('currentTeacherPinDisplay').textContent = localAdminPinHints.teacherPin || 'محمي ومشفر';
+            document.getElementById('currentRecoveryKeyDisplay').textContent = localAdminPinHints.recoveryKey || 'محمي ومشفر';
 
             document.getElementById('permTeacherEditStudents').checked = !!securityConfig.allowTeacherEditStudents;
             document.getElementById('permTeacherDeleteManage').checked = !!securityConfig.allowTeacherDeleteManage;
@@ -1480,12 +1527,12 @@
                 updatedAt: new Date().toISOString()
             };
 
-            if (newAdminPin) adminPinVault.adminPin = newAdminPin;
-            if (newTeacherPin) adminPinVault.teacherPin = newTeacherPin;
-            if (newRecoveryKey) adminPinVault.recoveryKey = newRecoveryKey;
+            if (newAdminPin) localAdminPinHints.adminPin = newAdminPin;
+            if (newTeacherPin) localAdminPinHints.teacherPin = newTeacherPin;
+            if (newRecoveryKey) localAdminPinHints.recoveryKey = newRecoveryKey;
+            saveLocalPinHints();
 
             localStorage.setItem('arqam_security_cfg_v2', JSON.stringify(securityConfig));
-            localStorage.setItem('arqam_admin_vault_v1', JSON.stringify(adminPinVault));
             updateRecoveryPromptUI();
 
             const updatedSession = JSON.stringify({
@@ -1504,19 +1551,15 @@
                     console.error("Failed to sync security settings:", err);
                 });
             }
-            saveData();
 
             closeSecurityModal();
             applyRolePermissionsUI();
-            renderStudents();
+            renderStudents(true);
             showToast('تم حفظ وتعميم إعدادات الحماية والاسترداد بنجاح!', 'success');
         }
 
         // ==========================================
-        // 4. PROTECTED CLOUD SYNC (FIREBASE FIRESTORE)
-        //    - Conflict-free timestamped sync
-        //    - Separate compressed logo document (prevents 1MB limit overflow)
-        //    - Auto-retry queue so refresh NEVER wipes unsaved local changes
+        // 5. PROTECTED CLOUD SYNC (FIREBASE AUTH + FIRESTORE)
         // ==========================================
         const HARDCODED_FIREBASE_CONFIG = {
             apiKey: "AIzaSyAI-P5AW9ua8VvDvhUTdCOuwNqKRKBpeYw",
@@ -1544,6 +1587,7 @@
 
         let firestoreDb = null;
         let persistenceInitialized = false;
+        let authPromise = null;
         let sharedDocRef = null;
         let logoDocRef = null;
         let unsubscribeSharedState = null;
@@ -1570,42 +1614,77 @@
             }
         }
 
-        function parseFirebaseConfigInput(rawText) {
-            if (!rawText) return null;
+        function safeParseFirebaseConfig(rawText) {
+            if (!rawText || typeof rawText !== 'string') return null;
+            const trimmed = rawText.trim();
             try {
-                return JSON.parse(rawText);
-            } catch (e) {
-                const match = rawText.match(/\{[\s\S]*\}/);
-                if (!match) return null;
-                try {
-                    return Function('"use strict"; return (' + match[0] + ')')();
-                } catch (err) {
-                    return null;
-                }
+                const direct = JSON.parse(trimmed);
+                if (direct && typeof direct === 'object') return direct;
+            } catch (e) {}
+
+            const match = trimmed.match(/\{[\s\S]*\}/);
+            if (!match) return null;
+
+            try {
+                let jsonLike = match[0]
+                    .replace(/\/\*[\s\S]*?\*\//g, '')
+                    .replace(/\/\/.*$/gm, '')
+                    .replace(/'([^'\\]*(?:\\.[^'\\]*)*)'/g, (_, inner) => JSON.stringify(inner))
+                    .replace(/([{,]\s*)([a-zA-Z0-9_$]+)\s*:/g, '$1"$2":')
+                    .replace(/,\s*([}\]])/g, '$1');
+                const parsed = JSON.parse(jsonLike);
+                return (parsed && typeof parsed === 'object') ? parsed : null;
+            } catch (err) {
+                return null;
             }
         }
 
         function getFirebaseInstance() {
             if (firestoreDb) return firestoreDb;
             const savedUserConfigStr = localStorage.getItem('arqam_user_firebase_config_v1');
-            const userConfig = parseFirebaseConfigInput(savedUserConfigStr) || HARDCODED_FIREBASE_CONFIG;
+            const userConfig = safeParseFirebaseConfig(savedUserConfigStr) || HARDCODED_FIREBASE_CONFIG;
             if (userConfig && userConfig.projectId) {
                 const app = firebase.apps.length ? firebase.app() : firebase.initializeApp(userConfig);
                 firestoreDb = firebase.firestore(app);
                 if (!persistenceInitialized) {
                     persistenceInitialized = true;
-                    firestoreDb.enablePersistence({ synchronizeTabs: true }).catch(() => {
-                        // Ignore if multiple tabs or private mode
-                    });
+                    firestoreDb.enablePersistence({ synchronizeTabs: true }).catch(() => {});
                 }
             }
             return firestoreDb;
         }
 
-        function initSecurityCloudListener() {
+        function ensureFirebaseAuth() {
+            if (authPromise) return authPromise;
+            try {
+                getFirebaseInstance();
+                if (!firebase.auth) {
+                    authPromise = Promise.resolve(null);
+                    return authPromise;
+                }
+                const auth = firebase.auth();
+                if (auth.currentUser) {
+                    authPromise = Promise.resolve(auth.currentUser);
+                    return authPromise;
+                }
+                authPromise = auth.signInAnonymously()
+                    .then(cred => cred.user)
+                    .catch(err => {
+                        console.warn("Anonymous Auth fallback:", err && err.code);
+                        return null;
+                    });
+                return authPromise;
+            } catch (e) {
+                authPromise = Promise.resolve(null);
+                return authPromise;
+            }
+        }
+
+        async function initSecurityCloudListener() {
             try {
                 const db = getFirebaseInstance();
                 if (!db) return;
+                await ensureFirebaseAuth();
                 securityDocRef = db.collection('dar_alarqam_system').doc('security_config_v2');
                 securityDocRef.onSnapshot((docSnap) => {
                     if (docSnap.exists) {
@@ -1624,7 +1703,7 @@
                                 lockSystem('تم تحديث الرقم السري من الإدارة، يرجى الدخول بالرقم الجديد');
                             } else {
                                 applyRolePermissionsUI();
-                                renderStudents();
+                                renderStudents(true);
                             }
                         }
                     } else {
@@ -1646,13 +1725,13 @@
 
             label.textContent = text;
             if (status === 'connected') {
-                badge.className = "bg-emerald-500/25 hover:bg-emerald-500/35 text-emerald-200 border border-emerald-400/60 text-[11px] font-extrabold px-2.5 py-0.5 rounded-full flex items-center gap-1.5 transition cursor-pointer shadow-sm";
+                badge.className = "bg-emerald-500/25 hover:bg-emerald-500/35 text-emerald-200 border border-emerald-400/60 text-[11px] font-extrabold px-2.5 py-1 rounded-full flex items-center gap-1.5 transition cursor-pointer shadow-sm";
                 icon.className = "fa-solid fa-cloud-bolt text-emerald-300";
             } else if (status === 'error') {
-                badge.className = "bg-rose-500/30 hover:bg-rose-500/40 text-rose-200 border border-rose-400/60 text-[11px] font-extrabold px-2.5 py-0.5 rounded-full flex items-center gap-1.5 transition cursor-pointer shadow-sm";
+                badge.className = "bg-rose-500/30 hover:bg-rose-500/40 text-rose-200 border border-rose-400/60 text-[11px] font-extrabold px-2.5 py-1 rounded-full flex items-center gap-1.5 transition cursor-pointer shadow-sm";
                 icon.className = "fa-solid fa-triangle-exclamation text-rose-300";
             } else {
-                badge.className = "bg-amber-500/20 hover:bg-amber-500/30 text-arqam-goldLight border border-arqam-gold/50 text-[11px] font-extrabold px-2.5 py-0.5 rounded-full flex items-center gap-1.5 transition cursor-pointer shadow-sm";
+                badge.className = "bg-amber-500/20 hover:bg-amber-500/30 text-arqam-goldLight border border-arqam-gold/50 text-[11px] font-extrabold px-2.5 py-1 rounded-full flex items-center gap-1.5 transition cursor-pointer shadow-sm";
                 icon.className = "fa-solid fa-arrows-rotate fa-spin text-arqam-goldLight";
             }
         }
@@ -1677,19 +1756,20 @@
             }, 5000);
         }
 
-        function initCloudDataConnection() {
+        async function initCloudDataConnection() {
             if (!isSystemUnlocked) return;
             try {
                 const db = getFirebaseInstance();
                 if (!db) return;
 
                 setCloudBadgeState('pending', 'جاري الاتصال...');
+                await ensureFirebaseAuth();
+
                 sharedDocRef = db.collection('dar_alarqam_system').doc('shared_state');
                 logoDocRef = db.collection('dar_alarqam_system').doc('branding_logo');
 
                 startSyncRetryLoop();
 
-                // Separate listener for logo so logo size never blocks student saves
                 if (unsubscribeLogoState) unsubscribeLogoState();
                 unsubscribeLogoState = logoDocRef.onSnapshot((logoSnap) => {
                     if (logoSnap.exists) {
@@ -1706,7 +1786,6 @@
                 if (unsubscribeSharedState) unsubscribeSharedState();
 
                 unsubscribeSharedState = sharedDocRef.onSnapshot((docSnap) => {
-                    // Ignore local optimistic snapshots while writing
                     if (docSnap.metadata && docSnap.metadata.hasPendingWrites) {
                         return;
                     }
@@ -1718,8 +1797,6 @@
                         const cloudData = docSnap.data();
                         const cloudTs = Number(cloudData.updatedAtMs || (cloudData.updatedAt ? Date.parse(cloudData.updatedAt) : 0) || 0);
 
-                        // CRITICAL GUARD: If local device has unsaved changes OR newer timestamp,
-                        // NEVER overwrite local students/classes with stale cloud data! Push local UP instead.
                         if (dirty || (localTs > 0 && localTs > cloudTs)) {
                             pushDataToCloud(true);
                             return;
@@ -1730,20 +1807,11 @@
                         if (Array.isArray(cloudData.students)) students = cloudData.students;
                         if (cloudData.payments && typeof cloudData.payments === 'object') payments = cloudData.payments;
 
-                        // Migrate legacy logo out of shared_state if still there
                         if (cloudData.customLogo && !localStorage.getItem(LS_KEYS.LOGO)) {
                             try {
                                 localStorage.setItem(LS_KEYS.LOGO, cloudData.customLogo);
                             } catch (e) {}
                             applyCustomLogo(cloudData.customLogo);
-                        }
-
-                        if (cloudData.adminPinVault && typeof cloudData.adminPinVault === 'object') {
-                            adminPinVault = { ...adminPinVault, ...cloudData.adminPinVault };
-                            if (pendingRecoveredAdminPin) {
-                                adminPinVault.adminPin = pendingRecoveredAdminPin;
-                            }
-                            localStorage.setItem('arqam_admin_vault_v1', JSON.stringify(adminPinVault));
                         }
 
                         localStorage.setItem(LS_KEYS.CLASSES, JSON.stringify(classes));
@@ -1755,14 +1823,9 @@
                         localStorage.setItem(LS_KEYS.DIRTY_SYNC, '0');
 
                         populateClassDropdowns();
-                        renderStudents();
+                        renderStudents(true);
                         isReceivingCloudData = false;
                         setCloudBadgeState('connected', 'محفوظ في السحابة ✓');
-
-                        if (pendingRecoveredAdminPin) {
-                            pendingRecoveredAdminPin = null;
-                            saveData();
-                        }
                     } else {
                         pushDataToCloud(true);
                     }
@@ -1782,18 +1845,15 @@
             const writeTs = getLocalUpdatedAt() || Date.now();
             setCloudBadgeState('pending', 'جاري الحفظ في السحابة...');
 
-            // Notice: customLogo is NOT sent inside shared_state anymore so document stays tiny (< 50KB)
             const payload = {
                 classes: classes,
                 students: students,
                 payments: payments,
-                adminPinVault: adminPinVault,
-                customLogo: firebase.firestore.FieldValue.delete(),
                 updatedAtMs: writeTs,
                 updatedAt: new Date(writeTs).toISOString()
             };
 
-            sharedDocRef.set(payload, { merge: true })
+            sharedDocRef.set(payload)
                 .then(() => {
                     clearLocalDirty(writeTs);
                     setCloudBadgeState('connected', 'تم الحفظ في السحابة ✓');
@@ -1831,9 +1891,9 @@
         function saveAndConnectFirebase() {
             if (currentUserRole !== 'admin') return;
             const raw = document.getElementById('firebaseConfigInput').value.trim();
-            const parsed = parseFirebaseConfigInput(raw);
+            const parsed = safeParseFirebaseConfig(raw);
             if (!parsed || !parsed.apiKey || !parsed.projectId) {
-                showToast('برجاء لصق كود firebaseConfig الصحيح', 'warning');
+                showToast('برجاء لصق كود firebaseConfig الصحيح بصيغة JSON أو كائن JavaScript صالح', 'warning');
                 return;
             }
             localStorage.setItem('arqam_user_firebase_config_v1', JSON.stringify(parsed, null, 2));
@@ -1977,7 +2037,7 @@
         }
 
         // ==========================================
-        // 5. MONTH NAVIGATION & MULTI-MONTH ARREARS ENGINE
+        // 6. MONTH NAVIGATION & MULTI-MONTH ARREARS ENGINE
         // ==========================================
         function getCurrentMonthKey() {
             const month = document.getElementById('monthSelect').value;
@@ -2011,8 +2071,9 @@
                 document.getElementById('studentStartMonthInput'),
                 document.getElementById('bulkStartMonthInput')
             ];
+            const maxYear = getMaxSystemYear();
             let optionsHtml = '';
-            for (let y = 2026; y <= 2030; y++) {
+            for (let y = 2026; y <= maxYear; y++) {
                 const startM = (y === 2026) ? 11 : 1;
                 for (let m = startM; m <= 12; m++) {
                     const mm = String(m).padStart(2, '0');
@@ -2034,7 +2095,7 @@
             const [endY, endM] = currentKey.split('-').map(Number);
             let guard = 0;
 
-            while ((y < endY || (y === endY && m < endM)) && guard < 48) {
+            while ((y < endY || (y === endY && m < endM)) && guard < 60) {
                 result.push(`${y}-${String(m).padStart(2, '0')}`);
                 m++;
                 if (m > 12) {
@@ -2101,8 +2162,9 @@
             const bar = document.getElementById('quickMonthsBar');
             if (!bar) return;
             const currentKey = getCurrentMonthKey();
+            const dynamicPeriods = getDynamicQuickPeriods();
 
-            bar.innerHTML = QUICK_PERIODS.map(p => {
+            bar.innerHTML = dynamicPeriods.map(p => {
                 const key = `${p.y}-${p.m}`;
                 const isActive = key === currentKey;
                 return `
@@ -2136,8 +2198,10 @@
         }
 
         // ==========================================
-        // 6. CORE UI RENDERING & STATS
+        // 7. CORE UI RENDERING & PERFORMANCE OPTIMIZATION
         // ==========================================
+        let lastRenderDigest = '';
+
         function populateClassDropdowns() {
             const classFilter = document.getElementById('classFilter');
             const studentClassInput = document.getElementById('studentClassInput');
@@ -2282,25 +2346,39 @@
                     tablesBtn.className = "px-2.5 py-1.5 rounded-lg text-xs font-bold transition text-slate-600 hover:text-slate-900 flex items-center gap-1";
                 }
             }
-            renderStudents();
+            renderStudents(true);
         }
 
         function buildTablePaymentControlHtml(st, isPaid, unpaidPrev, currentShortName) {
             const fee = Number(st.fee || 0);
 
             if (unpaidPrev.length === 0) {
+                if (!isPaid) {
+                    return `
+                        <button 
+                            onclick="collectSingleMonth('${st.id}')" 
+                            class="check-btn px-4 py-2 rounded-xl font-extrabold text-xs sm:text-sm inline-flex items-center justify-center gap-1.5 cursor-pointer border transition bg-slate-100 hover:bg-arqam-goldPale text-slate-700 border-slate-300 hover:border-arqam-navy"
+                        >
+                            <i class="fa-solid fa-square text-slate-400"></i>
+                            <span>تحصيل</span>
+                        </button>
+                    `;
+                }
                 return `
-                    <button 
-                        onclick="togglePayment('${st.id}')" 
-                        class="check-btn px-3.5 py-2 rounded-xl font-extrabold text-xs sm:text-sm inline-flex items-center justify-center gap-1.5 cursor-pointer border transition ${
-                            isPaid 
-                            ? 'bg-emerald-600 text-white border-emerald-700 shadow-sm' 
-                            : 'bg-slate-100 hover:bg-arqam-goldPale text-slate-700 border-slate-300 hover:border-arqam-navy'
-                        }"
-                    >
-                        <i class="fa-solid ${isPaid ? 'fa-square-check' : 'fa-square text-slate-400'}"></i>
-                        <span>${isPaid ? 'تم الدفع ✓' : 'تحصيل'}</span>
-                    </button>
+                    <div class="inline-flex items-center justify-center gap-1.5">
+                        <span class="px-3 py-1.5 rounded-xl font-extrabold text-xs sm:text-sm inline-flex items-center gap-1.5 bg-emerald-600 text-white border border-emerald-700 shadow-sm select-none">
+                            <i class="fa-solid fa-square-check"></i>
+                            <span>تم الدفع ✓</span>
+                        </span>
+                        <button 
+                            onclick="cancelPayment('${st.id}')" 
+                            class="check-btn px-2.5 py-1.5 rounded-xl font-extrabold text-xs inline-flex items-center gap-1 cursor-pointer bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 transition"
+                            title="إلغاء تسجيل الدفع"
+                        >
+                            <i class="fa-solid fa-rotate-left"></i>
+                            <span>إلغاء</span>
+                        </button>
+                    </div>
                 `;
             }
 
@@ -2323,7 +2401,7 @@
                         </button>
                         <div class="flex items-center justify-center gap-1">
                             <button 
-                                onclick="togglePayment('${st.id}')" 
+                                onclick="collectSingleMonth('${st.id}')" 
                                 class="flex-1 py-1 px-2 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-300 text-[10px] font-extrabold transition"
                             >
                                 ${currentShortName} فقط
@@ -2341,13 +2419,20 @@
 
             return `
                 <div class="inline-flex flex-col items-stretch gap-1.5">
-                    <button 
-                        onclick="togglePayment('${st.id}')" 
-                        class="check-btn px-3 py-1.5 rounded-xl font-extrabold text-xs bg-emerald-600 text-white border border-emerald-700 inline-flex items-center justify-center gap-1.5 cursor-pointer"
-                    >
-                        <i class="fa-solid fa-square-check"></i>
-                        <span>تم دفع ${currentShortName} ✓</span>
-                    </button>
+                    <div class="inline-flex items-center justify-center gap-1.5">
+                        <span class="px-3 py-1.5 rounded-xl font-extrabold text-xs bg-emerald-600 text-white border border-emerald-700 inline-flex items-center gap-1.5 select-none">
+                            <i class="fa-solid fa-square-check"></i>
+                            <span>تم دفع ${currentShortName} ✓</span>
+                        </span>
+                        <button 
+                            onclick="cancelPayment('${st.id}')" 
+                            class="check-btn px-2.5 py-1.5 rounded-xl font-extrabold text-xs inline-flex items-center gap-1 cursor-pointer bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 transition"
+                            title="إلغاء تسجيل الدفع"
+                        >
+                            <i class="fa-solid fa-rotate-left"></i>
+                            <span>إلغاء</span>
+                        </button>
+                    </div>
                     <button 
                         onclick="collectPreviousOnly('${st.id}')" 
                         class="check-btn px-2.5 py-1 rounded-lg font-extrabold text-[11px] bg-amber-500 hover:bg-amber-600 text-white inline-flex items-center justify-center gap-1 cursor-pointer shadow-sm"
@@ -2457,17 +2542,20 @@
                         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                             <div class="flex items-start sm:items-center gap-3 flex-1 min-w-0">
                                 <span class="w-6 text-center text-xs font-black text-slate-400 shrink-0 mt-2 sm:mt-0">${idx + 1}</span>
+                                ${isPaid ? `
+                                <div class="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl flex flex-col items-center justify-center shrink-0 select-none border-2 bg-emerald-500 text-white border-emerald-600 shadow-md shadow-emerald-500/20">
+                                    <i class="fa-solid fa-check text-xl scale-110"></i>
+                                    <span class="text-[9px] font-extrabold mt-0.5">خالص</span>
+                                </div>
+                                ` : `
                                 <button 
-                                    onclick="togglePayment('${st.id}')" 
-                                    class="check-btn w-12 h-12 sm:w-14 sm:h-14 rounded-2xl flex flex-col items-center justify-center shrink-0 cursor-pointer select-none border-2 ${
-                                        isPaid 
-                                        ? 'bg-emerald-500 text-white border-emerald-600 shadow-md shadow-emerald-500/20' 
-                                        : 'bg-slate-50 text-slate-400 border-slate-300 hover:border-arqam-navy hover:text-arqam-navy'
-                                    }"
+                                    onclick="collectSingleMonth('${st.id}')" 
+                                    class="check-btn w-12 h-12 sm:w-14 sm:h-14 rounded-2xl flex flex-col items-center justify-center shrink-0 cursor-pointer select-none border-2 bg-slate-50 text-slate-400 border-slate-300 hover:border-arqam-navy hover:text-arqam-navy"
                                 >
-                                    <i class="fa-solid fa-check text-xl ${isPaid ? 'scale-110' : 'opacity-40'}"></i>
-                                    <span class="text-[9px] font-extrabold mt-0.5">${isPaid ? 'خالص' : currentShortName}</span>
+                                    <i class="fa-solid fa-check text-xl opacity-40"></i>
+                                    <span class="text-[9px] font-extrabold mt-0.5">${currentShortName}</span>
                                 </button>
+                                `}
                                 <div class="min-w-0 flex-1">
                                     <div class="flex flex-wrap items-center gap-2 mb-1">
                                         <h3 class="text-base sm:text-lg font-extrabold text-slate-800 truncate">${highlightSearchMatch(st.name, searchQuery)}</h3>
@@ -2509,6 +2597,12 @@
                             </div>
 
                             <div class="flex items-center justify-end gap-1.5 shrink-0 no-print">
+                                ${isPaid ? `
+                                <button onclick="cancelPayment('${st.id}')" class="px-3 py-2 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 flex items-center gap-1.5 text-xs font-extrabold transition">
+                                    <i class="fa-solid fa-rotate-left"></i>
+                                    <span>إلغاء التحصيل</span>
+                                </button>
+                                ` : ''}
                                 <button onclick="sendWhatsAppReceipt('${st.id}')" class="px-3 py-2 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-200 flex items-center gap-1.5 text-xs font-bold transition">
                                     <i class="fa-brands fa-whatsapp text-base text-emerald-600"></i>
                                     <span>${isPaid ? 'إيصال' : 'تذكير'}</span>
@@ -2555,7 +2649,7 @@
             `;
         }
 
-        function renderStudents() {
+        function renderStudents(force = false) {
             if (!isSystemUnlocked) return;
 
             renderQuickMonthsBar();
@@ -2597,6 +2691,7 @@
             document.getElementById('resultsCountText').textContent = `الطلاب المعروضون لشهر ${monthLabel}: (${filtered.length} من ${students.length})`;
 
             if (filtered.length === 0) {
+                lastRenderDigest = '';
                 listContainer.innerHTML = '';
                 emptyState.classList.remove('hidden');
                 return;
@@ -2617,7 +2712,6 @@
                 htmlSections += renderClassGroupBlock(cls, classStudents, monthKey, monthLabel, currentShortName, rawSearchQuery, allowEdit, allowDelete);
             });
 
-            // Fallback group so students whose class was removed or unlinked are NEVER hidden
             const orphanStudents = filtered
                 .filter(st => !validClassIds.has(st.classId))
                 .sort((a, b) => a.name.localeCompare(b.name, 'ar'));
@@ -2627,7 +2721,10 @@
                 htmlSections += renderClassGroupBlock(fallbackClass, orphanStudents, monthKey, monthLabel, currentShortName, rawSearchQuery, allowEdit, allowDelete);
             }
 
-            listContainer.innerHTML = htmlSections;
+            if (force || htmlSections !== lastRenderDigest) {
+                lastRenderDigest = htmlSections;
+                listContainer.innerHTML = htmlSections;
+            }
         }
 
         function highlightSearchMatch(text, query) {
@@ -2639,8 +2736,10 @@
         }
 
         // ==========================================
-        // 7. INSTANT AUTOCOMPLETE & SEARCH LOGIC
+        // 8. INSTANT AUTOCOMPLETE & DEBOUNCED SEARCH
         // ==========================================
+        let searchDebounceTimer = null;
+
         function handleSearchInput() {
             const input = document.getElementById('searchInput');
             const query = input.value.trim();
@@ -2657,7 +2756,10 @@
                 autocompleteBox.classList.add('hidden');
             }
 
-            renderStudents();
+            clearTimeout(searchDebounceTimer);
+            searchDebounceTimer = setTimeout(() => {
+                renderStudents();
+            }, 90);
         }
 
         function renderAutocompleteSuggestions(query) {
@@ -2691,7 +2793,23 @@
                 const combinedTotal = (unpaidPrev.length + 1) * fee;
 
                 let actionButtonsHtml = '';
-                if (unpaidPrev.length > 0 && !isPaid) {
+                if (isPaid) {
+                    actionButtonsHtml = `
+                        <div class="flex items-center gap-1.5 shrink-0">
+                            <span class="px-3 py-2 rounded-xl font-extrabold text-xs flex items-center gap-1 bg-emerald-500 text-white select-none">
+                                <i class="fa-solid fa-circle-check"></i>
+                                <span>تم الدفع ✓</span>
+                            </span>
+                            <button 
+                                onclick="cancelPayment('${st.id}'); handleSearchInput();" 
+                                class="px-2.5 py-2 rounded-xl font-extrabold text-xs flex items-center gap-1 bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 transition"
+                            >
+                                <i class="fa-solid fa-rotate-left"></i>
+                                <span>إلغاء</span>
+                            </button>
+                        </div>
+                    `;
+                } else if (unpaidPrev.length > 0) {
                     actionButtonsHtml = `
                         <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-1.5 shrink-0">
                             <button 
@@ -2702,7 +2820,7 @@
                                 <span>تحصيل الكل (${combinedTotal} ج.م)</span>
                             </button>
                             <button 
-                                onclick="togglePayment('${st.id}'); handleSearchInput();" 
+                                onclick="collectSingleMonth('${st.id}'); handleSearchInput();" 
                                 class="px-2.5 py-2 rounded-xl font-bold text-[11px] bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-300"
                             >
                                 ${currentShortName} فقط
@@ -2712,15 +2830,11 @@
                 } else {
                     actionButtonsHtml = `
                         <button 
-                            onclick="togglePayment('${st.id}'); handleSearchInput();" 
-                            class="px-3.5 py-2 rounded-xl font-extrabold text-xs flex items-center gap-1.5 transition shadow-sm shrink-0 ${
-                                isPaid 
-                                ? 'bg-emerald-500 text-white' 
-                                : 'bg-arqam-navy hover:bg-arqam-blue text-white border border-arqam-gold'
-                            }"
+                            onclick="collectSingleMonth('${st.id}'); handleSearchInput();" 
+                            class="px-3.5 py-2 rounded-xl font-extrabold text-xs flex items-center gap-1.5 transition shadow-sm shrink-0 bg-arqam-navy hover:bg-arqam-blue text-white border border-arqam-gold"
                         >
-                            <i class="fa-solid ${isPaid ? 'fa-circle-check' : 'fa-check text-arqam-goldLight'}"></i>
-                            <span>${isPaid ? 'تم الدفع ✓' : 'تحصيل الآن'}</span>
+                            <i class="fa-solid fa-check text-arqam-goldLight"></i>
+                            <span>تحصيل الآن</span>
                         </button>
                     `;
                 }
@@ -2751,7 +2865,7 @@
             if (!st) return;
             document.getElementById('searchInput').value = st.name;
             closeAutocomplete();
-            renderStudents();
+            renderStudents(true);
         }
 
         function closeAutocomplete() {
@@ -2781,11 +2895,53 @@
         }
 
         // ==========================================
-        // 8. SINGLE & ONE-CLICK COMBINED PAYMENT ACTIONS
+        // 9. COLLECT & CANCEL PAYMENT ACTIONS
         // ==========================================
         function getFormattedTimestamp() {
             const now = new Date();
             return now.toLocaleDateString('ar-EG') + ' - ' + now.toLocaleTimeString('ar-EG', { hour: '2-digit', minute: '2-digit' });
+        }
+
+        function cleanupEmptyMonthBucket(monthKey) {
+            if (payments[monthKey] && Object.keys(payments[monthKey]).length === 0) {
+                delete payments[monthKey];
+            }
+        }
+
+        function collectSingleMonth(studentId) {
+            const monthKey = getCurrentMonthKey();
+            if (!payments[monthKey]) {
+                payments[monthKey] = {};
+            }
+            const student = students.find(s => s.id === studentId);
+            payments[monthKey][studentId] = {
+                paid: true,
+                date: getFormattedTimestamp()
+            };
+            saveData();
+            renderStudents(true);
+            showToast(`تم تسجيل دفع اشتراك: ${student ? student.name : ''} (${getCurrentMonthLabel()}) ✓`, 'success');
+        }
+
+        function cancelPayment(studentId) {
+            const monthKey = getCurrentMonthKey();
+            const student = students.find(s => s.id === studentId);
+            if (!isStudentPaid(studentId, monthKey)) return;
+
+            const bundledMonths = getBundledMonthsCollectedIn(studentId, monthKey);
+            if (bundledMonths.length > 0) {
+                openUndoPaymentModal(student, monthKey, bundledMonths);
+                return;
+            }
+
+            if (payments[monthKey]) {
+                delete payments[monthKey][studentId];
+                cleanupEmptyMonthBucket(monthKey);
+            }
+
+            saveData();
+            renderStudents(true);
+            showToast(`تم إلغاء تحصيل الطالب: ${student ? student.name : ''} ✓`, 'warning');
         }
 
         function collectAllDue(studentId) {
@@ -2818,7 +2974,7 @@
             const monthsNames = allToCollect.map(formatMonthKeyShort).join(' + ');
 
             saveData();
-            renderStudents();
+            renderStudents(true);
             showToast(`تم تحصيل (${monthsNames}) بإجمالي ${totalMoney} ج.م للطالب: ${st.name} ✓`, 'success');
         }
 
@@ -2845,37 +3001,8 @@
             const prevNames = unpaidPrev.map(formatMonthKeyShort).join(' + ');
 
             saveData();
-            renderStudents();
+            renderStudents(true);
             showToast(`تم تحصيل المتأخر (${prevNames} • ${totalPrevMoney} ج.م) للطالب: ${st.name} ✓`, 'success');
-        }
-
-        function togglePayment(studentId) {
-            const monthKey = getCurrentMonthKey();
-            if (!payments[monthKey]) {
-                payments[monthKey] = {};
-            }
-
-            const student = students.find(s => s.id === studentId);
-            const currentlyPaid = isStudentPaid(studentId, monthKey);
-
-            if (currentlyPaid) {
-                const bundledMonths = getBundledMonthsCollectedIn(studentId, monthKey);
-                if (bundledMonths.length > 0) {
-                    openUndoPaymentModal(student, monthKey, bundledMonths);
-                    return;
-                }
-                delete payments[monthKey][studentId];
-                showToast(`تم إلغاء تسجيل دفع: ${student ? student.name : ''}`, 'warning');
-            } else {
-                payments[monthKey][studentId] = {
-                    paid: true,
-                    date: getFormattedTimestamp()
-                };
-                showToast(`تم تسجيل دفع اشتراك: ${student ? student.name : ''} (${getCurrentMonthLabel()}) ✓`, 'success');
-            }
-
-            saveData();
-            renderStudents();
         }
 
         function openUndoPaymentModal(student, monthKey, bundledMonths) {
@@ -2890,21 +3017,30 @@
             desc.textContent = `الطالب "${student.name}" تم تحصيل متأخرات سابقة له (${bundledNames}) مجمعة مع شهر (${currentLabel}). كيف ترغب في إلغاء الدفع؟`;
 
             undoAllBtn.onclick = function() {
-                delete payments[monthKey][student.id];
+                if (payments[monthKey]) {
+                    delete payments[monthKey][student.id];
+                    cleanupEmptyMonthBucket(monthKey);
+                }
                 bundledMonths.forEach(mKey => {
-                    if (payments[mKey]) delete payments[mKey][student.id];
+                    if (payments[mKey]) {
+                        delete payments[mKey][student.id];
+                        cleanupEmptyMonthBucket(mKey);
+                    }
                 });
                 closeUndoPaymentModal();
                 saveData();
-                renderStudents();
+                renderStudents(true);
                 showToast(`تم إلغاء التحصيل المجمع بالكامل للطالب: ${student.name}`, 'warning');
             };
 
             undoCurrBtn.onclick = function() {
-                delete payments[monthKey][student.id];
+                if (payments[monthKey]) {
+                    delete payments[monthKey][student.id];
+                    cleanupEmptyMonthBucket(monthKey);
+                }
                 closeUndoPaymentModal();
                 saveData();
-                renderStudents();
+                renderStudents(true);
                 showToast(`تم إلغاء شهر ${currentLabel} فقط للطالب: ${student.name}`, 'warning');
             };
 
@@ -2919,7 +3055,7 @@
         }
 
         function handleMonthChange() {
-            renderStudents();
+            renderStudents(true);
             showToast(`تم الانتقال إلى كشف شهر: ${getCurrentMonthLabel()}`, 'info');
         }
 
@@ -2942,7 +3078,7 @@
             if (filter === 'unpaid') unpaidBtn.className = activeClass;
             if (filter === 'arrears') arrearsBtn.className = activeClass;
 
-            renderStudents();
+            renderStudents(true);
         }
 
         function resetAllFilters() {
@@ -2953,7 +3089,7 @@
         }
 
         // ==========================================
-        // 9. ORGANIZED RIGHT-TO-LEFT (RTL) EXCEL EXPORT BY CLASS
+        // 10. ORGANIZED RIGHT-TO-LEFT (RTL) EXCEL EXPORT BY CLASS
         // ==========================================
         function exportToExcel() {
             const monthKey = getCurrentMonthKey();
@@ -3108,7 +3244,7 @@
         }
 
         // ==========================================
-        // 10. WHATSAPP BRANDED RECEIPT & ARREARS REMINDER
+        // 11. WHATSAPP BRANDED RECEIPT & ARREARS REMINDER
         // ==========================================
         function sendWhatsAppReceipt(studentId) {
             const st = students.find(s => s.id === studentId);
@@ -3122,9 +3258,9 @@
             const bundledHere = getBundledMonthsCollectedIn(st.id, monthKey);
             const fee = Number(st.fee || 0);
 
-            let cleanPhone = (st.phone || '').replace(/\D/g, '');
-            if (cleanPhone.startsWith('0')) {
-                cleanPhone = '2' + cleanPhone;
+            const phoneResult = formatWhatsAppPhone(st.phone);
+            if (!phoneResult.empty && !phoneResult.valid) {
+                showToast('رقم هاتف ولي الأمر غير مكتمل؛ سيتم فتح واتساب لاختيار جهة الاتصال يدوياً', 'warning');
             }
 
             let message = '';
@@ -3138,14 +3274,14 @@
                 message = `بسم الله الرحمن الرحيم\n*دار الأرقم بن أبي الأرقم لتحفيظ القرآن الكريم* 🕌📖\n(إدارة الشيخ: ربيع يوسف حسين - عنك _ إطسا _ الفيوم)\n\nأهلاً بحضرتك ولي أمر الطالب/ة: *${st.name}*\n(${cls.name} - ${cls.teacher})\n\nنود تذكير حضرتك بموعد سداد الاشتراك المستحق عن (*${dueMonthsList.join(' + ')}*) بإجمالي (*${totalDueMoney} ج.م*).\nجزاكم الله خيراً على حسن تعاونكم.`;
             }
 
-            const whatsappUrl = cleanPhone
-                ? `https://wa.me/${cleanPhone}?text=${encodeURIComponent(message)}`
+            const whatsappUrl = phoneResult.valid
+                ? `https://wa.me/${phoneResult.phone}?text=${encodeURIComponent(message)}`
                 : `https://wa.me/?text=${encodeURIComponent(message)}`;
             window.open(whatsappUrl, '_blank');
         }
 
         // ==========================================
-        // 11. MODALS: GUIDE, BULK ADD, SINGLE STUDENT & CLASSES
+        // 12. MODALS: GUIDE, BULK ADD, SINGLE STUDENT & CLASSES
         // ==========================================
         function openGuideModal() {
             const modal = document.getElementById('guideModal');
@@ -3217,7 +3353,7 @@
             document.getElementById('bulkNamesInput').value = '';
             saveData();
             closeBulkModal();
-            renderStudents();
+            renderStudents(true);
             showToast(`تمت إضافة ${lines.length} طالب بنجاح!`, 'success');
         }
 
@@ -3276,7 +3412,7 @@
             const name = document.getElementById('studentNameInput').value.trim();
             const classId = document.getElementById('studentClassInput').value;
             const fee = Number(document.getElementById('studentFeeInput').value);
-            const phone = document.getElementById('studentPhoneInput').value.trim();
+            const rawPhone = document.getElementById('studentPhoneInput').value.trim();
             const notes = document.getElementById('studentNotesInput').value.trim();
             const startMonth = document.getElementById('studentStartMonthInput').value || SYSTEM_BASE_MONTH;
 
@@ -3285,6 +3421,16 @@
                 showToast('برجاء اختيار الفصل / الحلقة للطالب', 'warning');
                 return;
             }
+
+            if (rawPhone) {
+                const phoneCheck = formatWhatsAppPhone(rawPhone);
+                if (!phoneCheck.valid) {
+                    showToast('يرجى إدخال رقم واتساب صحيح (مثال: 01012345678 أو +9665...)', 'warning');
+                    return;
+                }
+            }
+
+            const phone = normalizeDigitsToWestern(rawPhone);
 
             if (editId) {
                 const index = students.findIndex(s => s.id === editId);
@@ -3307,7 +3453,7 @@
 
             saveData();
             closeStudentModal();
-            renderStudents();
+            renderStudents(true);
         }
 
         function deleteStudent(studentId) {
@@ -3318,10 +3464,24 @@
             const st = students.find(s => s.id === studentId);
             if (!st) return;
 
-            students = students.filter(s => s.id !== studentId);
-            saveData();
-            renderStudents();
-            showToast(`تم حذف الطالب: ${st.name}`, 'warning');
+            requestConfirmAction({
+                title: 'تأكيد حذف الطالب',
+                message: `هل أنت متأكد من حذف الطالب "${st.name}" نهائياً من الدفتر وسجلات الدفع؟`,
+                confirmText: 'نعم، احذف الطالب',
+                onConfirm: () => {
+                    students = students.filter(s => s.id !== studentId);
+                    Object.keys(payments).forEach(mKey => {
+                        if (payments[mKey] && payments[mKey][studentId]) {
+                            delete payments[mKey][studentId];
+                            cleanupEmptyMonthBucket(mKey);
+                        }
+                    });
+
+                    saveData();
+                    renderStudents(true);
+                    showToast(`تم حذف الطالب: ${st.name}`, 'warning');
+                }
+            });
         }
 
         function openClassesModal() {
@@ -3385,40 +3545,58 @@
             saveData();
             populateClassDropdowns();
             renderClassesModalList();
-            renderStudents();
+            renderStudents(true);
             showToast(`تم إضافة ${newCls.name} (${newCls.teacher})`, 'success');
         }
 
         function deleteClass(classId) {
             if (!canDeleteOrManageClasses()) return;
+            const cls = classes.find(c => c.id === classId);
+            if (!cls) return;
+
             const hasStudents = students.some(s => s.classId === classId);
             if (hasStudents) {
                 showToast('لا يمكن حذف فصل به طلاب مسجلين حالياً', 'warning');
                 return;
             }
-            classes = classes.filter(c => c.id !== classId);
-            saveData();
-            populateClassDropdowns();
-            renderClassesModalList();
-            renderStudents();
-            showToast('تم حذف الفصل بنجاح', 'warning');
+
+            requestConfirmAction({
+                title: 'تأكيد حذف الفصل',
+                message: `هل تريد حذف "${cls.name}" (${cls.teacher})؟`,
+                confirmText: 'نعم، احذف الفصل',
+                onConfirm: () => {
+                    classes = classes.filter(c => c.id !== classId);
+                    saveData();
+                    populateClassDropdowns();
+                    renderClassesModalList();
+                    renderStudents(true);
+                    showToast('تم حذف الفصل بنجاح', 'warning');
+                }
+            });
         }
 
         function resetDemoData() {
             if (currentUserRole !== 'admin') return;
-            classes = [...DEFAULT_CLASSES];
-            students = [...DEFAULT_STUDENTS];
-            payments = JSON.parse(JSON.stringify(DEFAULT_PAYMENTS));
-            saveData();
-            populateClassDropdowns();
-            renderClassesModalList();
-            renderStudents();
-            closeClassesModal();
-            showToast('تمت استعادة البيانات الافتراضية بنجاح', 'info');
+            requestConfirmAction({
+                title: 'استعادة البيانات الافتراضية',
+                message: 'سيتم استبدال القائمة الحالية بالبيانات التجريبية الافتراضية. هل أنت متأكد؟',
+                confirmText: 'نعم، استعد البيانات',
+                onConfirm: () => {
+                    classes = [...DEFAULT_CLASSES];
+                    students = [...DEFAULT_STUDENTS];
+                    payments = JSON.parse(JSON.stringify(DEFAULT_PAYMENTS));
+                    saveData();
+                    populateClassDropdowns();
+                    renderClassesModalList();
+                    renderStudents(true);
+                    closeClassesModal();
+                    showToast('تمت استعادة البيانات الافتراضية بنجاح', 'info');
+                }
+            });
         }
 
         // ==========================================
-        // 12. TOAST NOTIFICATION SYSTEM
+        // 13. TOAST NOTIFICATION SYSTEM
         // ==========================================
         let toastTimeout;
         function showToast(message, type = 'success') {
@@ -3447,8 +3625,17 @@
         }
 
         // ==========================================
-        // 13. INITIALIZATION ON LOAD
+        // 14. INITIALIZATION & LOADING SPLASH
         // ==========================================
+        function hideInitialLoadingScreen() {
+            const splash = document.getElementById('initialLoadingScreen');
+            if (!splash) return;
+            splash.classList.add('opacity-0', 'pointer-events-none');
+            setTimeout(() => {
+                splash.classList.add('hidden');
+            }, 300);
+        }
+
         window.onload = function() {
             const savedLogo = localStorage.getItem(LS_KEYS.LOGO);
             if (savedLogo) applyCustomLogo(savedLogo);
@@ -3465,6 +3652,8 @@
                 const pinInput = document.getElementById('lockPinInput');
                 if (pinInput) pinInput.focus();
             }
+
+            setTimeout(hideInitialLoadingScreen, 250);
         };
     </script>
 </body>
